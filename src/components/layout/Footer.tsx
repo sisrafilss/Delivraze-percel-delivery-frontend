@@ -1,13 +1,16 @@
 import Logo from "@/assets/icons/Logo";
+import { Link } from "react-router";
 
 export default function Footer() {
   return (
-    <footer className="border-t">
+    <footer className="container mx-auto px-4 border-t">
       <div className="mx-auto container space-y-8 px-4 py-16 lg:space-y-16">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div>
             <div className="flex items-center gap-3">
-              <Logo />
+              <Link to="/">
+                <Logo />
+              </Link>
             </div>
 
             <p className="mt-4 max-w-xs text-muted-foreground">
