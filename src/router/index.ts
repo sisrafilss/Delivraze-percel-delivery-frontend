@@ -1,6 +1,7 @@
 import App from "@/App";
 import About from "@/pages/About";
 import HomePage from "@/pages/HomePage";
+import Login from "@/pages/Login";
 import { createBrowserRouter } from "react-router";
 
 export const router = createBrowserRouter([
@@ -17,5 +18,9 @@ export const router = createBrowserRouter([
         path: "about",
       },
     ],
+  },
+  {
+    Component: Login,
+    path: "/login",
   },
 ]);
