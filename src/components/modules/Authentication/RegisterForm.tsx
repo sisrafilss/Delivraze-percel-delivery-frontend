@@ -18,6 +18,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useRegisterMutation } from "@/redux/features/auth/auth.api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router";
 import { z } from "zod";
@@ -44,6 +52,9 @@ const registerFormSchema = z
     confirmPassword: z
       .string()
       .min(8, { message: "Confirm password must be at least 8 characters" }),
+    role: z.enum(["SENDER", "RECEIVER"], {
+      message: "You must choose either Sender or Receiver",
+    }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     path: ["confirmPassword"],
@@ -54,6 +65,8 @@ export function RegisterForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [register] = useRegisterMutation();
+
   const form = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
@@ -64,10 +77,17 @@ export function RegisterForm({
     },
   });
 
-  function onSubmit(values: z.infer<typeof registerFormSchema>) {
+  async function onSubmit(values: z.infer<typeof registerFormSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
+
+    try {
+      const res = await register(values);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -83,6 +103,7 @@ export function RegisterForm({
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <div className="flex flex-col gap-6">
+                {/* name */}
                 <FormField
                   control={form.control}
                   name="name"
@@ -97,6 +118,8 @@ export function RegisterForm({
                     </FormItem>
                   )}
                 />
+
+                {/* email */}
                 <FormField
                   control={form.control}
                   name="email"
@@ -112,6 +135,34 @@ export function RegisterForm({
                   )}
                 />
 
+                {/* role */}
+                <FormField
+                  control={form.control}
+                  name="role"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Role</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl className="w-full">
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Role" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="SENDER">Sender</SelectItem>
+                          <SelectItem value="RECEIVER">Receiver</SelectItem>
+                        </SelectContent>
+                      </Select>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* password */}
                 <FormField
                   control={form.control}
                   name="password"
@@ -126,6 +177,8 @@ export function RegisterForm({
                     </FormItem>
                   )}
                 />
+
+                {/* confirm password */}
                 <FormField
                   control={form.control}
                   name="confirmPassword"
@@ -143,10 +196,7 @@ export function RegisterForm({
 
                 <div className="flex flex-col gap-3">
                   <Button type="submit" className="w-full">
-                    Register
-                  </Button>
-                  <Button variant="outline" type="button" className="w-full">
-                    Login with Google
+                    Sign Up
                   </Button>
                 </div>
               </div>
