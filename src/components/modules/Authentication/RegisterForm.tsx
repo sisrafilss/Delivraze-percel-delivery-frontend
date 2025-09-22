@@ -80,17 +80,16 @@ export function RegisterForm({
   });
 
   async function onSubmit(values: z.infer<typeof registerFormSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-
     try {
-      const res = await register(values);
-      navigate("/verify");
-      toast.success("Registration Successfull");
-      console.log(res);
-    } catch (error) {
-      console.log(error);
+      const res = await register(values).unwrap();
+      if (res?.data?.success) {
+        toast.success("Registration Successfull");
+        navigate("/verify", { state: values.email });
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error(error);
+      toast.error(error.data?.message);
     }
   }
 

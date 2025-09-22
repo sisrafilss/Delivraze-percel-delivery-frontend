@@ -57,11 +57,11 @@ const Verify = () => {
   });
 
   // Needed | commented for development
-  // useEffect(() => {
-  //   if (!email) {
-  //     navigate("/");
-  //   }
-  // }, [email, navigate]);
+  useEffect(() => {
+    if (!email) {
+      navigate("/");
+    }
+  }, [email, navigate]);
 
   const handleSendOtp = async () => {
     const toastId = toast.loading("Sending OTP");

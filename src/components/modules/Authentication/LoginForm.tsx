@@ -49,22 +49,21 @@ export function LoginForm({
   async function onSubmit(values: z.infer<typeof authSchema>) {
     try {
       const result = await login(values).unwrap();
-
-      if (result) {
+      console.log(result);
+      if (result.success) {
         toast.success("Successfully logged in");
         navigate("/");
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      console.log(err);
-      if (err.data.message === "User is not verified!") {
-        toast.error(err.data.message);
+      // This kind of error handling using error message is not recommended (It is temporary solution)
+      if (err.data.message === "User is not verified") {
+        toast.error("Your account is not verified");
+        navigate("/verify", { state: values.email });
       }
       if (err.data.message) {
         toast.error(err.data.message);
       }
-      console.error(err);
-      navigate("/verify", { state: values.email });
     }
   }
 
