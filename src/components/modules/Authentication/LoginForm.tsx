@@ -18,8 +18,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useLoginMutation } from "@/redux/features/auth/auth.api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const authSchema = z.object({
@@ -33,6 +35,9 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [login] = useLoginMutation();
+  const navigate = useNavigate();
+
   const form = useForm<z.infer<typeof authSchema>>({
     resolver: zodResolver(authSchema),
     defaultValues: {
@@ -41,10 +46,26 @@ export function LoginForm({
     },
   });
 
-  function onSubmit(values: z.infer<typeof authSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof authSchema>) {
+    try {
+      const result = await login(values).unwrap();
+
+      if (result) {
+        toast.success("Successfully logged in");
+        navigate("/");
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      console.log(err);
+      if (err.data.message === "User is not verified!") {
+        toast.error(err.data.message);
+      }
+      if (err.data.message) {
+        toast.error(err.data.message);
+      }
+      console.error(err);
+      navigate("/verify", { state: values.email });
+    }
   }
 
   return (

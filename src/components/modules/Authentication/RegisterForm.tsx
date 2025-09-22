@@ -27,7 +27,8 @@ import {
 } from "@/components/ui/select";
 import { useRegisterMutation } from "@/redux/features/auth/auth.api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const registerFormSchema = z
@@ -66,6 +67,7 @@ export function RegisterForm({
   ...props
 }: React.ComponentProps<"div">) {
   const [register] = useRegisterMutation();
+  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
@@ -84,6 +86,8 @@ export function RegisterForm({
 
     try {
       const res = await register(values);
+      navigate("/verify");
+      toast.success("Registration Successfull");
       console.log(res);
     } catch (error) {
       console.log(error);
