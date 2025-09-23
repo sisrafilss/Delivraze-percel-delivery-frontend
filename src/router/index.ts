@@ -1,5 +1,6 @@
 import App from "@/App";
 import About from "@/pages/About";
+import ForgotPassword from "@/pages/ForgotPassword";
 import HomePage from "@/pages/HomePage";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
@@ -32,5 +33,9 @@ export const router = createBrowserRouter([
   {
     Component: Verify,
     path: "/verify",
+  },
+  {
+    Component: ForgotPassword,
+    path: "/forgot-password",
   },
 ]);
