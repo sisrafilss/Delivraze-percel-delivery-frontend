@@ -3,7 +3,9 @@ import About from "@/pages/About";
 import ForgotPassword from "@/pages/ForgotPassword";
 import HomePage from "@/pages/HomePage";
 import Login from "@/pages/Login";
+import PasswordResetSuccess from "@/pages/PasswordResetSuccess";
 import Register from "@/pages/Register";
+import ResetPassword from "@/pages/ResetPassword";
 import Verify from "@/pages/Verify";
 import { createBrowserRouter } from "react-router";
 
@@ -37,5 +39,13 @@ export const router = createBrowserRouter([
   {
     Component: ForgotPassword,
     path: "/forgot-password",
+  },
+  {
+    Component: ResetPassword,
+    path: "/reset-password",
+  },
+  {
+    Component: PasswordResetSuccess,
+    path: "/password-reset-success",
   },
 ]);
