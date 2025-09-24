@@ -33,9 +33,9 @@ const About: React.FC = () => {
   return (
     <div className="space-y-20 py-12 px-4 md:px-16 lg:px-32 text-slate-900 dark:text-slate-100">
       {/* Service Description */}
-      <section className="space-y-4">
+      <section className="space-y-4 text-center max-w-3xl mx-auto">
         <h1 className="text-4xl font-bold">About Delivraze</h1>
-        <p className="text-lg max-w-3xl">
+        <p className="text-lg">
           Delivraze is a next-generation delivery platform that connects
           customers with reliable local couriers. Our goal is to provide fast,
           safe, and affordable delivery services while keeping you updated in
@@ -44,9 +44,9 @@ const About: React.FC = () => {
       </section>
 
       {/* Mission Section */}
-      <section className="space-y-4">
+      <section className="space-y-4 text-center max-w-3xl mx-auto">
         <h2 className="text-3xl font-semibold">Our Mission</h2>
-        <p className="text-lg max-w-3xl">
+        <p className="text-lg">
           At Delivraze, our mission is to simplify urban logistics by leveraging
           technology and a network of trusted couriers. We strive to make
           deliveries faster, safer, and stress-free for both businesses and
@@ -57,7 +57,7 @@ const About: React.FC = () => {
 
       {/* Team Section */}
       <section className="space-y-8">
-        <h2 className="text-3xl font-semibold">Meet Our Team</h2>
+        <h2 className="text-3xl font-semibold text-center">Meet Our Team</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {teamMembers.map((member) => (
             <Card
