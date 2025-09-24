@@ -24,6 +24,7 @@ import ModeToggler from "./ModeToggler";
 const navigationLinks = [
   { href: "/", label: "Home", active: true },
   { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export default function Navbar() {
