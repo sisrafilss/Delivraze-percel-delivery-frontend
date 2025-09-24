@@ -37,8 +37,8 @@ export default function Navbar() {
   };
 
   return (
-    <header className="container mx-auto border-b px-4 ">
-      <div className="flex h-16 items-center justify-between gap-4">
+    <header className="sticky top-0 z-50 bg-background border-b">
+      <div className="container mx-auto flex h-16 items-center justify-between gap-4 px-4">
         {/* Left side */}
         <div className="flex items-center gap-2">
           {/* Mobile menu trigger */}
@@ -102,7 +102,7 @@ export default function Navbar() {
                   <NavigationMenuItem key={index}>
                     <NavigationMenuLink
                       asChild
-                      className="text-muted-foreground hover:text-primary py-1.5 font-medium"
+                      className="py-1.5 font-medium text-muted-foreground hover:text-primary"
                     >
                       <Link to={link.href}>{link.label}</Link>
                     </NavigationMenuLink>
@@ -115,12 +115,6 @@ export default function Navbar() {
         {/* Right side */}
         <div className="flex items-center gap-2">
           <ModeToggler />
-          {/* <Button variant="outline" className="text-sm">
-            Logout
-          </Button>
-          <Button asChild variant="default" className="text-sm">
-            <Link to="/login">Login</Link>
-          </Button> */}
           {data?.data?.email && (
             <Button
               onClick={handleLogout}
