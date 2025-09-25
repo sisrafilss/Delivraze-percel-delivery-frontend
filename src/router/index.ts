@@ -1,5 +1,6 @@
 import App from "@/App";
 import DashboardLayout from "@/components/layout/DashboardLayout";
+import { role } from "@/constants/role";
 import About from "@/pages/About";
 import { default as AdminAnalytics } from "@/pages/Admin/Analytics";
 import Contact from "@/pages/Contact";
@@ -11,7 +12,10 @@ import { default as ReceiverAnalytics } from "@/pages/Receiver/Analytics";
 import Register from "@/pages/Register";
 import ResetPassword from "@/pages/ResetPassword";
 import { default as SenderAnalytics } from "@/pages/Sender/Analytics";
+import Unauthorized from "@/pages/UnAuthorized";
 import Verify from "@/pages/Verify";
+import type { TRole } from "@/types";
+import { withAuth } from "@/utils/withAuth";
 import { createBrowserRouter } from "react-router";
 
 export const router = createBrowserRouter([
@@ -35,7 +39,10 @@ export const router = createBrowserRouter([
   },
 
   {
-    Component: DashboardLayout,
+    Component: withAuth(
+      DashboardLayout,
+      (role.superAdmin as TRole) || (role.admin as TRole)
+    ),
     path: "/admin",
     children: [
       {
@@ -87,5 +94,9 @@ export const router = createBrowserRouter([
   {
     Component: PasswordResetSuccess,
     path: "/password-reset-success",
+  },
+  {
+    Component: Unauthorized,
+    path: "/unauthorized",
   },
 ]);
