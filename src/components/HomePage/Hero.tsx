@@ -1,3 +1,4 @@
+import deliveryIllustration from "@/assets/images/delivery-illustration.svg";
 import { Button } from "@/components/ui/button";
 
 export default function HeroSection() {
@@ -21,7 +22,7 @@ export default function HeroSection() {
         </div>
         <div className="flex-1">
           <img
-            src="https://via.placeholder.com/500x350"
+            src={deliveryIllustration}
             alt="Delivery Illustration"
             className="rounded-xl shadow-lg"
           />
