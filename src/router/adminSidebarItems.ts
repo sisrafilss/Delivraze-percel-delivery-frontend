@@ -12,14 +12,14 @@ export const adminSidebarItems: ISidebarItems[] = [
       },
     ],
   },
-  {
-    title: "Tour Management",
-    items: [
-      // {
-      //   title: "Add Tour Type",
-      //   Component: AddTourType,
-      //   url: "/admin/add-tour-type",
-      // },
-    ],
-  },
+  // {
+  // title: "",
+  // items: [
+  // {
+  //   title: "Add Tour Type",
+  //   Component: AddTourType,
+  //   url: "/admin/add-tour-type",
+  // },
+  //   ],
+  // },
 ];

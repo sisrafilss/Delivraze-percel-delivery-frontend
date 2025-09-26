@@ -7,16 +7,18 @@ import Contact from "@/pages/Contact";
 import ForgotPassword from "@/pages/ForgotPassword";
 import HomePage from "@/pages/HomePage";
 import Login from "@/pages/Login";
+import NotFoundPage from "@/pages/NotFoundPage";
 import PasswordResetSuccess from "@/pages/PasswordResetSuccess";
 import { default as ReceiverAnalytics } from "@/pages/Receiver/Analytics";
 import Register from "@/pages/Register";
 import ResetPassword from "@/pages/ResetPassword";
-import { default as SenderAnalytics } from "@/pages/Sender/Analytics";
-import Unauthorized from "@/pages/UnAuthorized";
+import Unauthorized from "@/pages/Unauthorized";
 import Verify from "@/pages/Verify";
 import type { TRole } from "@/types";
+import { generateRoutes } from "@/utils/generateRoutes";
 import { withAuth } from "@/utils/withAuth";
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
+import { senderSidebarItems } from "./senderSidebarItems";
 
 export const router = createBrowserRouter([
   {
@@ -39,10 +41,7 @@ export const router = createBrowserRouter([
   },
 
   {
-    Component: withAuth(
-      DashboardLayout,
-      (role.superAdmin as TRole) || (role.admin as TRole)
-    ),
+    Component: withAuth(DashboardLayout, role.admin as TRole),
     path: "/admin",
     children: [
       {
@@ -52,17 +51,18 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    Component: DashboardLayout,
+    Component: withAuth(DashboardLayout, role.sender as TRole),
     path: "/sender",
     children: [
       {
-        Component: SenderAnalytics,
         index: true,
+        element: <Navigate to="/sender/analytics" />,
       },
+      ...generateRoutes(senderSidebarItems),
     ],
   },
   {
-    Component: DashboardLayout,
+    Component: withAuth(DashboardLayout, role.receiver as TRole),
     path: "/receiver",
     children: [
       {
@@ -98,5 +98,9 @@ export const router = createBrowserRouter([
   {
     Component: Unauthorized,
     path: "/unauthorized",
+  },
+  {
+    Component: NotFoundPage,
+    path: "*",
   },
 ]);
