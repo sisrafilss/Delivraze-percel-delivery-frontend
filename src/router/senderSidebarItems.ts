@@ -2,7 +2,8 @@
 
 import AllParcels from "@/pages/Sender/AllParcels";
 import Analytics from "@/pages/Sender/Analytics";
-import PickupRequest from "@/pages/Sender/PickupRequest";
+import ParcelRequestPage from "@/pages/Sender/ParcelRequestPage";
+
 import type { ISidebarItems } from "@/types";
 
 export const senderSidebarItems: ISidebarItems[] = [
@@ -15,9 +16,9 @@ export const senderSidebarItems: ISidebarItems[] = [
         url: "/sender/analytics",
       },
       {
-        title: "Pickup Request",
-        Component: PickupRequest,
-        url: "/sender/pickup",
+        title: "Parcel Request",
+        Component: ParcelRequestPage,
+        url: "/sender/parcel-request",
       },
       {
         title: "All Parcels",
