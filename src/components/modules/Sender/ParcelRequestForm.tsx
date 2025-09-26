@@ -74,8 +74,6 @@ export function ParcelRequestForm({
   });
 
   async function onSubmit(values: ParcelRequestFormValues) {
-    console.log("Parcel request submitted:", values);
-
     const toastId = toast.loading("Parcel Send Request Submitting...");
     try {
       const parcelInfo = {

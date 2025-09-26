@@ -1,8 +1,10 @@
 // import { Booking } from "@/pages/User/Booking";
 
+import ChangePasswordPage from "@/pages/ChangePassword";
 import AllParcels from "@/pages/Sender/AllParcels";
 import Analytics from "@/pages/Sender/Analytics";
 import ParcelRequestPage from "@/pages/Sender/ParcelRequestPage";
+import UpdateProfilePage from "@/pages/UpdateProfile";
 
 import type { ISidebarItems } from "@/types";
 
@@ -24,6 +26,21 @@ export const senderSidebarItems: ISidebarItems[] = [
         title: "All Parcels",
         Component: AllParcels,
         url: "/sender/all-parcels",
+      },
+    ],
+  },
+  {
+    title: "My Profile",
+    items: [
+      {
+        title: "Update Profile",
+        Component: UpdateProfilePage,
+        url: "/sender/update-profile",
+      },
+      {
+        title: "Change Password",
+        Component: ChangePasswordPage,
+        url: "/sender/change-password",
       },
     ],
   },

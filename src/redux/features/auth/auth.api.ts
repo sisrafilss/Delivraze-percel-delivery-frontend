@@ -24,6 +24,20 @@ export const authApi = baseApi.injectEndpoints({
         data: userInfo,
       }),
     }),
+    updateProfile: builder.mutation({
+      query: (updateInfo) => ({
+        url: "/auth/update-profile",
+        method: "PATCH",
+        data: updateInfo,
+      }),
+    }),
+    changePassword: builder.mutation({
+      query: (passwordInfo) => ({
+        url: "/auth/change-password",
+        method: "POST",
+        data: passwordInfo,
+      }),
+    }),
     sendOtp: builder.mutation<IResponse<null>, ISendOtp>({
       query: (userInfo) => ({
         url: "/otp/send",
@@ -72,6 +86,8 @@ export const {
   useLoginMutation,
   useLogoutMutation,
   useRegisterMutation,
+  useUpdateProfileMutation,
+  useChangePasswordMutation,
   useSendOtpMutation,
   useVerifyOtpMutation,
   useResetPasswordMutation,
