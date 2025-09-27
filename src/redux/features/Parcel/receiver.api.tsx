@@ -12,9 +12,10 @@ export const authApi = baseApi.injectEndpoints({
     }),
 
     getAllIncommingParcelsByReceiver: builder.query({
-      query: () => ({
+      query: (params) => ({
         url: "/parcel/receiver/incomming",
         method: "GET",
+        params,
       }),
       providesTags: ["PARCEL"],
     }),
