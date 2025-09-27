@@ -26,7 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useParcelSendRequestMutation } from "@/redux/features/Parcel/Sender/Sender";
+import { useParcelSendRequestMutation } from "@/redux/features/Parcel/Sender/sender.api";
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -64,7 +64,7 @@ export function ParcelRequestForm({
       receiverName: "John Doe",
       receiverPhone: "+8801712345678",
       receiverAddress: "House 12, Road 7, Dhanmondi, Dhaka",
-      receiverEmail: "mrreceiver@gmail.com",
+      receiverEmail: "israfilhossen3@gmail.com",
       parcelType: "Electronics",
       weight: 1500,
       specialInstructions: "Handle with care, fragile item inside",

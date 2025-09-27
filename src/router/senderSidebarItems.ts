@@ -3,6 +3,7 @@
 import ChangePasswordPage from "@/pages/ChangePassword";
 import AllParcels from "@/pages/Sender/AllParcels";
 import Analytics from "@/pages/Sender/Analytics";
+import CancelParcelSendRequest from "@/pages/Sender/CancelParcelSendRequest";
 import ParcelRequestPage from "@/pages/Sender/ParcelRequestPage";
 import UpdateProfilePage from "@/pages/UpdateProfile";
 
@@ -21,6 +22,11 @@ export const senderSidebarItems: ISidebarItems[] = [
         title: "Parcel Request",
         Component: ParcelRequestPage,
         url: "/sender/parcel-request",
+      },
+      {
+        title: "Cancel Parcel Request",
+        Component: CancelParcelSendRequest,
+        url: "/sender/cancel-parcel",
       },
       {
         title: "All Parcels",
