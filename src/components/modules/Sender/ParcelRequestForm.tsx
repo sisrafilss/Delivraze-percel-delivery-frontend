@@ -26,7 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useParcelSendRequestMutation } from "@/redux/features/Parcel/Sender/sender.api";
+import { useParcelSendRequestMutation } from "@/redux/features/Parcel/sender.api";
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";

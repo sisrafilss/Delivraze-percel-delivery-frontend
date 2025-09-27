@@ -8,14 +8,14 @@ export const authApi = baseApi.injectEndpoints({
         method: "POST",
         data: parcelInfo,
       }),
-      invalidatesTags: ["PARCEL_SEND"],
+      invalidatesTags: ["PARCEL"],
     }),
     cancelPendingParcelBySender: builder.mutation({
       query: (parcelId) => ({
         url: `parcel/cancel/${parcelId}`,
         method: "PATCH",
       }),
-      invalidatesTags: ["PARCEL_SEND"],
+      invalidatesTags: ["PARCEL"],
     }),
 
     getAllParcelsBySender: builder.query({
@@ -24,7 +24,7 @@ export const authApi = baseApi.injectEndpoints({
         method: "GET",
         params,
       }),
-      providesTags: ["PARCEL_SEND"],
+      providesTags: ["PARCEL"],
     }),
   }),
 });

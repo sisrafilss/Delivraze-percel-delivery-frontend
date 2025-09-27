@@ -2,14 +2,12 @@ import App from "@/App";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { role } from "@/constants/role";
 import About from "@/pages/About";
-import { default as AdminAnalytics } from "@/pages/Admin/Analytics";
 import Contact from "@/pages/Contact";
 import ForgotPassword from "@/pages/ForgotPassword";
 import HomePage from "@/pages/HomePage";
 import Login from "@/pages/Login";
 import NotFoundPage from "@/pages/NotFoundPage";
 import PasswordResetSuccess from "@/pages/PasswordResetSuccess";
-import { default as ReceiverAnalytics } from "@/pages/Receiver/Analytics";
 import Register from "@/pages/Register";
 import ResetPassword from "@/pages/ResetPassword";
 import Unauthorized from "@/pages/Unauthorized";
@@ -18,6 +16,8 @@ import type { TRole } from "@/types";
 import { generateRoutes } from "@/utils/generateRoutes";
 import { withAuth } from "@/utils/withAuth";
 import { createBrowserRouter, Navigate } from "react-router";
+import { adminSidebarItems } from "./adminSidebarItems";
+import { receiverSidebarItems } from "./receiverSidebarItems";
 import { senderSidebarItems } from "./senderSidebarItems";
 
 export const router = createBrowserRouter([
@@ -45,9 +45,10 @@ export const router = createBrowserRouter([
     path: "/admin",
     children: [
       {
-        Component: AdminAnalytics,
         index: true,
+        element: <Navigate to="/admin/analytics" />,
       },
+      ...generateRoutes(adminSidebarItems),
     ],
   },
   {
@@ -66,9 +67,10 @@ export const router = createBrowserRouter([
     path: "/receiver",
     children: [
       {
-        Component: ReceiverAnalytics,
         index: true,
+        element: <Navigate to="/receiver/analytics" />,
       },
+      ...generateRoutes(receiverSidebarItems),
     ],
   },
   {

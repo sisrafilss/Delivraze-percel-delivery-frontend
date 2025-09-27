@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { useMemo, useState } from "react";
 
-import { useGetAllParcelsBySenderQuery } from "@/redux/features/Parcel/Sender/sender.api";
+import { useGetAllParcelsBySenderQuery } from "@/redux/features/Parcel/sender.api";
 import { format } from "date-fns";
 
 const STATUS_OPTIONS = [
