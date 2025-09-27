@@ -1,6 +1,7 @@
 // import { Booking } from "@/pages/User/Booking";
 
 import ChangePasswordPage from "@/pages/ChangePassword";
+import ProfileAndLogout from "@/pages/ProfileAndLogout";
 import AllParcels from "@/pages/Sender/AllParcelsForSender";
 import Analytics from "@/pages/Sender/Analytics";
 import CancelParcelSendRequest from "@/pages/Sender/CancelParcelSendRequest";
@@ -38,6 +39,11 @@ export const senderSidebarItems: ISidebarItems[] = [
   {
     title: "My Profile",
     items: [
+      {
+        title: "My Profile",
+        Component: ProfileAndLogout,
+        url: "/sender/my-profile",
+      },
       {
         title: "Update Profile",
         Component: UpdateProfilePage,
