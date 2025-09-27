@@ -1,7 +1,7 @@
 // import { Booking } from "@/pages/User/Booking";
 
 import ChangePasswordPage from "@/pages/ChangePassword";
-import AllParcels from "@/pages/Parcels/AllParcels";
+import AllParcels from "@/pages/Sender/AllParcelsForSender";
 import Analytics from "@/pages/Sender/Analytics";
 import CancelParcelSendRequest from "@/pages/Sender/CancelParcelSendRequest";
 import ParcelRequestPage from "@/pages/Sender/ParcelRequestPage";

@@ -6,8 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { useMemo, useState } from "react";
 
-import { useGetAllParcelsBySenderQuery } from "@/redux/features/Parcel/sender.api";
-import { format } from "date-fns";
+import { useGetAllParcelsByReceiverQuery } from "@/redux/features/Parcel/receiver.api";
 
 const STATUS_OPTIONS = [
   { label: "All", value: "ALL" },
@@ -18,8 +17,8 @@ const STATUS_OPTIONS = [
   { label: "Cancelled", value: "CANCELLED" },
 ];
 
-export default function AllParcelsPage() {
-  const [selectedStatus, setSelectedStatus] = useState<string>("PENDING");
+export default function AllParcelsByReceiver() {
+  const [selectedStatus, setSelectedStatus] = useState<string>("ALL");
   const [selectedParcel, setSelectedParcel] = useState<Parcel | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -29,7 +28,7 @@ export default function AllParcelsPage() {
     [selectedStatus]
   );
 
-  const { data, isLoading, isError, refetch } = useGetAllParcelsBySenderQuery(
+  const { data, isLoading, isError, refetch } = useGetAllParcelsByReceiverQuery(
     // Typescript: pass queryArg as any if signature requires specific shape
     queryArg as any,
     { refetchOnMountOrArgChange: true }
@@ -99,7 +98,7 @@ export default function AllParcelsPage() {
                   <th className="px-3 py-2">Weight (g)</th>
                   <th className="px-3 py-2">Pickup → Dropoff</th>
                   <th className="px-3 py-2">Status</th>
-                  <th className="px-3 py-2">Created</th>
+                  {/* <th className="px-3 py-2">Created</th> */}
                   <th className="px-3 py-2">Actions</th>
                 </tr>
               </thead>
@@ -141,11 +140,11 @@ export default function AllParcelsPage() {
                       </span>
                     </td>
 
-                    <td className="px-3 py-3 text-sm">
+                    {/* <td className="px-3 py-3 text-sm">
                       {p.createdAt
                         ? format(new Date(p.createdAt), "dd MMM yyyy")
                         : "-"}
-                    </td>
+                    </td> */}
                     <td className="px-3 py-3 text-sm">
                       <div className="flex gap-2">
                         <Button size="sm" onClick={() => openDetail(p)}>

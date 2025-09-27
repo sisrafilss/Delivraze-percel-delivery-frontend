@@ -18,10 +18,19 @@ export const authApi = baseApi.injectEndpoints({
       }),
       providesTags: ["PARCEL"],
     }),
+    getAllParcelsByReceiver: builder.query({
+      query: (params) => ({
+        url: "/parcel/receiver/history",
+        method: "GET",
+        params,
+      }),
+      providesTags: ["PARCEL"],
+    }),
   }),
 });
 
 export const {
   useMarkAsDeliveredMutation,
   useGetAllIncommingParcelsByReceiverQuery,
+  useGetAllParcelsByReceiverQuery,
 } = authApi;
