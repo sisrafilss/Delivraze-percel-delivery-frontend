@@ -1,4 +1,6 @@
+import AskConfirmation from "@/components/AskConfirmation";
 import { Button } from "@/components/ui/button";
+import { useDeleteParcelByAdminMutation } from "@/redux/features/parcel/admin.api";
 import type { Parcel } from "@/types";
 
 const statusColors: Record<string, string> = {
@@ -16,6 +18,8 @@ interface Props {
 }
 
 export default function ParcelTable({ parcels, onViewDetail, onEdit }: Props) {
+  const [deleteParcelByAdmin] = useDeleteParcelByAdminMutation();
+
   return (
     <div className="overflow-x-auto">
       <table className="w-full table-auto border-collapse">
@@ -74,9 +78,11 @@ export default function ParcelTable({ parcels, onViewDetail, onEdit }: Props) {
                 <Button size="sm" onClick={() => onEdit(p)}>
                   Edit
                 </Button>
-                <Button variant="destructive" size="sm">
-                  Delete
-                </Button>
+                <AskConfirmation onDelete={() => deleteParcelByAdmin(p._id)}>
+                  <Button variant="destructive" size="sm">
+                    Delete
+                  </Button>
+                </AskConfirmation>
               </td>
             </tr>
           ))}

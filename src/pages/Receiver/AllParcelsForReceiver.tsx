@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import ParcelDetailModal, {
-  type Parcel,
-} from "@/components/modules/Parcels/ParcelDetailModal";
+import ParcelDetailModal from "@/components/modules/Parcels/ParcelDetailModal";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { useMemo, useState } from "react";
 
 import { useGetAllParcelsByReceiverQuery } from "@/redux/features/parcel/receiver.api";
+import type { Parcel } from "@/types";
 
 const STATUS_OPTIONS = [
   { label: "All", value: "ALL" },
