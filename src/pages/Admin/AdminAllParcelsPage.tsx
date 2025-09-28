@@ -22,8 +22,8 @@ export default function AdminAllParcelsPage() {
   const [searchEmail, setSearchEmail] = useState<string>("");
 
   const { data, isLoading, isError, refetch } = useGetAllParcelsByAdminQuery(
-    { status: selectedStatus === "ALL" ? {} : selectedStatus }
-    // { refetchOnMountOrArgChange: true }
+    { status: selectedStatus === "ALL" ? {} : selectedStatus },
+    { refetchOnMountOrArgChange: true }
   );
 
   console.log("All parcels", data);

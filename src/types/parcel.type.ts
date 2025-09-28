@@ -2,6 +2,7 @@ export type Parcel = {
   _id: string;
   senderId: string;
   senderName: string;
+  senderEmail: string;
   senderPhone: string;
   senderAddress: string;
   receiverName: string;

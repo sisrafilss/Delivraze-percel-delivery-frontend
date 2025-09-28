@@ -82,6 +82,7 @@ export function ParcelRequestForm({
       };
       const res = await parcelSendRequest(parcelInfo).unwrap();
       if (res?.success) {
+        console.log("PARCEL CREATED API RESPONSE:", res.data);
         toast.success("Parcel Send Request Submitted Successfully", {
           id: toastId,
         });

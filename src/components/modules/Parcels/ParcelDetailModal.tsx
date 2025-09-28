@@ -35,6 +35,8 @@ export default function ParcelDetailModal({
     }
   };
 
+  console.log("inside parcel detail modal:", parcel);
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
@@ -67,6 +69,9 @@ export default function ParcelDetailModal({
                   <h3 className="text-sm font-semibold mb-2">Sender</h3>
                   <p className="text-sm">
                     <strong>Name:</strong> {parcel.senderName}
+                  </p>
+                  <p className="text-sm">
+                    <strong>Email:</strong> {parcel.senderEmail}
                   </p>
                   <p className="text-sm">
                     <strong>Phone:</strong> {parcel.senderPhone}
@@ -110,6 +115,20 @@ export default function ParcelDetailModal({
                   </p>
                   <p className="text-sm">
                     <strong>Tracking ID:</strong> {parcel.trackingId || "-"}
+                  </p>
+                  <p className="text-sm">
+                    <strong>Is Blocked:</strong>{" "}
+                    <span
+                      className={`px-2 py-1 rounded-md text-xs font-medium
+                      ${
+                        parcel.isBlocked
+                          ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+                          : "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                      }
+                      `}
+                    >
+                      {parcel.isBlocked ? "Yes" : "No"}
+                    </span>
                   </p>
                 </div>
 

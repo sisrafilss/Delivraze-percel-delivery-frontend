@@ -22,10 +22,11 @@ export default function ParcelTable({ parcels, onViewDetail, onEdit }: Props) {
         <thead>
           <tr className="text-sm text-muted-foreground border-b border-border">
             <th className="px-3 py-2 text-left">Tracking</th>
-            {/* <th className="px-3 py-2 text-left">Sender</th> */}
+            <th className="px-3 py-2 text-left">Sender</th>
             <th className="px-3 py-2 text-left">Receiver</th>
             <th className="px-3 py-2 text-left">Type</th>
             <th className="px-3 py-2 text-left">Status</th>
+            <th className="px-3 py-2 text-left">Blocked</th>
             <th className="px-3 py-2 text-left">Actions</th>
           </tr>
         </thead>
@@ -36,7 +37,7 @@ export default function ParcelTable({ parcels, onViewDetail, onEdit }: Props) {
               className="border-b border-border hover:bg-muted/50 dark:hover:bg-muted/30"
             >
               <td className="px-3 py-2 text-sm">{p.trackingId}</td>
-              {/* <td className="px-3 py-2 text-sm">{p.senderEmail}</td>   */}
+              <td className="px-3 py-2 text-sm">{p.senderEmail}</td>
               <td className="px-3 py-2 text-sm">{p.receiverEmail}</td>
               <td className="px-3 py-2 text-sm">{p.parcelType}</td>
               <td className="px-3 py-2 text-sm">
@@ -48,6 +49,20 @@ export default function ParcelTable({ parcels, onViewDetail, onEdit }: Props) {
                   {p.status}
                 </span>
               </td>
+              <td className="px-3 py-2 text-sm">
+                <span
+                  className={`px-2 py-1 rounded-md text-xs font-medium
+                      ${
+                        p.isBlocked
+                          ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+                          : "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                      }
+                      `}
+                >
+                  {p.isBlocked ? "YES" : "NO"}
+                </span>
+              </td>
+
               <td className="px-3 py-2 text-sm flex gap-2">
                 <Button
                   variant="outline"
