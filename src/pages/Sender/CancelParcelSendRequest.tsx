@@ -6,7 +6,7 @@ import { Spinner } from "@/components/ui/spinner";
 import {
   useCancelPendingParcelBySenderMutation,
   useGetAllParcelsBySenderQuery,
-} from "@/redux/features/Parcel/sender.api";
+} from "@/redux/features/parcel/sender.api";
 import { format } from "date-fns";
 
 export default function CancelParcelSendRequest() {

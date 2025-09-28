@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { useMemo, useState } from "react";
 
-import { useGetAllParcelsByReceiverQuery } from "@/redux/features/Parcel/receiver.api";
+import { useGetAllParcelsByReceiverQuery } from "@/redux/features/parcel/receiver.api";
 
 const STATUS_OPTIONS = [
   { label: "All", value: "ALL" },

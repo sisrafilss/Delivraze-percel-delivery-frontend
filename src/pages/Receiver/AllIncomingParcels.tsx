@@ -10,7 +10,7 @@ import AskConfirmation from "@/components/AskConfirmation";
 import {
   useGetAllIncommingParcelsByReceiverQuery,
   useMarkAsDeliveredMutation,
-} from "@/redux/features/Parcel/receiver.api";
+} from "@/redux/features/parcel/receiver.api";
 import { toast } from "sonner";
 
 const STATUS_OPTIONS = [

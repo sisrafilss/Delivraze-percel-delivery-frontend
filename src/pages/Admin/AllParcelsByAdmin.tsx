@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { useMemo, useState } from "react";
 
-import { useGetAllParcelsBySenderQuery } from "@/redux/features/parcel/sender.api";
+import { useGetAllParcelsByAdminQuery } from "@/redux/features/parcel/admin.api";
 import { format } from "date-fns";
 
 const STATUS_OPTIONS = [
@@ -18,7 +18,7 @@ const STATUS_OPTIONS = [
   { label: "Cancelled", value: "CANCELLED" },
 ];
 
-export default function AllParcelsForSender() {
+export default function AllParcelsByAdmin() {
   const [selectedStatus, setSelectedStatus] = useState<string>("ALL");
   const [selectedParcel, setSelectedParcel] = useState<Parcel | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,7 +29,7 @@ export default function AllParcelsForSender() {
     [selectedStatus]
   );
 
-  const { data, isLoading, isError, refetch } = useGetAllParcelsBySenderQuery(
+  const { data, isLoading, isError, refetch } = useGetAllParcelsByAdminQuery(
     // Typescript: pass queryArg as any if signature requires specific shape
     queryArg as any,
     { refetchOnMountOrArgChange: true }
@@ -99,7 +99,7 @@ export default function AllParcelsForSender() {
                   <th className="px-3 py-2">Weight (g)</th>
                   <th className="px-3 py-2">Pickup → Dropoff</th>
                   <th className="px-3 py-2">Status</th>
-                  <th className="px-3 py-2">Created</th>
+                  {/* <th className="px-3 py-2">Created</th> */}
                   <th className="px-3 py-2">Actions</th>
                 </tr>
               </thead>
@@ -152,7 +152,7 @@ export default function AllParcelsForSender() {
                           Show Details
                         </Button>
                         {/* Example placeholder action button (edit/cancel) */}
-                        {/* <Button
+                        <Button
                           size="sm"
                           variant="ghost"
                           onClick={() =>
@@ -160,7 +160,7 @@ export default function AllParcelsForSender() {
                           }
                         >
                           Action
-                        </Button> */}
+                        </Button>
                       </div>
                     </td>
                   </tr>

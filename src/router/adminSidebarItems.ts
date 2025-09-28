@@ -1,4 +1,8 @@
+import AdminAllParcelsPage from "@/pages/Admin/AdminAllParcelsPage";
 import Analytics from "@/pages/Admin/Analytics";
+import ChangePasswordPage from "@/pages/ChangePassword";
+import ProfileAndLogout from "@/pages/ProfileAndLogout";
+import UpdateProfilePage from "@/pages/UpdateProfile";
 import type { ISidebarItems } from "@/types";
 
 export const adminSidebarItems: ISidebarItems[] = [
@@ -10,16 +14,31 @@ export const adminSidebarItems: ISidebarItems[] = [
         Component: Analytics,
         url: "/admin/analytics",
       },
+      {
+        title: "All Parcels",
+        Component: AdminAllParcelsPage,
+        url: "/admin/all-parcels",
+      },
     ],
   },
-  // {
-  // title: "",
-  // items: [
-  // {
-  //   title: "Add Tour Type",
-  //   Component: AddTourType,
-  //   url: "/admin/add-tour-type",
-  // },
-  //   ],
-  // },
+  {
+    title: "My Profile",
+    items: [
+      {
+        title: "Profile & Logout",
+        Component: ProfileAndLogout,
+        url: "/admin/my-profile",
+      },
+      {
+        title: "Update Profile",
+        Component: UpdateProfilePage,
+        url: "/admin/update-profile",
+      },
+      {
+        title: "Change Password",
+        Component: ChangePasswordPage,
+        url: "/admin/change-password",
+      },
+    ],
+  },
 ];
