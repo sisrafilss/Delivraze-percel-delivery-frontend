@@ -1,5 +1,12 @@
 import type { ComponentType } from "react";
 
+export type {
+  GetAllUsersResponse,
+  Meta,
+  User,
+  UserActive,
+  UserRole,
+} from "./admin";
 export type { ILogin, ISendOtp, IVerifyOtp } from "./auth.type";
 export type { Parcel } from "./parcel.type";
 

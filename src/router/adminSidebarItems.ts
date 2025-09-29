@@ -1,4 +1,5 @@
 import AdminAllParcelsPage from "@/pages/Admin/AdminAllParcelsPage";
+import AllUsers from "@/pages/Admin/AllUsers";
 import Analytics from "@/pages/Admin/Analytics";
 import ChangePasswordPage from "@/pages/ChangePassword";
 import ProfileAndLogout from "@/pages/ProfileAndLogout";
@@ -7,7 +8,7 @@ import type { ISidebarItems } from "@/types";
 
 export const adminSidebarItems: ISidebarItems[] = [
   {
-    title: "Dashboard",
+    title: "Manage Parcels",
     items: [
       {
         title: "Analytics",
@@ -18,6 +19,16 @@ export const adminSidebarItems: ISidebarItems[] = [
         title: "All Parcels",
         Component: AdminAllParcelsPage,
         url: "/admin/all-parcels",
+      },
+    ],
+  },
+  {
+    title: "Manage Users",
+    items: [
+      {
+        title: "All Users",
+        Component: AllUsers,
+        url: "/admin/users",
       },
     ],
   },
