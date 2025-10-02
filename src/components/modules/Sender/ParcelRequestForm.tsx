@@ -187,14 +187,25 @@ export function ParcelRequestForm({
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
+                          <SelectItem value="Documents">Documents</SelectItem>
                           <SelectItem value="Electronics">
                             Electronics
                           </SelectItem>
-                          <SelectItem value="Documents">Documents</SelectItem>
+                          <SelectItem value="Books">Books</SelectItem>
                           <SelectItem value="Clothes">Clothes</SelectItem>
-                          <SelectItem value="Food">Food</SelectItem>
+                          <SelectItem value="Clothes">Clothes</SelectItem>
+                          <SelectItem value="Cosmetics">Cosmetics</SelectItem>
                           <SelectItem value="Other">Other</SelectItem>
                         </SelectContent>
+
+                        {/* export enum ParcelType {
+  DOCUMENTS = "Documents",
+  CLOTHES = "Clothes",
+  BOOKS = "Books",
+  COSMETICS = "Cosmetics",
+  TOYS = "Toys",
+  ELECTRONICS = "Electronics",
+} */}
                       </Select>
                       <FormMessage />
                     </FormItem>

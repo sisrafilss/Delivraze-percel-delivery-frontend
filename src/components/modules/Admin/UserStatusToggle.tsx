@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // src/pages/admin/users/components/UserStatusToggle.tsx
-import { useState } from "react";
 
+import AskConfirmation from "@/components/AskConfirmation";
 import { Button } from "@/components/ui/button";
-import { useUpdateProfileMutation } from "@/redux/features/auth/auth.api";
+import { useUpdateUserByAdminMutation } from "@/redux/features/admin/user.api";
 import type { User } from "@/types";
+import { toast } from "sonner";
 
 export default function UserStatusToggle({
   user,
@@ -13,25 +14,24 @@ export default function UserStatusToggle({
   user: User;
   onRefetch: () => void;
 }) {
-  const [updateUserStatus, { isLoading }] = useUpdateProfileMutation();
-  const [busy, setBusy] = useState(false);
-
+  const [updateUserByAdmin, { isLoading }] = useUpdateUserByAdminMutation();
+  const next = user.isActive === "ACTIVE" ? "BLOCKED" : "ACTIVE";
   const toggle = async () => {
-    const next = user.isActive === "ACTIVE" ? "BLOCKED" : "ACTIVE";
-    const confirmText =
-      next === "BLOCKED" ? "Block this user?" : "Unblock this user?";
-    if (!window.confirm(confirmText)) return;
-
     try {
-      setBusy(true);
-      await updateUserStatus({ id: user._id, status: next }).unwrap();
+      const res = await updateUserByAdmin({
+        userId: user._id,
+        userInfo: { isActive: next },
+      }).unwrap();
+
       onRefetch();
-      // optionally show toast
+      if (res.success) {
+        toast.success(
+          `User successfully ${next === "ACTIVE" ? "Unblocked" : next}!`
+        );
+      }
     } catch (err) {
       console.error(err);
-      alert("Failed to update user status");
-    } finally {
-      setBusy(false);
+      toast.error("Failed to update user status");
     }
   };
 
@@ -39,13 +39,15 @@ export default function UserStatusToggle({
   const variant = user.isActive === "ACTIVE" ? "destructive" : "default";
 
   return (
-    <Button
-      size="sm"
-      variant={variant as any}
-      onClick={toggle}
-      disabled={busy || isLoading}
+    <AskConfirmation
+      description={
+        next === "BLOCKED" ? "Block this user?" : "Unblock this user?"
+      }
+      onDelete={toggle}
     >
-      {busy || isLoading ? "Working..." : label}
-    </Button>
+      <Button size="sm" variant={variant as any} disabled={isLoading}>
+        {label}
+      </Button>
+    </AskConfirmation>
   );
 }

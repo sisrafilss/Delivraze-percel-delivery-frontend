@@ -82,7 +82,7 @@ export function RegisterForm({
   async function onSubmit(values: z.infer<typeof registerFormSchema>) {
     try {
       const res = await register(values).unwrap();
-      if (res?.data?.success) {
+      if (res?.success) {
         toast.success("Registration Successfull");
         navigate("/verify", { state: values.email });
       }

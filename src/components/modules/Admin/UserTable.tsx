@@ -1,6 +1,9 @@
 // src/pages/admin/users/components/UserTable.tsx
 
+import AskConfirmation from "@/components/AskConfirmation";
+import { useUpdateUserByAdminMutation } from "@/redux/features/admin/user.api";
 import type { User } from "@/types";
+import { toast } from "sonner";
 import UserStatusToggle from "./UserStatusToggle";
 
 type Props = {
@@ -86,8 +89,6 @@ export default function UserTable({
   );
 }
 
-/* Small inline Delete button component that uses RTK mutation (assumed) */
-// import { useDeleteUserMutation } from "@/services/adminApi"; // <- adjust hook/path
 function DeleteUserButton({
   userId,
   onRefetch,
@@ -95,29 +96,32 @@ function DeleteUserButton({
   userId: string;
   onRefetch: () => void;
 }) {
-  //   const [deleteUser, { isLoading }] = useDeleteUserMutation();
+  const [updateUserByAdmin, { isLoading }] = useUpdateUserByAdminMutation();
   const onDelete = async () => {
-    const ok = window.confirm(
-      "Delete this user permanently? This action cannot be undone."
-    );
-    if (!ok) return;
     try {
-      //   await deleteUser(userId).unwrap();
+      const res = await updateUserByAdmin({
+        userId: userId,
+        userInfo: { isDeleted: true },
+      }).unwrap();
       onRefetch();
-      alert("User deleted"); // replace with a toast if you have one
+      console.log(res);
+      if (res?.success) {
+        toast.success("User deleted");
+      }
     } catch (err) {
       console.error(err);
-      alert("Failed to delete user");
+      toast.error("Failed to delete user");
     }
   };
 
   return (
-    <button
-      className="px-3 py-1 rounded-md border text-sm text-red-600 disabled:opacity-50"
-      onClick={onDelete}
-      //   disabled={isLoading}
-    >
-      Delete
-    </button>
+    <AskConfirmation onDelete={onDelete}>
+      <button
+        className="px-3 py-1 rounded-md border text-sm text-red-600 disabled:opacity-50"
+        disabled={isLoading}
+      >
+        Delete
+      </button>
+    </AskConfirmation>
   );
 }

@@ -1,16 +1,12 @@
-// src/pages/admin/users/UserList.tsx
-import { useMemo, useState } from "react";
-
-import { Button } from "@/components/ui/button";
-
-import Pagination from "@/components/modules/Admin/Pagination";
+import Pagination from "@/components/Pagination";
 import UserDetailDialog from "@/components/modules/Admin/UserDetailDialog";
 import UserFilters from "@/components/modules/Admin/UserFilters";
 import UserTable from "@/components/modules/Admin/UserTable";
+import { Button } from "@/components/ui/button";
+import { useMemo, useState } from "react";
 
 import { useGetAllUsersByAdminQuery } from "@/redux/features/admin/user.api";
 import type { User } from "@/types";
-// Note: useGetAllUsersQuery assumed to exist in your RTK Query slice
 
 export default function AllUsers() {
   const [page, setPage] = useState<number>(1);
@@ -25,9 +21,9 @@ export default function AllUsers() {
     () => ({
       page,
       limit,
-      search: search || undefined,
+      searchTerm: search || undefined,
       role: role || undefined,
-      status: status || undefined,
+      isActive: status || undefined,
     }),
     [page, limit, search, role, status]
   );

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 // import ParcelTable from "./ParcelTable";
 // import ParcelFilters from "./ParcelFilters";
 // import ParcelDetailModal from "./ParcelDetailModal";
@@ -14,17 +14,32 @@ import ParcelFilters from "@/components/modules/Admin/ParcelFilters";
 import { ParcelFormModal } from "@/components/modules/Admin/ParcelFormModal";
 import ParcelTable from "@/components/modules/Admin/ParcelTable";
 import ParcelDetailModal from "@/components/modules/Parcels/ParcelDetailModal";
+import Pagination from "@/components/Pagination";
 import { useGetAllParcelsByAdminQuery } from "@/redux/features/parcel/admin.api";
 import type { Parcel } from "@/types";
 
 export default function AdminAllParcelsPage() {
   const [selectedStatus, setSelectedStatus] = useState<string>("ALL");
   const [searchEmail, setSearchEmail] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
+  const [limit] = useState<number>(10);
 
-  const { data, isLoading, isError, refetch } = useGetAllParcelsByAdminQuery(
-    { status: selectedStatus === "ALL" ? {} : selectedStatus },
-    { refetchOnMountOrArgChange: true }
+  const queryParams = useMemo(
+    () => ({
+      page,
+      limit,
+      status: selectedStatus === "ALL" ? undefined : selectedStatus,
+      searchTerm: searchEmail || undefined,
+    }),
+    [page, limit, selectedStatus, searchEmail]
   );
+
+  const { data, isLoading, isError, refetch } =
+    useGetAllParcelsByAdminQuery(queryParams);
+  // const { data, isLoading, isError, refetch } = useGetAllParcelsByAdminQuery(
+  //   { status: selectedStatus === "ALL" ? {} : selectedStatus },
+  //   { refetchOnMountOrArgChange: true }
+  // );
 
   console.log("All parcels", data);
 
@@ -66,6 +81,8 @@ export default function AdminAllParcelsPage() {
     );
   }
 
+  const meta = data?.meta;
+
   return (
     <div className="min-h-screen p-4 bg-background">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -88,6 +105,16 @@ export default function AdminAllParcelsPage() {
           onViewDetail={openDetail}
           onEdit={openEdit}
         />
+
+        {meta && meta.totalPage > 1 && (
+          <div className="mt-4 flex justify-end">
+            <Pagination
+              page={meta.page}
+              totalPages={meta.totalPage}
+              onPageChange={(p) => setPage(p)}
+            />
+          </div>
+        )}
 
         <ParcelDetailModal
           parcel={selectedParcel || undefined}

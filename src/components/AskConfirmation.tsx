@@ -1,5 +1,6 @@
 import {
   AlertDialog,
+  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -14,24 +15,35 @@ import { Button } from "./ui/button";
 interface IProps {
   children: ReactNode;
   onDelete: () => void;
+  title?: string;
+  description?: string;
 }
 
-const AskConfirmation = ({ children, onDelete }: IProps) => {
+const AskConfirmation = ({
+  children,
+  onDelete,
+  title,
+  description,
+}: IProps) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>
+            {title ? title : "Are you absolutely sure?"}
+          </AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone.
+            {description ? description : "This action cannot be undone."}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <Button variant="destructive" onClick={onDelete}>
-            Continue
-          </Button>
+          <AlertDialogAction asChild>
+            <Button variant="destructive" onClick={onDelete}>
+              Continue
+            </Button>
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
