@@ -36,12 +36,6 @@ export default function AdminAllParcelsPage() {
 
   const { data, isLoading, isError, refetch } =
     useGetAllParcelsByAdminQuery(queryParams);
-  // const { data, isLoading, isError, refetch } = useGetAllParcelsByAdminQuery(
-  //   { status: selectedStatus === "ALL" ? {} : selectedStatus },
-  //   { refetchOnMountOrArgChange: true }
-  // );
-
-  console.log("All parcels", data);
 
   const parcels: Parcel[] = data?.data || [];
 

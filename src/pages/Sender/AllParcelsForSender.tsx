@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import ParcelDetailModal, {
-  type Parcel,
-} from "@/components/modules/Parcels/ParcelDetailModal";
+import ParcelDetailModal from "@/components/modules/Parcels/ParcelDetailModal";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { useMemo, useState } from "react";
 
+import Pagination from "@/components/Pagination";
 import { useGetAllParcelsBySenderQuery } from "@/redux/features/parcel/sender.api";
+import type { Parcel } from "@/types";
 import { format } from "date-fns";
 
 const STATUS_OPTIONS = [
@@ -23,19 +23,25 @@ export default function AllParcelsForSender() {
   const [selectedParcel, setSelectedParcel] = useState<Parcel | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // call RTK query with selected status (convert ALL to undefined to fetch everything)
-  const queryArg = useMemo(
-    () => (selectedStatus === "ALL" ? {} : { status: selectedStatus }),
-    [selectedStatus]
+  const [page, setPage] = useState<number>(1);
+  const [limit] = useState<number>(5);
+
+  const queryParams = useMemo(
+    () => ({
+      page,
+      limit,
+      status: selectedStatus === "ALL" ? undefined : selectedStatus,
+    }),
+    [page, limit, selectedStatus]
   );
 
   const { data, isLoading, isError, refetch } = useGetAllParcelsBySenderQuery(
-    // Typescript: pass queryArg as any if signature requires specific shape
-    queryArg as any,
+    queryParams,
     { refetchOnMountOrArgChange: true }
   );
 
-  const parcels = data?.data || [];
+  const parcels: Parcel[] = data?.data || [];
+  const meta = data?.meta;
 
   const openDetail = (parcel: Parcel) => {
     setSelectedParcel(parcel);
@@ -167,6 +173,16 @@ export default function AllParcelsForSender() {
                 ))}
               </tbody>
             </table>
+          </div>
+        )}
+
+        {meta && meta.totalPage > 1 && (
+          <div className="mt-4 flex justify-end">
+            <Pagination
+              page={meta.page}
+              totalPages={meta.totalPage}
+              onPageChange={(p) => setPage(p)}
+            />
           </div>
         )}
       </div>
