@@ -161,7 +161,7 @@ export default function AdminAnalytics() {
                 </CardContent>
               </Card>
             ) : (
-              statuses.map((s, index) => (
+              statuses.map((s) => (
                 <StatCard
                   key={s._id}
                   title={s._id}

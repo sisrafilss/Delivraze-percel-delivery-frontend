@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-Delivraze is a parcel delivery platform designed to streamline the process of sending and receiving parcels. This frontend application provides users with an intuitive interface to manage deliveries. It has also a dashboard for `Sender`, `Receiver` and `Admin`.
+Delivraze is a parcel delivery platform designed to streamline the process of sending and receiving parcels. This frontend application provides users with an intuitive interface to manage deliveries. It has also a dashboard for `Sender`, `Receiver` and `Admin`. The live link of this website is [https://delivraze-percel-delivery-frontend-5m6o6dx2q.vercel.app/](https://delivraze-percel-delivery-frontend-5m6o6dx2q.vercel.app/)
 
 ## Setup Instructions
 
@@ -43,8 +43,7 @@ npm run build
 
 ## Live URL
 
-[https://delivraze-frontend.example.com](https://delivraze-frontend.example.com)  
-_(Update with actual deployed URL if available)_
+[https://delivraze-percel-delivery-frontend-5m6o6dx2q.vercel.app/](https://delivraze-percel-delivery-frontend-5m6o6dx2q.vercel.app/)
 
 ## Additional Notes
 
