@@ -1,69 +1,54 @@
-# React + TypeScript + Vite
+# Delivraze Parcel Delivery Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Project Overview
 
-Currently, two official plugins are available:
+Delivraze is a parcel delivery platform designed to streamline the process of sending and receiving parcels. This frontend application provides users with an intuitive interface to manage deliveries. It has also a dashboard for `Sender`, `Receiver` and `Admin`.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Setup Instructions
 
-## Expanding the ESLint configuration
+1. **Clone the repository:**
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+git clone https://github.com/your-username/Delivraze-percel-delivery-frontend.git
+cd Delivraze-percel-delivery-frontend
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. **Install dependencies:**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
+
+3. **Start the development server:**
+
+```bash
+npm run dev
+```
+
+4. **Build for production:**
+
+```bash
+npm run build
+```
+
+## Technology Stack
+
+- **Framework:** React.js
+- **State Management:** Redux Toolkit
+- **Routing:** React Router
+- **Styling:** Tailwind CSS
+- **HTTP Client:** Axios
+- **Build Tool:** Vite / Create React App (specify which one is used)
+- **Testing:** Jest, React Testing Library
+
+## Live URL
+
+[https://delivraze-frontend.example.com](https://delivraze-frontend.example.com)  
+_(Update with actual deployed URL if available)_
+
+## Additional Notes
+
+- Ensure you have Node.js (v16 or higher) and npm installed.
+- The frontend communicates with the Delivraze backend API. Update the API base URL in the environment configuration as needed.
+- For environment variables, create a `.env` file based on `.env.example`.
+- Contributions are welcome! Please open issues or submit pull requests for improvements.
