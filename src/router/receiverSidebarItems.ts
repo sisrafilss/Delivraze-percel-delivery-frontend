@@ -1,6 +1,6 @@
 // import { Booking } from "@/pages/User/Booking";
 
-import Analytics from "@/pages/Receiver/Analytics";
+import ReceiverAnalytics from "@/pages/Receiver/ReceiverAnalytics";
 
 import ChangePasswordPage from "@/pages/ChangePassword";
 import ProfileAndLogout from "@/pages/ProfileAndLogout";
@@ -16,7 +16,7 @@ export const receiverSidebarItems: ISidebarItems[] = [
     items: [
       {
         title: "Analytics",
-        Component: Analytics,
+        Component: ReceiverAnalytics,
         url: "/receiver/analytics",
       },
       {

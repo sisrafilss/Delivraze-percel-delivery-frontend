@@ -26,6 +26,12 @@ export const authApi = baseApi.injectEndpoints({
       }),
       providesTags: ["PARCEL"],
     }),
+    getAdminStats: builder.query({
+      query: () => ({
+        url: "/stats/admin",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -33,4 +39,5 @@ export const {
   useUpdateParcelByAdminMutation,
   useGetAllParcelsByAdminQuery,
   useDeleteParcelByAdminMutation,
+  useGetAdminStatsQuery,
 } = authApi;

@@ -27,6 +27,12 @@ export const authApi = baseApi.injectEndpoints({
       }),
       providesTags: ["PARCEL"],
     }),
+    getReceiverStats: builder.query({
+      query: () => ({
+        url: "/stats/receiver",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -34,4 +40,5 @@ export const {
   useMarkAsDeliveredMutation,
   useGetAllIncommingParcelsByReceiverQuery,
   useGetAllParcelsByReceiverQuery,
+  useGetReceiverStatsQuery,
 } = authApi;

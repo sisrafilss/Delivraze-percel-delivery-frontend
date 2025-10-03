@@ -1,16 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import StatCard from "@/components/modules/Dashboard/StatsCard";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatNumber } from "@/lib/format";
-import { useGetSenderStatsQuery } from "@/redux/features/parcel/sender.api";
+import { useGetReceiverStatsQuery } from "@/redux/features/parcel/receiver.api";
 import { Loader2, Package, RefreshCcw } from "lucide-react";
 import React from "react";
 import { toast } from "sonner";
@@ -34,44 +29,9 @@ const getStatusCardBg = (status: string): string => {
   }
 };
 
-// --- Helper small components ---
-const StatCard: React.FC<{
-  title: string;
-  subtitle?: string;
-  value?: React.ReactNode;
-  loading?: boolean;
-  className?: string;
-}> = ({ title, subtitle, value, loading, className }) => {
-  return (
-    <Card
-      className={`w-full md:w-64 overflow-hidden transition-transform duration-300 ease-out hover:scale-[1.03] hover:shadow-xl ${
-        className ?? ""
-      }`}
-    >
-      <CardHeader>
-        <CardTitle className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <Package className="h-4 w-4" />
-            <span className="text-sm font-medium">{title}</span>
-          </div>
-          {subtitle && <span className="text-xs opacity-80">{subtitle}</span>}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="flex items-center justify-center py-6">
-        {loading ? (
-          <Skeleton className="h-8 w-24 bg-white/40 dark:bg-black/40" />
-        ) : (
-          <div className="text-5xl font-semibold">{value}</div>
-        )}
-      </CardContent>
-      <CardFooter />
-    </Card>
-  );
-};
-
-export default function Analytics() {
+export default function ReceiverAnalytics() {
   const { data, isLoading, isError, error, refetch } =
-    useGetSenderStatsQuery(undefined);
+    useGetReceiverStatsQuery(undefined);
 
   React.useEffect(() => {
     if (isError) {
@@ -84,7 +44,7 @@ export default function Analytics() {
   return (
     <section className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Sender Analytics</h2>
+        <h2 className="text-lg font-semibold">Receiver Analytics</h2>
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"

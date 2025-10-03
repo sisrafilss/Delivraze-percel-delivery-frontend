@@ -1,6 +1,6 @@
 import AdminAllParcelsPage from "@/pages/Admin/AdminAllParcelsPage";
+import Analytics from "@/pages/Admin/AdminAnalytics";
 import AllUsers from "@/pages/Admin/AllUsers";
-import Analytics from "@/pages/Admin/Analytics";
 import ChangePasswordPage from "@/pages/ChangePassword";
 import ProfileAndLogout from "@/pages/ProfileAndLogout";
 import TrackParcel from "@/pages/TrackParcel";

@@ -3,9 +3,9 @@
 import ChangePasswordPage from "@/pages/ChangePassword";
 import ProfileAndLogout from "@/pages/ProfileAndLogout";
 import AllParcels from "@/pages/Sender/AllParcelsForSender";
-import Analytics from "@/pages/Sender/Analytics";
 import CancelParcelSendRequest from "@/pages/Sender/CancelParcelSendRequest";
 import ParcelRequestPage from "@/pages/Sender/ParcelRequestPage";
+import SenderAnalytics from "@/pages/Sender/SenderAnalytics";
 import TrackParcel from "@/pages/TrackParcel";
 import UpdateProfilePage from "@/pages/UpdateProfile";
 
@@ -17,7 +17,7 @@ export const senderSidebarItems: ISidebarItems[] = [
     items: [
       {
         title: "Analytics",
-        Component: Analytics,
+        Component: SenderAnalytics,
         url: "/sender/analytics",
       },
       {
