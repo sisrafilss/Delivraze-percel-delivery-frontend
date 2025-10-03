@@ -49,7 +49,6 @@ export function LoginForm({
   async function onSubmit(values: z.infer<typeof authSchema>) {
     try {
       const result = await login(values).unwrap();
-      console.log(result);
       if (result.success) {
         toast.success("Successfully logged in");
         navigate("/");

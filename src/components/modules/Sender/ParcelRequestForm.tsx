@@ -56,7 +56,6 @@ export function ParcelRequestForm({
   const [parcelSendRequest] = useParcelSendRequestMutation();
   const { data: userInfo } = useUserInfoQuery(undefined);
 
-  console.log("User info", userInfo);
   // ✅ Ensure correct type
   const form = useForm<ParcelRequestFormValues>({
     resolver: zodResolver(parcelRequestSchema),
@@ -82,7 +81,6 @@ export function ParcelRequestForm({
       };
       const res = await parcelSendRequest(parcelInfo).unwrap();
       if (res?.success) {
-        console.log("PARCEL CREATED API RESPONSE:", res.data);
         toast.success("Parcel Send Request Submitted Successfully", {
           id: toastId,
         });

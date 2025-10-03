@@ -35,8 +35,6 @@ export default function ParcelDetailModal({
     }
   };
 
-  console.log("inside parcel detail modal:", parcel);
-
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4"

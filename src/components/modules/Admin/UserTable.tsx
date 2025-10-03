@@ -141,7 +141,7 @@ function DeleteUserButton({
         userInfo: { isDeleted: true },
       }).unwrap();
       onRefetch();
-      console.log(res);
+
       if (res?.success) {
         toast.success("User deleted");
       }

@@ -38,8 +38,7 @@ const Contact: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const onSubmit = async (data: ContactFormValues) => {
-    console.log(data);
+  const onSubmit = async () => {
     setSubmitted(true);
     reset(); // clear form
     setTimeout(() => setSubmitted(false), 3000); // Hide success overlay

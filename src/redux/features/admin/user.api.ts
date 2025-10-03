@@ -4,8 +4,6 @@ export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     updateUserByAdmin: builder.mutation({
       query: ({ userId, userInfo }) => {
-        console.log("inside user api by admin:", userId, userInfo);
-
         return {
           url: `/user/${userId}`,
           method: "PATCH",
