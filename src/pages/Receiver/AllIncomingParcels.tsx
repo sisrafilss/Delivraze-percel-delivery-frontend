@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import ParcelDetailModal from "@/components/modules/Parcels/ParcelDetailModal";
 import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useMemo, useState } from "react";
 
 import AskConfirmation from "@/components/AskConfirmation";
@@ -62,21 +62,29 @@ export default function AllIncommingParcels() {
 
   const handleUpdateParcelStatus = async (parcelId: string) => {
     try {
-      const res = await markAsDelivered({
-        _id: parcelId,
-      }).unwrap();
+      const res = await markAsDelivered({ _id: parcelId }).unwrap();
 
       if (res?.success) {
         toast.success("Parcel marked as delivered successfully.");
       }
-      console.log("Parcel marked as delivered successfully.");
-      // Optionally trigger refetch
       refetch();
     } catch (error: any) {
       console.error(error);
       toast.error(error?.data?.message);
     }
   };
+
+  // Skeleton rows
+  const renderSkeletonRows = () =>
+    Array.from({ length: limit }).map((_, i) => (
+      <tr key={i} className="border-b border-border">
+        {Array.from({ length: 7 }).map((_, j) => (
+          <td key={j} className="px-3 py-3">
+            <Skeleton className="h-4 w-full" />
+          </td>
+        ))}
+      </tr>
+    ));
 
   return (
     <div className="min-h-screen p-4 bg-background">
@@ -107,36 +115,40 @@ export default function AllIncommingParcels() {
           </div>
         </div>
 
-        {isLoading ? (
-          <div className="flex items-center justify-center py-20">
-            <Spinner size="lg" />
-          </div>
-        ) : isError ? (
-          <div className="py-8 text-center text-red-500">
-            Failed to load parcels.
-          </div>
-        ) : parcels.length === 0 ? (
-          <div className="py-8 text-center text-muted-foreground">
-            No parcels found.
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full table-auto border-collapse">
-              <thead>
-                <tr className="text-sm text-left text-muted-foreground border-b border-border">
-                  <th className="px-3 py-2">Tracking</th>
-                  <th className="px-3 py-2">Receiver</th>
-                  <th className="px-3 py-2">Type</th>
-                  <th className="px-3 py-2">Weight (g)</th>
-                  <th className="px-3 py-2">Pickup → Dropoff</th>
-                  <th className="px-3 py-2">Status</th>
-                  {/* <th className="px-3 py-2">Created</th> */}
-                  <th className="px-3 py-2">Actions</th>
-                </tr>
-              </thead>
+        <div className="overflow-x-auto">
+          <table className="w-full table-auto border-collapse">
+            <thead>
+              <tr className="text-sm text-left text-muted-foreground border-b border-border">
+                <th className="px-3 py-2">Tracking</th>
+                <th className="px-3 py-2">Receiver</th>
+                <th className="px-3 py-2">Type</th>
+                <th className="px-3 py-2">Weight (g)</th>
+                <th className="px-3 py-2">Pickup → Dropoff</th>
+                <th className="px-3 py-2">Status</th>
+                <th className="px-3 py-2">Actions</th>
+              </tr>
+            </thead>
 
-              <tbody>
-                {parcels.map((p: Parcel) => (
+            <tbody>
+              {isLoading ? (
+                renderSkeletonRows()
+              ) : isError ? (
+                <tr>
+                  <td colSpan={7} className="py-8 text-center text-red-500">
+                    Failed to load parcels.
+                  </td>
+                </tr>
+              ) : parcels.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={7}
+                    className="py-8 text-center text-muted-foreground"
+                  >
+                    No parcels found.
+                  </td>
+                </tr>
+              ) : (
+                parcels.map((p: Parcel) => (
                   <tr
                     key={p._id}
                     className="border-b border-border hover:bg-muted/50 dark:hover:bg-muted/30"
@@ -160,10 +172,6 @@ export default function AllIncommingParcels() {
           ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
           : p.status === "IN_TRANSIT"
           ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
-          : p.status === "DELIVERED"
-          ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200"
-          : p.status === "CANCELLED"
-          ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
           : "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200"
       }
     `}
@@ -171,12 +179,6 @@ export default function AllIncommingParcels() {
                         {p.status}
                       </span>
                     </td>
-
-                    {/* <td className="px-3 py-3 text-sm">
-                      {p.createdAt
-                        ? format(new Date(p.createdAt), "dd MMM yyyy")
-                        : "-"}
-                    </td> */}
                     <td className="px-3 py-3 text-sm">
                       <div className="flex gap-2">
                         <Button
@@ -186,30 +188,20 @@ export default function AllIncommingParcels() {
                         >
                           Show Details
                         </Button>
-                        {/* Example placeholder action button (edit/cancel) */}
-
                         <AskConfirmation
                           onDelete={() => handleUpdateParcelStatus(p._id)}
                         >
-                          <Button
-                            size="sm"
-                            onClick={() =>
-                              console.log("placeholder action for", p._id)
-                            }
-                          >
-                            Mark as Delivered
-                          </Button>
+                          <Button size="sm">Mark as Delivered</Button>
                         </AskConfirmation>
                       </div>
                     </td>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
 
-        {/* pagination */}
         {meta && meta.totalPage > 1 && (
           <div className="mt-4 flex justify-end">
             <Pagination

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import ParcelDetailModal from "@/components/modules/Parcels/ParcelDetailModal";
 import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useMemo, useState } from "react";
 
 import Pagination from "@/components/Pagination";
@@ -53,6 +53,19 @@ export default function AllParcelsForSender() {
     setIsModalOpen(false);
   };
 
+  // Skeleton rows for table
+  const renderSkeletonRows = () => {
+    return Array.from({ length: limit }).map((_, i) => (
+      <tr key={i} className="border-b border-border">
+        {Array.from({ length: 8 }).map((_, j) => (
+          <td key={j} className="px-3 py-3">
+            <Skeleton className="h-4 w-full" />
+          </td>
+        ))}
+      </tr>
+    ));
+  };
+
   return (
     <div className="min-h-screen p-4 bg-background">
       <div className="max-w-7xl mx-auto">
@@ -85,36 +98,41 @@ export default function AllParcelsForSender() {
           </div>
         </div>
 
-        {isLoading ? (
-          <div className="flex items-center justify-center py-20">
-            <Spinner size="lg" />
-          </div>
-        ) : isError ? (
-          <div className="py-8 text-center text-red-500">
-            Failed to load parcels.
-          </div>
-        ) : parcels.length === 0 ? (
-          <div className="py-8 text-center text-muted-foreground">
-            No parcels found.
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full table-auto border-collapse">
-              <thead>
-                <tr className="text-sm text-left text-muted-foreground border-b border-border">
-                  <th className="px-3 py-2">Tracking</th>
-                  <th className="px-3 py-2">Receiver</th>
-                  <th className="px-3 py-2">Type</th>
-                  <th className="px-3 py-2">Weight (g)</th>
-                  <th className="px-3 py-2">Pickup → Dropoff</th>
-                  <th className="px-3 py-2">Status</th>
-                  <th className="px-3 py-2">Created</th>
-                  <th className="px-3 py-2">Actions</th>
-                </tr>
-              </thead>
+        <div className="overflow-x-auto">
+          <table className="w-full table-auto border-collapse">
+            <thead>
+              <tr className="text-sm text-left text-muted-foreground border-b border-border">
+                <th className="px-3 py-2">Tracking</th>
+                <th className="px-3 py-2">Receiver</th>
+                <th className="px-3 py-2">Type</th>
+                <th className="px-3 py-2">Weight (g)</th>
+                <th className="px-3 py-2">Pickup → Dropoff</th>
+                <th className="px-3 py-2">Status</th>
+                <th className="px-3 py-2">Created</th>
+                <th className="px-3 py-2">Actions</th>
+              </tr>
+            </thead>
 
-              <tbody>
-                {parcels.map((p: Parcel) => (
+            <tbody>
+              {isLoading ? (
+                renderSkeletonRows()
+              ) : isError ? (
+                <tr>
+                  <td colSpan={8} className="py-8 text-center text-red-500">
+                    Failed to load parcels.
+                  </td>
+                </tr>
+              ) : parcels.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={8}
+                    className="py-8 text-center text-muted-foreground"
+                  >
+                    No parcels found.
+                  </td>
+                </tr>
+              ) : (
+                parcels.map((p: Parcel) => (
                   <tr
                     key={p._id}
                     className="border-b border-border hover:bg-muted/50 dark:hover:bg-muted/30"
@@ -160,24 +178,14 @@ export default function AllParcelsForSender() {
                         <Button size="sm" onClick={() => openDetail(p)}>
                           Show Details
                         </Button>
-                        {/* Example placeholder action button (edit/cancel) */}
-                        {/* <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() =>
-                            console.log("placeholder action for", p._id)
-                          }
-                        >
-                          Action
-                        </Button> */}
                       </div>
                     </td>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
 
         {meta && meta.totalPage > 1 && (
           <div className="mt-4 flex justify-end">

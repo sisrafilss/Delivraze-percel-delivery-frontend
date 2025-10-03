@@ -1,22 +1,14 @@
-import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
-import { useEffect, useMemo, useState } from "react";
-// import ParcelTable from "./ParcelTable";
-// import ParcelFilters from "./ParcelFilters";
-// import ParcelDetailModal from "./ParcelDetailModal";
-// import ParcelFormModal from "./ParcelFormModal";
-// import {
-//   useGetAllParcelsByAdmin,
-// //   useDeleteParcelByAdminMutation,
-// } from "@/redux/features/admin/adminParcel.api";
-// import { ParcelDetailModal } from "@/components/modules/Admin/ParcelDetailModal";
+import { LazyLoadWrapper } from "@/components/LazyLoadWrapper";
 import ParcelFilters from "@/components/modules/Admin/ParcelFilters";
 import { ParcelFormModal } from "@/components/modules/Admin/ParcelFormModal";
 import ParcelTable from "@/components/modules/Admin/ParcelTable";
 import ParcelDetailModal from "@/components/modules/Parcels/ParcelDetailModal";
 import Pagination from "@/components/Pagination";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useGetAllParcelsByAdminQuery } from "@/redux/features/parcel/admin.api";
 import type { Parcel } from "@/types";
+import { useEffect, useMemo, useState } from "react";
 
 export default function AdminAllParcelsPage() {
   const [selectedStatus, setSelectedStatus] = useState<string>("ALL");
@@ -63,14 +55,6 @@ export default function AdminAllParcelsPage() {
     setPage(1);
   }, [selectedStatus]);
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center py-20">
-        <Spinner size="lg" />
-      </div>
-    );
-  }
-
   if (isError) {
     return (
       <div className="text-center text-red-500 py-10">
@@ -82,50 +66,74 @@ export default function AdminAllParcelsPage() {
   const meta = data?.meta;
 
   return (
-    <div className="min-h-screen p-4 bg-background">
-      <div className="max-w-7xl mx-auto space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-semibold text-primary">All Parcels</h1>
-          <Button variant="outline" onClick={() => refetch()}>
-            Refresh
-          </Button>
-        </div>
-
-        <ParcelFilters
-          selectedStatus={selectedStatus}
-          onStatusChange={setSelectedStatus}
-          searchEmail={searchEmail}
-          onEmailChange={setSearchEmail}
-        />
-
-        <ParcelTable
-          parcels={parcels}
-          onViewDetail={openDetail}
-          onEdit={openEdit}
-        />
-
-        {meta && meta.totalPage > 1 && (
-          <div className="mt-4 flex justify-end">
-            <Pagination
-              page={meta.page}
-              totalPages={meta.totalPage}
-              onPageChange={(p) => setPage(p)}
-            />
+    <LazyLoadWrapper>
+      <div className="min-h-screen p-4 bg-background">
+        <div className="max-w-7xl mx-auto space-y-6">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-semibold text-primary">All Parcels</h1>
+            <Button variant="outline" onClick={() => refetch()}>
+              Refresh
+            </Button>
           </div>
-        )}
 
-        <ParcelDetailModal
-          parcel={selectedParcel || undefined}
-          isOpen={isDetailOpen}
-          onClose={closeModals}
-        />
+          <ParcelFilters
+            selectedStatus={selectedStatus}
+            onStatusChange={setSelectedStatus}
+            searchEmail={searchEmail}
+            onEmailChange={setSearchEmail}
+          />
 
-        <ParcelFormModal
-          parcel={selectedParcel || undefined}
-          open={isEditOpen}
-          onClose={closeModals}
-        />
+          {isLoading ? (
+            <div className="p-4 space-y-3 bg-card border rounded-lg">
+              {/* Skeleton table header */}
+              <div className="flex gap-2">
+                <Skeleton className="h-6 w-24" />
+                <Skeleton className="h-6 w-24" />
+                <Skeleton className="h-6 w-24" />
+                <Skeleton className="h-6 w-24" />
+              </div>
+              {/* Skeleton rows */}
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="flex gap-3 items-center">
+                  <Skeleton className="h-10 w-10 rounded-full" />
+                  <Skeleton className="h-4 w-48" />
+                  <Skeleton className="h-4 w-36" />
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-8 w-20 ml-auto" />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <ParcelTable
+              parcels={parcels}
+              onViewDetail={openDetail}
+              onEdit={openEdit}
+            />
+          )}
+
+          {meta && meta.totalPage > 1 && (
+            <div className="mt-4 flex justify-end">
+              <Pagination
+                page={meta.page}
+                totalPages={meta.totalPage}
+                onPageChange={(p) => setPage(p)}
+              />
+            </div>
+          )}
+
+          <ParcelDetailModal
+            parcel={selectedParcel || undefined}
+            isOpen={isDetailOpen}
+            onClose={closeModals}
+          />
+
+          <ParcelFormModal
+            parcel={selectedParcel || undefined}
+            open={isEditOpen}
+            onClose={closeModals}
+          />
+        </div>
       </div>
-    </div>
+    </LazyLoadWrapper>
   );
 }

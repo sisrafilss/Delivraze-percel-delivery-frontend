@@ -12,6 +12,7 @@ import React from "react";
 import { toast } from "sonner";
 
 // --- Recharts imports ---
+import { LazyLoadWrapper } from "@/components/LazyLoadWrapper";
 import {
   Bar,
   BarChart,
@@ -66,195 +67,197 @@ export default function AdminAnalytics() {
   const parcelTrends: ParcelTrend[] = data?.data?.parcelTrends ?? [];
 
   return (
-    <section className="space-y-10">
-      {/* === Existing cards === */}
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Admin Analytics</h2>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => refetch?.()}
-              aria-label="Refresh stats"
-            >
-              {isLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <RefreshCcw className="h-4 w-4" />
-              )}
-            </Button>
+    <LazyLoadWrapper>
+      <section className="space-y-10">
+        {/* === Existing cards === */}
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Admin Analytics</h2>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => refetch?.()}
+                aria-label="Refresh stats"
+              >
+                {isLoading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <RefreshCcw className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
+          </div>
+
+          {/* Grid of cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Total Parcels card */}
+            <Card className="col-span-1 md:col-span-2 lg:col-span-1 transition-transform duration-300 hover:scale-[1.03] hover:shadow-xl">
+              <CardHeader>
+                <CardTitle className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="rounded-full p-2 bg-muted/40 dark:bg-muted/30">
+                      <Package className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <div className="text-sm">Total Parcels</div>
+                      <div className="text-xs text-muted-foreground">
+                        Overall count for this sender
+                      </div>
+                    </div>
+                  </div>
+                  <Badge variant="outline">Sender</Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="py-8 flex items-center justify-center">
+                {isLoading ? (
+                  <div className="flex items-center gap-2">
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                    <span className="text-sm">Loading...</span>
+                  </div>
+                ) : isError ? (
+                  <div className="text-center">
+                    <div className="text-sm text-destructive">
+                      Failed to load.
+                    </div>
+                    <Button variant="ghost" size="sm" onClick={() => refetch()}>
+                      Retry
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="text-5xl font-bold">
+                    {formatNumber(data?.data.totalParcels ?? 0)}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* One card per status */}
+            {isLoading ? (
+              Array.from({ length: 4 }).map((_, i) => (
+                <Card key={i} className="w-full">
+                  <CardContent className="py-6">
+                    <Skeleton className="h-6 w-28 mb-3" />
+                    <Skeleton className="h-8 w-full" />
+                  </CardContent>
+                </Card>
+              ))
+            ) : isError ? (
+              <Card className="col-span-1 md:col-span-3">
+                <CardHeader>
+                  <CardTitle>Error</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-destructive">
+                    {typeof error === "object" &&
+                    error !== null &&
+                    "message" in error
+                      ? (error as { message: string }).message
+                      : "Failed to load stats"}
+                  </p>
+                  <div className="mt-3">
+                    <Button onClick={() => refetch()}>Retry</Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              statuses.map((s, index) => (
+                <StatCard
+                  key={s._id}
+                  title={s._id}
+                  subtitle={`${s.count} parcels`}
+                  value={<span className="tabular-nums">{s.count}</span>}
+                  className={`${getStatusCardBg(s._id)} shadow-lg`}
+                />
+              ))
+            )}
           </div>
         </div>
 
-        {/* Grid of cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Total Parcels card */}
-          <Card className="col-span-1 md:col-span-2 lg:col-span-1 transition-transform duration-300 hover:scale-[1.03] hover:shadow-xl">
+        {/* === Charts Section === */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Pie chart: Delivery Status Distribution */}
+          <Card className="p-4">
             <CardHeader>
-              <CardTitle className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="rounded-full p-2 bg-muted/40 dark:bg-muted/30">
-                    <Package className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <div className="text-sm">Total Parcels</div>
-                    <div className="text-xs text-muted-foreground">
-                      Overall count for this sender
-                    </div>
-                  </div>
-                </div>
-                <Badge variant="outline">Sender</Badge>
-              </CardTitle>
+              <CardTitle>Delivery Status Distribution</CardTitle>
             </CardHeader>
-            <CardContent className="py-8 flex items-center justify-center">
-              {isLoading ? (
-                <div className="flex items-center gap-2">
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  <span className="text-sm">Loading...</span>
-                </div>
-              ) : isError ? (
-                <div className="text-center">
-                  <div className="text-sm text-destructive">
-                    Failed to load.
-                  </div>
-                  <Button variant="ghost" size="sm" onClick={() => refetch()}>
-                    Retry
-                  </Button>
-                </div>
-              ) : (
-                <div className="text-5xl font-bold">
-                  {formatNumber(data?.data.totalParcels ?? 0)}
-                </div>
-              )}
+            <CardContent className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={statuses}
+                    dataKey="count"
+                    nameKey="_id"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={80}
+                    label={(entry) => String(entry._id)}
+                  >
+                    {statuses.map((_, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={PIE_COLORS[index % PIE_COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <ReTooltip />
+                </PieChart>
+              </ResponsiveContainer>
             </CardContent>
           </Card>
 
-          {/* One card per status */}
-          {isLoading ? (
-            Array.from({ length: 4 }).map((_, i) => (
-              <Card key={i} className="w-full">
-                <CardContent className="py-6">
-                  <Skeleton className="h-6 w-28 mb-3" />
-                  <Skeleton className="h-8 w-full" />
-                </CardContent>
-              </Card>
-            ))
-          ) : isError ? (
-            <Card className="col-span-1 md:col-span-3">
-              <CardHeader>
-                <CardTitle>Error</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-destructive">
-                  {typeof error === "object" &&
-                  error !== null &&
-                  "message" in error
-                    ? (error as { message: string }).message
-                    : "Failed to load stats"}
-                </p>
-                <div className="mt-3">
-                  <Button onClick={() => refetch()}>Retry</Button>
-                </div>
-              </CardContent>
-            </Card>
-          ) : (
-            statuses.map((s, index) => (
-              <StatCard
-                key={s._id}
-                title={s._id}
-                subtitle={`${s.count} parcels`}
-                value={<span className="tabular-nums">{s.count}</span>}
-                className={`${getStatusCardBg(s._id)} shadow-lg`}
-              />
-            ))
-          )}
-        </div>
-      </div>
-
-      {/* === Charts Section === */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Pie chart: Delivery Status Distribution */}
-        <Card className="p-4">
-          <CardHeader>
-            <CardTitle>Delivery Status Distribution</CardTitle>
-          </CardHeader>
-          <CardContent className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={statuses}
-                  dataKey="count"
-                  nameKey="_id"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={80}
-                  label={(entry) => String(entry._id)}
+          {/* Bar chart: Parcel Trends */}
+          <Card className="p-4">
+            <CardHeader>
+              <CardTitle>Parcel Trends</CardTitle>
+            </CardHeader>
+            <CardContent className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={parcelTrends.map((t) => ({
+                    ...t,
+                    date: new Date(t.date).toLocaleDateString(),
+                  }))}
                 >
-                  {statuses.map((_, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={PIE_COLORS[index % PIE_COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <ReTooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <ReTooltip />
+                  <Legend />
+                  <Bar dataKey="count" fill="#3B82F6" />
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
 
-        {/* Bar chart: Parcel Trends */}
-        <Card className="p-4">
-          <CardHeader>
-            <CardTitle>Parcel Trends</CardTitle>
-          </CardHeader>
-          <CardContent className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={parcelTrends.map((t) => ({
-                  ...t,
-                  date: new Date(t.date).toLocaleDateString(),
-                }))}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <ReTooltip />
-                <Legend />
-                <Bar dataKey="count" fill="#3B82F6" />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        {/* Bar chart: Monthly Shipments */}
-        <Card className="p-4">
-          <CardHeader>
-            <CardTitle>Monthly Shipments</CardTitle>
-          </CardHeader>
-          <CardContent className="h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={monthlyShipments.map((m) => ({
-                  ...m,
-                  monthName: new Date(m.year, m.month - 1).toLocaleString(
-                    "default",
-                    { month: "short" }
-                  ),
-                }))}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="monthName" />
-                <YAxis />
-                <ReTooltip />
-                <Legend />
-                <Bar dataKey="count" fill="#10B981" />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-      </div>
-    </section>
+          {/* Bar chart: Monthly Shipments */}
+          <Card className="p-4">
+            <CardHeader>
+              <CardTitle>Monthly Shipments</CardTitle>
+            </CardHeader>
+            <CardContent className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={monthlyShipments.map((m) => ({
+                    ...m,
+                    monthName: new Date(m.year, m.month - 1).toLocaleString(
+                      "default",
+                      { month: "short" }
+                    ),
+                  }))}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="monthName" />
+                  <YAxis />
+                  <ReTooltip />
+                  <Legend />
+                  <Bar dataKey="count" fill="#10B981" />
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+    </LazyLoadWrapper>
   );
 }

@@ -3,7 +3,7 @@ import AskConfirmation from "@/components/AskConfirmation";
 import ParcelDetailModal from "@/components/modules/Parcels/ParcelDetailModal";
 import Pagination from "@/components/Pagination";
 import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   useCancelPendingParcelBySenderMutation,
   useGetAllParcelsBySenderQuery,
@@ -13,8 +13,6 @@ import { format } from "date-fns";
 import { useMemo, useState } from "react";
 
 export default function CancelParcelSendRequest() {
-  //   const [isConfirm, setIsConfirm] = useState(false);
-
   const [selectedParcel, setSelectedParcel] = useState<Parcel | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [page, setPage] = useState<number>(1);
@@ -36,23 +34,8 @@ export default function CancelParcelSendRequest() {
   const [cancelPendingParcelBySender] =
     useCancelPendingParcelBySenderMutation();
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Spinner size="lg" />
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="flex items-center justify-center min-h-screen text-red-500">
-        Failed to load pending parcels.
-      </div>
-    );
-  }
-
   const parcels = data?.data || [];
+  const meta = data?.meta;
 
   const openDetail = (parcel: Parcel) => {
     setSelectedParcel(parcel);
@@ -64,7 +47,18 @@ export default function CancelParcelSendRequest() {
     setIsModalOpen(false);
   };
 
-  const meta = data?.meta;
+  // Skeleton rows for table
+  const renderSkeletonRows = () => {
+    return Array.from({ length: limit }).map((_, i) => (
+      <tr key={i} className="border-b border-border">
+        {Array.from({ length: 8 }).map((_, j) => (
+          <td key={j} className="px-3 py-3">
+            <Skeleton className="h-4 w-full" />
+          </td>
+        ))}
+      </tr>
+    ));
+  };
 
   return (
     <div className="min-h-screen p-4 bg-background">
@@ -72,42 +66,47 @@ export default function CancelParcelSendRequest() {
         Pending Parcel Requests
       </h1>
 
-      {parcels.length === 0 && (
+      {parcels.length === 0 && !isLoading && (
         <p className="text-center col-span-full text-muted-foreground">
           No pending parcels found.
         </p>
       )}
 
-      {isLoading ? (
-        <div className="flex items-center justify-center py-20">
-          <Spinner size="lg" />
-        </div>
-      ) : isError ? (
-        <div className="py-8 text-center text-red-500">
-          Failed to load parcels.
-        </div>
-      ) : parcels.length === 0 ? (
-        <div className="py-8 text-center text-muted-foreground">
-          No parcels found.
-        </div>
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="w-full table-auto border-collapse">
-            <thead>
-              <tr className="text-sm text-left text-muted-foreground border-b border-border">
-                <th className="px-3 py-2">Tracking</th>
-                <th className="px-3 py-2">Receiver</th>
-                <th className="px-3 py-2">Type</th>
-                <th className="px-3 py-2">Weight (g)</th>
-                <th className="px-3 py-2">Pickup → Dropoff</th>
-                <th className="px-3 py-2">Status</th>
-                <th className="px-3 py-2">Created</th>
-                <th className="px-3 py-2">Actions</th>
-              </tr>
-            </thead>
+      <div className="overflow-x-auto">
+        <table className="w-full table-auto border-collapse">
+          <thead>
+            <tr className="text-sm text-left text-muted-foreground border-b border-border">
+              <th className="px-3 py-2">Tracking</th>
+              <th className="px-3 py-2">Receiver</th>
+              <th className="px-3 py-2">Type</th>
+              <th className="px-3 py-2">Weight (g)</th>
+              <th className="px-3 py-2">Pickup → Dropoff</th>
+              <th className="px-3 py-2">Status</th>
+              <th className="px-3 py-2">Created</th>
+              <th className="px-3 py-2">Actions</th>
+            </tr>
+          </thead>
 
-            <tbody>
-              {parcels.map((p: Parcel) => (
+          <tbody>
+            {isLoading ? (
+              renderSkeletonRows()
+            ) : isError ? (
+              <tr>
+                <td colSpan={8} className="py-8 text-center text-red-500">
+                  Failed to load parcels.
+                </td>
+              </tr>
+            ) : parcels.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={8}
+                  className="py-8 text-center text-muted-foreground"
+                >
+                  No parcels found.
+                </td>
+              </tr>
+            ) : (
+              parcels.map((p: Parcel) => (
                 <tr
                   key={p._id}
                   className="border-b border-border hover:bg-muted/50 dark:hover:bg-muted/30"
@@ -165,11 +164,11 @@ export default function CancelParcelSendRequest() {
                     </div>
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
 
       {meta && meta.totalPage > 1 && (
         <div className="mt-4 flex justify-end">

@@ -314,7 +314,7 @@ export default function Footer() {
         </div>
 
         <p className="text-xs text-muted-foreground">
-          &copy; 2022. Company Name. All rights reserved.
+          &copy; 2022. Delivraze Parcel Delivery. All rights reserved.
         </p>
       </div>
     </footer>

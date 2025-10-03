@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Spinner } from "@/components/ui/spinner";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   useUpdateProfileMutation,
   useUserInfoQuery,
@@ -36,8 +36,6 @@ export default function UpdateProfilePage() {
   const [updateProfile] = useUpdateProfileMutation();
   const { data: userInfo, isLoading } = useUserInfoQuery(undefined);
 
-  console.log(userInfo?.data?.name);
-
   const form = useForm<UpdateProfileFormValues>({
     resolver: zodResolver(updateProfileSchema),
     defaultValues: {
@@ -48,8 +46,6 @@ export default function UpdateProfilePage() {
   });
 
   const onSubmit = async (values: UpdateProfileFormValues) => {
-    console.log("Updated Profile:", values);
-
     const toastId = toast.loading("Updating Profile...");
     try {
       const res = await updateProfile(values).unwrap();
@@ -77,9 +73,33 @@ export default function UpdateProfilePage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-background px-4">
-      {isLoading && <Spinner size="lg" />}
+      {isLoading ? (
+        <Card className="w-full max-w-md shadow-lg rounded-2xl border border-border p-6 space-y-6">
+          {/* Title skeleton */}
+          <div className="flex justify-center">
+            <Skeleton className="h-6 w-40" />
+          </div>
 
-      {!isLoading && (
+          {/* Form fields skeleton */}
+          <div className="space-y-5">
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-10 w-full rounded-md" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-10 w-full rounded-md" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-10 w-full rounded-md" />
+            </div>
+          </div>
+
+          {/* Submit button skeleton */}
+          <Skeleton className="h-10 w-full rounded-md" />
+        </Card>
+      ) : (
         <Card className="w-full max-w-md shadow-lg rounded-2xl border border-border">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold text-center text-primary">

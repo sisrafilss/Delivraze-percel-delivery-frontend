@@ -11,6 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useGetParcelByTrackingIdQuery } from "@/redux/features/parcel/parcel.api";
 import type { Parcel } from "@/types";
 
@@ -59,7 +60,6 @@ const TrackParcel: React.FC = () => {
 
   React.useEffect(() => {
     if (parcelData) {
-      console.log(parcelData);
       openDetail(parcelData?.data);
     }
   }, [parcelData]);
@@ -75,55 +75,64 @@ const TrackParcel: React.FC = () => {
   };
 
   return (
-    <div
-      className={`flex flex-col items-center justify-center  px-4 py-8 bg-background transition-colors`}
-    >
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full max-w-md bg-card p-6 rounded-lg shadow-md space-y-4"
-        >
-          <FormField
-            control={form.control}
-            name="trackingId"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-lg font-semibold">
-                  Enter Parcel Tracking ID
-                </FormLabel>
-                <FormControl>
-                  <Input placeholder="e.g. 123456789" autoFocus {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={isFetching || !form.formState.isValid}
+    <div className="flex flex-col items-center justify-center px-4 py-8 bg-background transition-colors">
+      {isFetching ? (
+        <div className="w-full max-w-md bg-card p-6 rounded-lg shadow-md space-y-4">
+          {/* Skeleton for label */}
+          <Skeleton className="h-5 w-56" />
+          {/* Skeleton for input */}
+          <Skeleton className="h-10 w-full" />
+          {/* Skeleton for button */}
+          <Skeleton className="h-10 w-full" />
+        </div>
+      ) : (
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-full max-w-md bg-card p-6 rounded-lg shadow-md space-y-4"
           >
-            {isFetching ? (
-              <span className="flex items-center justify-center">
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Tracking...
-              </span>
-            ) : (
-              "Track Parcel"
+            <FormField
+              control={form.control}
+              name="trackingId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-lg font-semibold">
+                    Enter Parcel Tracking ID
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g. 123456789" autoFocus {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isFetching || !form.formState.isValid}
+            >
+              {isFetching ? (
+                <span className="flex items-center justify-center">
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Tracking...
+                </span>
+              ) : (
+                "Track Parcel"
+              )}
+            </Button>
+            {isError && (
+              <div className="text-destructive text-sm mt-2">
+                {error &&
+                typeof error === "object" &&
+                error !== null &&
+                "data" in error
+                  ? (error.data as any)?.message || "Parcel not found."
+                  : "Parcel not found."}
+              </div>
             )}
-          </Button>
-          {isError && (
-            <div className="text-destructive text-sm mt-2">
-              {error &&
-              typeof error === "object" &&
-              error !== null &&
-              "data" in error
-                ? (error.data as any)?.message || "Parcel not found."
-                : "Parcel not found."}
-            </div>
-          )}
-        </form>
-      </Form>
+          </form>
+        </Form>
+      )}
 
       {parcelData && (
         <ParcelDetailModal

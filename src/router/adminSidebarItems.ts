@@ -7,6 +7,17 @@ import TrackParcel from "@/pages/TrackParcel";
 import UpdateProfilePage from "@/pages/UpdateProfile";
 import type { ISidebarItems } from "@/types";
 
+// Import Lucide icons
+import {
+  BarChart2,
+  Key,
+  Package,
+  Search,
+  Settings,
+  User,
+  Users,
+} from "lucide-react";
+
 export const adminSidebarItems: ISidebarItems[] = [
   {
     title: "Manage Parcels",
@@ -15,16 +26,19 @@ export const adminSidebarItems: ISidebarItems[] = [
         title: "Analytics",
         Component: Analytics,
         url: "/admin/analytics",
+        Icon: BarChart2,
       },
       {
         title: "All Parcels",
         Component: AdminAllParcelsPage,
         url: "/admin/all-parcels",
+        Icon: Package,
       },
       {
         title: "Track a Parcel",
         Component: TrackParcel,
         url: "/admin/track-parcel",
+        Icon: Search,
       },
     ],
   },
@@ -35,6 +49,7 @@ export const adminSidebarItems: ISidebarItems[] = [
         title: "All Users",
         Component: AllUsers,
         url: "/admin/users",
+        Icon: Users,
       },
     ],
   },
@@ -45,16 +60,19 @@ export const adminSidebarItems: ISidebarItems[] = [
         title: "Profile & Logout",
         Component: ProfileAndLogout,
         url: "/admin/my-profile",
+        Icon: User,
       },
       {
         title: "Update Profile",
         Component: UpdateProfilePage,
         url: "/admin/update-profile",
+        Icon: Settings,
       },
       {
         title: "Change Password",
         Component: ChangePasswordPage,
         url: "/admin/change-password",
+        Icon: Key,
       },
     ],
   },

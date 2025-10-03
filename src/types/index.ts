@@ -1,4 +1,9 @@
-import type { ComponentType } from "react";
+import type { LucideProps } from "lucide-react";
+import type {
+  ComponentType,
+  ForwardRefExoticComponent,
+  RefAttributes,
+} from "react";
 
 export type {
   GetAllUsersResponse,
@@ -23,6 +28,9 @@ export interface ISidebarItems {
     title: string;
     Component: ComponentType;
     url: string;
+    Icon: ForwardRefExoticComponent<
+      Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
+    >;
   }[];
 }
 
