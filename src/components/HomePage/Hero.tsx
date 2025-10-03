@@ -1,8 +1,11 @@
 import deliveryIllustration from "@/assets/images/delivery-illustration.svg";
 import { Button } from "@/components/ui/button";
+import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 import { Link } from "react-router";
 
 export default function HeroSection() {
+  const { data: userInfo, isLoading } = useUserInfoQuery(undefined);
+
   return (
     <section className="relative w-full py-20 bg-gradient-to-b from-primary/10 to-background">
       <div className="container mx-auto px-6 flex flex-col md:flex-row items-center gap-10">
@@ -15,7 +18,11 @@ export default function HeroSection() {
             transparent, and hassle-free.
           </p>
           <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-            <Button size="lg">Send a Parcel</Button>
+            {!isLoading && userInfo?.role === "SENDER" && (
+              <Button size="lg" asChild>
+                <Link to="/sender/parcel-request">Send a Parcel</Link>
+              </Button>
+            )}
             <Button size="lg" variant="outline">
               <Link to="track-parcel">Track a Parcel</Link>
             </Button>
