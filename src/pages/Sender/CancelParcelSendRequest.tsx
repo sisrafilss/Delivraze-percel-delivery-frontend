@@ -18,7 +18,7 @@ export default function CancelParcelSendRequest() {
   const [selectedParcel, setSelectedParcel] = useState<Parcel | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [page, setPage] = useState<number>(1);
-  const [limit] = useState<number>(3);
+  const [limit] = useState<number>(10);
 
   const queryParams = useMemo(
     () => ({

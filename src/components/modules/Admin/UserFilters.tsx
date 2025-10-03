@@ -8,9 +8,11 @@ type Props = {
   initialSearch?: string;
   initialRole?: string;
   initialStatus?: string;
+  initalIsVerified?: string;
   onSearch: (value: string) => void;
   onRole: (value: string) => void;
   onStatus: (value: string) => void;
+  onVerified: (value: string) => void;
   onClear: () => void;
 };
 
@@ -18,25 +20,30 @@ export default function UserFilters({
   initialSearch = "",
   initialRole = "",
   initialStatus = "",
+  initalIsVerified = "",
   onSearch,
   onRole,
   onStatus,
+  onVerified,
   onClear,
 }: Props) {
   const [search, setSearch] = useState(initialSearch);
   const [role, setRole] = useState(initialRole);
   const [status, setStatus] = useState(initialStatus);
+  const [verified, setVerified] = useState(initalIsVerified);
 
   const apply = () => {
     onSearch(search.trim());
     onRole(role);
     onStatus(status);
+    onVerified(verified);
   };
 
   const clear = () => {
     setSearch("");
     setRole("");
     setStatus("");
+    setVerified("");
     onClear();
   };
 
@@ -56,6 +63,16 @@ export default function UserFilters({
       </div>
 
       <div className="flex items-center gap-2">
+        <select
+          value={verified}
+          onChange={(e) => setVerified(e.target.value)}
+          className="px-3 py-2 rounded-md border bg-transparent text-sm"
+        >
+          <option value="">All (Verified+Unverified)</option>
+          <option value="true">Verified</option>
+          <option value="false">Unverified</option>
+        </select>
+
         <select
           value={role}
           onChange={(e) => setRole(e.target.value)}

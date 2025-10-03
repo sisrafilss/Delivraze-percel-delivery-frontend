@@ -14,6 +14,7 @@ export default function AllUsers() {
   const [search, setSearch] = useState<string>("");
   const [role, setRole] = useState<string>("");
   const [status, setStatus] = useState<string>("");
+  const [isVerified, setIsVerified] = useState<string>("");
 
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
@@ -24,8 +25,9 @@ export default function AllUsers() {
       searchTerm: search || undefined,
       role: role || undefined,
       isActive: status || undefined,
+      isVerified: isVerified || undefined,
     }),
-    [page, limit, search, role, status]
+    [page, limit, search, role, status, isVerified]
   );
 
   const { data, isLoading, isFetching, refetch } =
@@ -49,6 +51,7 @@ export default function AllUsers() {
             initialSearch={search}
             initialRole={role}
             initialStatus={status}
+            initalIsVerified={isVerified}
             onSearch={(s) => {
               setSearch(s);
               setPage(1);
@@ -61,10 +64,15 @@ export default function AllUsers() {
               setStatus(s);
               setPage(1);
             }}
+            onVerified={(v) => {
+              setIsVerified(v);
+              setPage(1);
+            }}
             onClear={() => {
               setSearch("");
               setRole("");
               setStatus("");
+              setIsVerified("");
               setPage(1);
             }}
           />

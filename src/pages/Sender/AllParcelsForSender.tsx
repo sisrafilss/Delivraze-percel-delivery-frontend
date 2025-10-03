@@ -24,7 +24,7 @@ export default function AllParcelsForSender() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [page, setPage] = useState<number>(1);
-  const [limit] = useState<number>(5);
+  const [limit] = useState<number>(10);
 
   const queryParams = useMemo(
     () => ({
@@ -63,7 +63,10 @@ export default function AllParcelsForSender() {
             <p>Select Status</p>
             <select
               value={selectedStatus}
-              onChange={(e) => setSelectedStatus(e.target.value)}
+              onChange={(e) => {
+                setPage(1);
+                return setSelectedStatus(e.target.value);
+              }}
               className="px-3 py-2 rounded-md border border-border bg-white text-sm text-gray-900 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
               aria-label="Filter parcels by status"
             >

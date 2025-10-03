@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 // import ParcelTable from "./ParcelTable";
 // import ParcelFilters from "./ParcelFilters";
 // import ParcelDetailModal from "./ParcelDetailModal";
@@ -58,6 +58,10 @@ export default function AdminAllParcelsPage() {
     setIsDetailOpen(false);
     setIsEditOpen(false);
   };
+
+  useEffect(() => {
+    setPage(1);
+  }, [selectedStatus]);
 
   if (isLoading) {
     return (

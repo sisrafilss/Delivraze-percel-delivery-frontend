@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import ParcelDetailModal, {
-  type Parcel,
-} from "@/components/modules/Parcels/ParcelDetailModal";
+import ParcelDetailModal from "@/components/modules/Parcels/ParcelDetailModal";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import AskConfirmation from "@/components/AskConfirmation";
+import Pagination from "@/components/Pagination";
 import {
   useGetAllIncommingParcelsByReceiverQuery,
   useMarkAsDeliveredMutation,
 } from "@/redux/features/parcel/receiver.api";
+import type { Parcel } from "@/types";
 import { toast } from "sonner";
 
 const STATUS_OPTIONS = [
@@ -26,20 +26,29 @@ export default function AllIncommingParcels() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [markAsDelivered] = useMarkAsDeliveredMutation();
 
-  // call RTK query with selected status (convert ALL to undefined to fetch everything)
-  const queryArg = useMemo(
-    () => (selectedStatus === "ALL" ? {} : { status: selectedStatus }),
-    [selectedStatus]
+  const [page, setPage] = useState<number>(1);
+  const [limit] = useState<number>(10);
+
+  const queryParams = useMemo(
+    () => ({
+      page,
+      limit,
+      status: selectedStatus === "ALL" ? undefined : selectedStatus,
+    }),
+    [page, limit, selectedStatus]
   );
 
   const { data, isLoading, isError, refetch } =
-    useGetAllIncommingParcelsByReceiverQuery(
-      // Typescript: pass queryArg as any if signature requires specific shape
-      queryArg as any,
-      { refetchOnMountOrArgChange: true }
-    );
+    useGetAllIncommingParcelsByReceiverQuery(queryParams, {
+      refetchOnMountOrArgChange: true,
+    });
 
   const parcels = data?.data || [];
+  const meta = data?.meta;
+
+  useEffect(() => {
+    setPage(1);
+  }, [selectedStatus]);
 
   const openDetail = (parcel: Parcel) => {
     setSelectedParcel(parcel);
@@ -197,6 +206,17 @@ export default function AllIncommingParcels() {
                 ))}
               </tbody>
             </table>
+          </div>
+        )}
+
+        {/* pagination */}
+        {meta && meta.totalPage > 1 && (
+          <div className="mt-4 flex justify-end">
+            <Pagination
+              page={meta.page}
+              totalPages={meta.totalPage}
+              onPageChange={(p) => setPage(p)}
+            />
           </div>
         )}
       </div>

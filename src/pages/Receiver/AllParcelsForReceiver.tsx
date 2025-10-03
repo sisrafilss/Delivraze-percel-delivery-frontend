@@ -2,8 +2,9 @@
 import ParcelDetailModal from "@/components/modules/Parcels/ParcelDetailModal";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
+import Pagination from "@/components/Pagination";
 import { useGetAllParcelsByReceiverQuery } from "@/redux/features/parcel/receiver.api";
 import type { Parcel } from "@/types";
 
@@ -21,19 +22,29 @@ export default function AllParcelsByReceiver() {
   const [selectedParcel, setSelectedParcel] = useState<Parcel | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // call RTK query with selected status (convert ALL to undefined to fetch everything)
-  const queryArg = useMemo(
-    () => (selectedStatus === "ALL" ? {} : { status: selectedStatus }),
-    [selectedStatus]
+  const [page, setPage] = useState<number>(1);
+  const [limit] = useState<number>(10);
+
+  const queryParams = useMemo(
+    () => ({
+      page,
+      limit,
+      status: selectedStatus === "ALL" ? undefined : selectedStatus,
+    }),
+    [page, limit, selectedStatus]
   );
 
   const { data, isLoading, isError, refetch } = useGetAllParcelsByReceiverQuery(
-    // Typescript: pass queryArg as any if signature requires specific shape
-    queryArg as any,
+    queryParams,
     { refetchOnMountOrArgChange: true }
   );
 
   const parcels = data?.data || [];
+  const meta = data?.meta;
+
+  useEffect(() => {
+    setPage(1);
+  }, [selectedStatus]);
 
   const openDetail = (parcel: Parcel) => {
     setSelectedParcel(parcel);
@@ -149,22 +160,23 @@ export default function AllParcelsByReceiver() {
                         <Button size="sm" onClick={() => openDetail(p)}>
                           Show Details
                         </Button>
-                        {/* Example placeholder action button (edit/cancel) */}
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() =>
-                            console.log("placeholder action for", p._id)
-                          }
-                        >
-                          Action
-                        </Button>
                       </div>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+          </div>
+        )}
+
+        {/* pagination */}
+        {meta && meta.totalPage > 1 && (
+          <div className="mt-4 flex justify-end">
+            <Pagination
+              page={meta.page}
+              totalPages={meta.totalPage}
+              onPageChange={(p) => setPage(p)}
+            />
           </div>
         )}
       </div>

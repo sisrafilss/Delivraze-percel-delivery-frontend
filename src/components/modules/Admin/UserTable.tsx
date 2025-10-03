@@ -60,12 +60,49 @@ export default function UserTable({
               <td className="p-3 text-sm">{u.name}</td>
               <td className="p-3 text-sm">{u.email}</td>
               <td className="p-3 text-sm">
-                <span className="inline-block px-2 py-1 rounded-md text-xs font-medium bg-slate-100">
+                <span
+                  className={
+                    "inline-block px-2 py-1 rounded-md text-xs font-medium " +
+                    (u.role === "ADMIN"
+                      ? "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200"
+                      : u.role === "USER"
+                      ? "bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-200"
+                      : u.role === "RECEIVER"
+                      ? "bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-200"
+                      : "bg-muted text-foreground")
+                  }
+                >
                   {u.role}
                 </span>
               </td>
-              <td className="p-3 text-sm">{u.isActive}</td>
-              <td className="p-3 text-sm">{u.isVerified ? "Yes" : "No"}</td>
+              <td className="p-3 text-sm">
+                <span
+                  className={
+                    "inline-block px-2 py-1 rounded-md text-xs font-medium " +
+                    (u.isActive === "ACTIVE"
+                      ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200"
+                      : u.isActive === "INACTIVE"
+                      ? "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-200"
+                      : u.isActive === "BLOCKED"
+                      ? "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200"
+                      : "bg-muted text-foreground")
+                  }
+                >
+                  {u.isActive}
+                </span>
+              </td>
+              <td className="p-3 text-sm">
+                <span
+                  className={
+                    "inline-block px-2 py-1 rounded-md text-xs font-medium " +
+                    (u.isVerified
+                      ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200"
+                      : "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200")
+                  }
+                >
+                  {u.isVerified ? "Yes" : "No"}
+                </span>
+              </td>
               <td className="p-3 text-sm">
                 {new Date(u.createdAt).toLocaleDateString()}
               </td>
