@@ -6,6 +6,7 @@ import ChangePasswordPage from "@/pages/ChangePassword";
 import ProfileAndLogout from "@/pages/ProfileAndLogout";
 import AllIncommingParcels from "@/pages/Receiver/AllIncomingParcels";
 import AllParcelsByReceiver from "@/pages/Receiver/AllParcelsForReceiver";
+import TrackParcel from "@/pages/TrackParcel";
 import UpdateProfilePage from "@/pages/UpdateProfile";
 import type { ISidebarItems } from "@/types";
 
@@ -27,6 +28,11 @@ export const receiverSidebarItems: ISidebarItems[] = [
         title: "All Parcels",
         Component: AllParcelsByReceiver,
         url: "/receiver/all-parcels",
+      },
+      {
+        title: "Track a Parcel",
+        Component: TrackParcel,
+        url: "/receiver/track-parcel",
       },
     ],
   },

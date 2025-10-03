@@ -10,6 +10,7 @@ import NotFoundPage from "@/pages/NotFoundPage";
 import PasswordResetSuccess from "@/pages/PasswordResetSuccess";
 import Register from "@/pages/Register";
 import ResetPassword from "@/pages/ResetPassword";
+import TrackParcel from "@/pages/TrackParcel";
 import Unauthorized from "@/pages/Unauthorized";
 import Verify from "@/pages/Verify";
 import type { TRole } from "@/types";
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
       {
         Component: HomePage,
         index: true,
+      },
+      {
+        Component: TrackParcel,
+        path: "track-parcel",
       },
       {
         Component: About,
@@ -73,6 +78,7 @@ export const router = createBrowserRouter([
       ...generateRoutes(receiverSidebarItems),
     ],
   },
+
   {
     Component: Login,
     path: "/login",

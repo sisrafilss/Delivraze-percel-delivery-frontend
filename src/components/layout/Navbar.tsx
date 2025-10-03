@@ -24,6 +24,7 @@ import ModeToggler from "./ModeToggler";
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
   { href: "/", label: "Home", role: "PUBLIC" },
+  { href: "/track-parcel", label: "Track a Parcel", role: "PUBLIC" },
   { href: "/about", label: "About", role: "PUBLIC" },
   { href: "/contact", label: "Contact", role: "PUBLIC" },
   { href: "/sender", label: "Dashboard", role: role.sender },

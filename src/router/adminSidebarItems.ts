@@ -3,6 +3,7 @@ import AllUsers from "@/pages/Admin/AllUsers";
 import Analytics from "@/pages/Admin/Analytics";
 import ChangePasswordPage from "@/pages/ChangePassword";
 import ProfileAndLogout from "@/pages/ProfileAndLogout";
+import TrackParcel from "@/pages/TrackParcel";
 import UpdateProfilePage from "@/pages/UpdateProfile";
 import type { ISidebarItems } from "@/types";
 
@@ -19,6 +20,11 @@ export const adminSidebarItems: ISidebarItems[] = [
         title: "All Parcels",
         Component: AdminAllParcelsPage,
         url: "/admin/all-parcels",
+      },
+      {
+        title: "Track a Parcel",
+        Component: TrackParcel,
+        url: "/admin/track-parcel",
       },
     ],
   },

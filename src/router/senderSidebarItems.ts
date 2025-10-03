@@ -6,6 +6,7 @@ import AllParcels from "@/pages/Sender/AllParcelsForSender";
 import Analytics from "@/pages/Sender/Analytics";
 import CancelParcelSendRequest from "@/pages/Sender/CancelParcelSendRequest";
 import ParcelRequestPage from "@/pages/Sender/ParcelRequestPage";
+import TrackParcel from "@/pages/TrackParcel";
 import UpdateProfilePage from "@/pages/UpdateProfile";
 
 import type { ISidebarItems } from "@/types";
@@ -33,6 +34,11 @@ export const senderSidebarItems: ISidebarItems[] = [
         title: "All Parcels",
         Component: AllParcels,
         url: "/sender/all-parcels",
+      },
+      {
+        title: "Track a Parcel",
+        Component: TrackParcel,
+        url: "/sender/track-parcel",
       },
     ],
   },
