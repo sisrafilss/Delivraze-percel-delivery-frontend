@@ -39,7 +39,8 @@ export default function Navbar() {
   const dispatch = useAppDispatch();
 
   const handleLogout = async () => {
-    await logout(undefined);
+    const res = await logout(undefined).unwrap();
+    console.log(res);
     dispatch(authApi.util.resetApiState());
   };
 
