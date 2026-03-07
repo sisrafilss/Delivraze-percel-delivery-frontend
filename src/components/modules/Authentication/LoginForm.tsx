@@ -1,14 +1,14 @@
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
-import { useForm } from "react-hook-form";
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
+import { useForm } from 'react-hook-form';
 
 import {
   Form,
@@ -17,48 +17,68 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { useLoginMutation } from "@/redux/features/auth/auth.api";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate } from "react-router";
-import { toast } from "sonner";
-import { z } from "zod";
+} from '@/components/ui/form';
+import { useLoginMutation } from '@/redux/features/auth/auth.api';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Link, useNavigate } from 'react-router';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 const authSchema = z.object({
-  email: z.string().email({ message: "Invalid email address" }),
+  email: z.string().email({ message: 'Invalid email address' }),
   password: z
     .string()
-    .min(8, { message: "Password must be at least 8 characters" }),
+    .min(8, { message: 'Password must be at least 8 characters' }),
 });
 
 export function LoginForm({
   className,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<'div'>) {
   const [login] = useLoginMutation();
   const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof authSchema>>({
     resolver: zodResolver(authSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
+
+  // Demo login handler
+  const handleDemoLogin = (role: 'sender' | 'receiver' | 'admin') => {
+    const credentials = {
+      sender: {
+        email: 'sisrafilss@gmail.com',
+        password: '*Password123#',
+      },
+      receiver: {
+        email: 'israfilhossen3@gmail.com',
+        password: '*Password123#',
+      },
+      admin: {
+        email: 'super@gmail.com',
+        password: '12345678',
+      },
+    };
+
+    form.setValue('email', credentials[role].email);
+    form.setValue('password', credentials[role].password);
+  };
 
   async function onSubmit(values: z.infer<typeof authSchema>) {
     try {
       const result = await login(values).unwrap();
       if (result.success) {
-        toast.success("Successfully logged in");
-        navigate("/");
+        toast.success('Successfully logged in');
+        navigate('/');
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      // This kind of error handling using error message is not recommended (It is temporary solution)
-      if (err.data.message === "User is not verified") {
-        toast.error("Your account is not verified");
-        navigate("/verify", { state: values.email });
+      if (err.data.message === 'User is not verified') {
+        toast.error('Your account is not verified');
+        navigate('/verify', { state: values.email });
       }
       if (err.data.message) {
         toast.error(err.data.message);
@@ -67,7 +87,7 @@ export function LoginForm({
   }
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card className="border-0 bg-none shadow-none">
         <CardHeader>
           <CardTitle className="text-2xl">Login to your account</CardTitle>
@@ -75,10 +95,41 @@ export function LoginForm({
             Enter your email and password below to login to your account
           </CardDescription>
         </CardHeader>
+
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <div className="flex flex-col gap-4">
+                {/* Demo Login Buttons */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => handleDemoLogin('sender')}
+                    className="w-full"
+                  >
+                    Demo Sender
+                  </Button>
+
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => handleDemoLogin('receiver')}
+                    className="w-full"
+                  >
+                    Demo Receiver
+                  </Button>
+
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => handleDemoLogin('admin')}
+                    className="w-full"
+                  >
+                    Demo Admin
+                  </Button>
+                </div>
+
                 <div className="space-y-6">
                   <FormField
                     control={form.control}
@@ -94,6 +145,7 @@ export function LoginForm({
                       </FormItem>
                     )}
                   />
+
                   <div>
                     <FormField
                       control={form.control}
@@ -109,6 +161,7 @@ export function LoginForm({
                         </FormItem>
                       )}
                     />
+
                     <div className="flex flex-end">
                       <Link
                         to="/forgot-password"
@@ -124,13 +177,11 @@ export function LoginForm({
                   <Button type="submit" className="w-full">
                     Login
                   </Button>
-                  {/* <Button variant="outline" type="button" className="w-full">
-                    Login with Google
-                  </Button> */}
                 </div>
               </div>
+
               <div className="mt-4 text-center text-sm">
-                Don&apos;t have an account?{" "}
+                Don&apos;t have an account?{' '}
                 <Link to="/register" className="underline underline-offset-4">
                   Sign up
                 </Link>
