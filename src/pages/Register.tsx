@@ -1,9 +1,18 @@
 import Logo from "@/assets/icons/Logo";
 import { RegisterForm } from "@/components/modules/Authentication/RegisterForm";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import ParcelLogin from "../assets/images/Parcel-delivery-login.jpg";
 
 const Register = () => {
+  const [searchParams] = useSearchParams();
+  const roleParam = searchParams.get("role");
+  const preselectedRole =
+    roleParam === "sender"
+      ? "SENDER"
+      : roleParam === "receiver"
+        ? "RECEIVER"
+        : undefined;
+
   return (
     <div className="page-enter grid min-h-svh lg:grid-cols-2">
       <div className="relative hidden bg-muted lg:block">
@@ -21,7 +30,7 @@ const Register = () => {
         </div>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-[400px]">
-            <RegisterForm />
+            <RegisterForm preselectedRole={preselectedRole} />
           </div>
         </div>
       </div>

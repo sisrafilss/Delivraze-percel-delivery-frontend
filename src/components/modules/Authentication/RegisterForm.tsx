@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/select";
 import { useRegisterMutation } from "@/redux/features/auth/auth.api";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, type ComponentProps } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -64,8 +65,11 @@ const registerFormSchema = z
 
 export function RegisterForm({
   className,
+  preselectedRole,
   ...props
-}: React.ComponentProps<"div">) {
+}: ComponentProps<"div"> & {
+  preselectedRole?: "SENDER" | "RECEIVER";
+}) {
   const [register] = useRegisterMutation();
   const navigate = useNavigate();
 
@@ -76,8 +80,14 @@ export function RegisterForm({
       email: "",
       password: "",
       confirmPassword: "",
+      role: preselectedRole,
     },
   });
+
+  useEffect(() => {
+    if (!preselectedRole) return;
+    form.setValue("role", preselectedRole, { shouldValidate: true });
+  }, [form, preselectedRole]);
 
   async function onSubmit(values: z.infer<typeof registerFormSchema>) {
     try {
@@ -147,7 +157,7 @@ export function RegisterForm({
                       <FormLabel>Role</FormLabel>
                       <Select
                         onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={field.value}
                       >
                         <FormControl className="w-full">
                           <SelectTrigger>

@@ -1,6 +1,6 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { reasons } from "@/data/landingData";
-import * as Icons from "lucide-react";
+import { Card, CardContent } from '@/components/ui/card';
+import { reasons } from '@/data/landingData';
+import * as Icons from 'lucide-react';
 
 export default function WhyChooseUsSection() {
   return (
@@ -14,7 +14,7 @@ export default function WhyChooseUsSection() {
             return (
               <Card key={reason.title}>
                 <CardContent className="p-6 flex flex-col items-center">
-                  <Icon className="h-10 w-10 text-secondary mb-4" />
+                  <Icon className="h-10 w-10 text-primary mb-4" />
                   <h3 className="text-lg font-semibold">{reason.title}</h3>
                   <p className="mt-2 text-sm text-muted-foreground">
                     {reason.description}
