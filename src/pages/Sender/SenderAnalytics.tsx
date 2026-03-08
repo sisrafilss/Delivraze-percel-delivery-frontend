@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import StatCard from "@/components/modules/Dashboard/StatsCard";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { formatNumber } from "@/lib/format";
-import { useGetSenderStatsQuery } from "@/redux/features/parcel/sender.api";
-import { Loader2, Package, RefreshCcw } from "lucide-react";
-import React from "react";
-import { toast } from "sonner";
+import StatCard from '@/components/modules/Dashboard/StatsCard';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { formatNumber } from '@/lib/format';
+import { useGetSenderStatsQuery } from '@/redux/features/parcel/sender.api';
+import { Loader2, Package, RefreshCcw } from 'lucide-react';
+import React from 'react';
+import { toast } from 'sonner';
 
 // --- Types ---
 type ParcelStatusCount = { _id: string; count: number };
@@ -16,16 +16,16 @@ type ParcelStatusCount = { _id: string; count: number };
 // --- Helper: Background class based on status ---
 const getStatusCardBg = (status: string): string => {
   switch (status) {
-    case "DELIVERED":
-      return "bg-gradient-to-r from-emerald-500 to-green-600 text-white dark:from-emerald-600 dark:to-green-700";
-    case "ACCEPTED":
-      return "bg-gradient-to-r from-blue-500 to-sky-600 text-white dark:from-blue-600 dark:to-sky-700";
-    case "PENDING":
-      return "bg-gradient-to-r from-amber-400 to-orange-500 text-white dark:from-amber-500 dark:to-orange-600";
-    case "CANCELLED":
-      return "bg-gradient-to-r from-rose-500 to-red-600 text-white dark:from-rose-600 dark:to-red-700";
+    case 'DELIVERED':
+      return 'bg-gradient-to-r from-emerald-500 to-green-600 text-white dark:from-emerald-600 dark:to-green-700';
+    case 'ACCEPTED':
+      return 'bg-gradient-to-r from-blue-500 to-sky-600 text-white dark:from-blue-600 dark:to-sky-700';
+    case 'PENDING':
+      return 'bg-gradient-to-r from-amber-400 to-orange-500 text-white dark:from-amber-500 dark:to-orange-600';
+    case 'CANCELLED':
+      return 'bg-gradient-to-r from-rose-500 to-red-600 text-white dark:from-rose-600 dark:to-red-700';
     default:
-      return "bg-muted text-foreground";
+      return 'bg-muted text-foreground';
   }
 };
 
@@ -35,7 +35,7 @@ export default function SenderAnalytics() {
 
   React.useEffect(() => {
     if (isError) {
-      toast.error("Failed to load sender stats");
+      toast.error('Failed to load sender stats');
     }
   }, [isError, error]);
 
@@ -119,11 +119,11 @@ export default function SenderAnalytics() {
             </CardHeader>
             <CardContent>
               <p className="text-sm text-destructive">
-                {typeof error === "object" &&
+                {typeof error === 'object' &&
                 error !== null &&
-                "message" in error
+                'message' in error
                   ? (error as { message: string }).message
-                  : "Failed to load stats"}
+                  : 'Failed to load stats'}
               </p>
               <div className="mt-3">
                 <Button onClick={() => refetch()}>Retry</Button>

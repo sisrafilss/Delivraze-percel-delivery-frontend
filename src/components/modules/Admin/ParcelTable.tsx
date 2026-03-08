@@ -1,14 +1,14 @@
-import AskConfirmation from "@/components/AskConfirmation";
-import { Button } from "@/components/ui/button";
-import { useDeleteParcelByAdminMutation } from "@/redux/features/parcel/admin.api";
-import type { Parcel } from "@/types";
+import AskConfirmation from '@/components/AskConfirmation';
+import { Button } from '@/components/ui/button';
+import { useDeleteParcelByAdminMutation } from '@/redux/features/parcel/admin.api';
+import type { Parcel } from '@/types';
 
 const statusColors: Record<string, string> = {
-  PENDING: "bg-yellow-500/20 text-yellow-700 dark:text-yellow-400",
-  ACCEPTED: "bg-green-500/20 text-green-700 dark:text-green-400",
-  IN_TRANSIT: "bg-blue-500/20 text-blue-700 dark:text-blue-400",
-  DELIVERED: "bg-emerald-500/20 text-emerald-700 dark:text-emerald-400",
-  CANCELLED: "bg-red-500/20 text-red-700 dark:text-red-400",
+  PENDING: 'bg-yellow-500/20 text-yellow-700 dark:text-yellow-400',
+  ACCEPTED: 'bg-green-500/20 text-green-700 dark:text-green-400',
+  IN_TRANSIT: 'bg-blue-500/20 text-blue-700 dark:text-blue-400',
+  DELIVERED: 'bg-emerald-500/20 text-emerald-700 dark:text-emerald-400',
+  CANCELLED: 'bg-red-500/20 text-red-700 dark:text-red-400',
 };
 
 interface Props {
@@ -47,7 +47,7 @@ export default function ParcelTable({ parcels, onViewDetail, onEdit }: Props) {
               <td className="px-3 py-2 text-sm">
                 <span
                   className={`px-2 py-1 rounded-md text-xs font-medium ${
-                    statusColors[p.status] || "bg-gray-500/20 text-gray-700"
+                    statusColors[p.status] || 'bg-gray-500/20 text-gray-700'
                   }`}
                 >
                   {p.status}
@@ -58,12 +58,12 @@ export default function ParcelTable({ parcels, onViewDetail, onEdit }: Props) {
                   className={`px-2 py-1 rounded-md text-xs font-medium
                       ${
                         p.isBlocked
-                          ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
-                          : "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                          ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                          : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
                       }
                       `}
                 >
-                  {p.isBlocked ? "YES" : "NO"}
+                  {p.isBlocked ? 'YES' : 'NO'}
                 </span>
               </td>
 

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import ParcelDetailModal from "@/components/modules/Parcels/ParcelDetailModal";
-import { Button } from "@/components/ui/button";
+import ParcelDetailModal from '@/components/modules/Parcels/ParcelDetailModal';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -9,29 +9,29 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useGetParcelByTrackingIdQuery } from "@/redux/features/parcel/parcel.api";
-import type { Parcel } from "@/types";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useGetParcelByTrackingIdQuery } from '@/redux/features/parcel/parcel.api';
+import type { Parcel } from '@/types';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const trackingSchema = z.object({
   trackingId: z
     .string()
-    .min(5, "Tracking ID must be at least 5 characters")
-    .max(32, "Tracking ID too long"),
+    .min(5, 'Tracking ID must be at least 5 characters')
+    .max(32, 'Tracking ID too long'),
 });
 
 type TrackingFormValues = z.infer<typeof trackingSchema>;
 
 const TrackParcel: React.FC = () => {
-  const [trackingId, setTrackingId] = useState<string>("");
+  const [trackingId, setTrackingId] = useState<string>('');
 
   const [selectedParcel, setSelectedParcel] = useState<Parcel | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -47,7 +47,7 @@ const TrackParcel: React.FC = () => {
 
   const form = useForm<TrackingFormValues>({
     resolver: zodResolver(trackingSchema),
-    defaultValues: { trackingId: "" },
+    defaultValues: { trackingId: '' },
   });
 
   const onSubmit = (values: TrackingFormValues) => {
@@ -117,17 +117,17 @@ const TrackParcel: React.FC = () => {
                   Tracking...
                 </span>
               ) : (
-                "Track Parcel"
+                'Track Parcel'
               )}
             </Button>
             {isError && (
               <div className="text-destructive text-sm mt-2">
                 {error &&
-                typeof error === "object" &&
+                typeof error === 'object' &&
                 error !== null &&
-                "data" in error
-                  ? (error.data as any)?.message || "Parcel not found."
-                  : "Parcel not found."}
+                'data' in error
+                  ? (error.data as any)?.message || 'Parcel not found.'
+                  : 'Parcel not found.'}
               </div>
             )}
           </form>

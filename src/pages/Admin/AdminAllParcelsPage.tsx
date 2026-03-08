@@ -1,18 +1,18 @@
-import { LazyLoadWrapper } from "@/components/LazyLoadWrapper";
-import ParcelFilters from "@/components/modules/Admin/ParcelFilters";
-import { ParcelFormModal } from "@/components/modules/Admin/ParcelFormModal";
-import ParcelTable from "@/components/modules/Admin/ParcelTable";
-import ParcelDetailModal from "@/components/modules/Parcels/ParcelDetailModal";
-import Pagination from "@/components/Pagination";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useGetAllParcelsByAdminQuery } from "@/redux/features/parcel/admin.api";
-import type { Parcel } from "@/types";
-import { useEffect, useMemo, useState } from "react";
+import { LazyLoadWrapper } from '@/components/LazyLoadWrapper';
+import ParcelFilters from '@/components/modules/Admin/ParcelFilters';
+import { ParcelFormModal } from '@/components/modules/Admin/ParcelFormModal';
+import ParcelTable from '@/components/modules/Admin/ParcelTable';
+import ParcelDetailModal from '@/components/modules/Parcels/ParcelDetailModal';
+import Pagination from '@/components/Pagination';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useGetAllParcelsByAdminQuery } from '@/redux/features/parcel/admin.api';
+import type { Parcel } from '@/types';
+import { useEffect, useMemo, useState } from 'react';
 
 export default function AdminAllParcelsPage() {
-  const [selectedStatus, setSelectedStatus] = useState<string>("ALL");
-  const [searchEmail, setSearchEmail] = useState<string>("");
+  const [selectedStatus, setSelectedStatus] = useState<string>('ALL');
+  const [searchEmail, setSearchEmail] = useState<string>('');
   const [page, setPage] = useState<number>(1);
   const [limit] = useState<number>(10);
 
@@ -20,7 +20,7 @@ export default function AdminAllParcelsPage() {
     () => ({
       page,
       limit,
-      status: selectedStatus === "ALL" ? undefined : selectedStatus,
+      status: selectedStatus === 'ALL' ? undefined : selectedStatus,
       searchTerm: searchEmail || undefined,
     }),
     [page, limit, selectedStatus, searchEmail]

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -7,7 +7,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -15,41 +15,41 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { useUpdateParcelByAdminMutation } from "@/redux/features/parcel/admin.api";
+} from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
+import { useUpdateParcelByAdminMutation } from '@/redux/features/parcel/admin.api';
 // import { useUpdateParcelByAdminMutation } from "@/redux/features/parcel/admin.api";
-import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { zodResolver } from '@hookform/resolvers/zod';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 // ✅ Status options
 const ParcelStatus = {
-  PENDING: "PENDING",
-  ACCEPTED: "ACCEPTED",
-  IN_TRANSIT: "IN_TRANSIT",
-  DELIVERED: "DELIVERED",
-  CANCELLED: "CANCELLED",
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  IN_TRANSIT: 'IN_TRANSIT',
+  DELIVERED: 'DELIVERED',
+  CANCELLED: 'CANCELLED',
 } as const;
 
 type ParcelStatusType = (typeof ParcelStatus)[keyof typeof ParcelStatus];
 
 // ✅ Validation schema
 const parcelFormSchema = z.object({
-  receiverName: z.string().min(1, "Receiver name is required"),
-  receiverPhone: z.string().min(1, "Receiver phone is required"),
-  receiverAddress: z.string().min(1, "Receiver address is required"),
-  parcelType: z.string().min(1, "Parcel type is required"),
-  weight: z.number().positive("Weight must be a positive number"),
+  receiverName: z.string().min(1, 'Receiver name is required'),
+  receiverPhone: z.string().min(1, 'Receiver phone is required'),
+  receiverAddress: z.string().min(1, 'Receiver address is required'),
+  parcelType: z.string().min(1, 'Parcel type is required'),
+  weight: z.number().positive('Weight must be a positive number'),
   status: z.enum([
     ParcelStatus.PENDING,
     ParcelStatus.ACCEPTED,
@@ -57,8 +57,8 @@ const parcelFormSchema = z.object({
     ParcelStatus.DELIVERED,
     ParcelStatus.CANCELLED,
   ]),
-  location: z.string({ message: "Location is required" }),
-  note: z.string({ message: "Please enter a note" }),
+  location: z.string({ message: 'Location is required' }),
+  note: z.string({ message: 'Please enter a note' }),
   isBlocked: z.boolean(),
 });
 
@@ -80,14 +80,14 @@ export const ParcelFormModal: React.FC<ParcelFormModalProps> = ({
   const form = useForm<ParcelFormValues>({
     resolver: zodResolver(parcelFormSchema),
     defaultValues: {
-      receiverName: "",
-      receiverPhone: "",
-      receiverAddress: "",
-      parcelType: "",
+      receiverName: '',
+      receiverPhone: '',
+      receiverAddress: '',
+      parcelType: '',
       weight: 0,
       status: ParcelStatus.PENDING,
-      location: "",
-      note: "",
+      location: '',
+      note: '',
       isBlocked: false,
     },
   });
@@ -96,10 +96,10 @@ export const ParcelFormModal: React.FC<ParcelFormModalProps> = ({
   useEffect(() => {
     if (parcel) {
       form.reset({
-        receiverName: parcel.receiverName || "",
-        receiverPhone: parcel.receiverPhone || "",
-        receiverAddress: parcel.receiverAddress || "",
-        parcelType: parcel.parcelType || "",
+        receiverName: parcel.receiverName || '',
+        receiverPhone: parcel.receiverPhone || '',
+        receiverAddress: parcel.receiverAddress || '',
+        parcelType: parcel.parcelType || '',
         weight: parcel.weight || 0,
         status: parcel.status as ParcelStatusType,
         isBlocked: parcel.isBlocked || false,
@@ -112,7 +112,7 @@ export const ParcelFormModal: React.FC<ParcelFormModalProps> = ({
       await updateParcel({ parcelId: parcel._id, ...values }).unwrap();
       onClose();
     } catch (err) {
-      console.error("Failed to update parcel", err);
+      console.error('Failed to update parcel', err);
     }
   };
 
@@ -226,7 +226,7 @@ export const ParcelFormModal: React.FC<ParcelFormModalProps> = ({
                       type="number"
                       placeholder="1500"
                       {...field}
-                      value={field.value ?? ""}
+                      value={field.value ?? ''}
                       onChange={(e) =>
                         field.onChange(e.target.valueAsNumber || 0)
                       }
@@ -253,7 +253,7 @@ export const ParcelFormModal: React.FC<ParcelFormModalProps> = ({
                     <SelectContent>
                       {Object.values(ParcelStatus).map((status) => (
                         <SelectItem key={status} value={status}>
-                          {status.replace("_", " ")}
+                          {status.replace('_', ' ')}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -318,7 +318,7 @@ export const ParcelFormModal: React.FC<ParcelFormModalProps> = ({
                 Cancel
               </Button>
               <Button type="submit" disabled={isLoading}>
-                {isLoading ? "Updating..." : "Update"}
+                {isLoading ? 'Updating...' : 'Update'}
               </Button>
             </DialogFooter>
           </form>

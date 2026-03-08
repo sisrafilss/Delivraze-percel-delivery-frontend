@@ -1,15 +1,15 @@
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
-import { useForm } from "react-hook-form";
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/lib/utils';
+import { useForm } from 'react-hook-form';
 
 import {
   Form,
@@ -18,33 +18,33 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from '@/components/ui/form';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
-import { useParcelSendRequestMutation } from "@/redux/features/parcel/sender.api";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-import { z } from "zod";
+} from '@/components/ui/select';
+import { useUserInfoQuery } from '@/redux/features/auth/auth.api';
+import { useParcelSendRequestMutation } from '@/redux/features/parcel/sender.api';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 // ✅ Schema
 const parcelRequestSchema = z.object({
-  receiverName: z.string().min(2, "Receiver name is required"),
+  receiverName: z.string().min(2, 'Receiver name is required'),
   receiverPhone: z.string().regex(/^(\+8801[3-9]\d{8})$/, {
-    message: "Enter a valid Bangladeshi phone number (+8801...)",
+    message: 'Enter a valid Bangladeshi phone number (+8801...)',
   }),
-  receiverAddress: z.string().min(5, "Receiver address is required"),
-  receiverEmail: z.string().email("Invalid email address"),
-  parcelType: z.string().min(1, "Parcel type is required"),
-  weight: z.number().positive("Weight must be a positive number"),
+  receiverAddress: z.string().min(5, 'Receiver address is required'),
+  receiverEmail: z.string().email('Invalid email address'),
+  parcelType: z.string().min(1, 'Parcel type is required'),
+  weight: z.number().positive('Weight must be a positive number'),
   specialInstructions: z.string().optional(),
-  pickupLocation: z.string().min(2, "Pickup location is required"),
-  dropoffLocation: z.string().min(2, "Dropoff location is required"),
+  pickupLocation: z.string().min(2, 'Pickup location is required'),
+  dropoffLocation: z.string().min(2, 'Dropoff location is required'),
 });
 
 type ParcelRequestFormValues = z.infer<typeof parcelRequestSchema>;
@@ -52,7 +52,7 @@ type ParcelRequestFormValues = z.infer<typeof parcelRequestSchema>;
 export function ParcelRequestForm({
   className,
   ...props
-}: React.ComponentProps<"div">) {
+}: React.ComponentProps<'div'>) {
   const [parcelSendRequest] = useParcelSendRequestMutation();
   const { data: userInfo } = useUserInfoQuery(undefined);
 
@@ -60,20 +60,20 @@ export function ParcelRequestForm({
   const form = useForm<ParcelRequestFormValues>({
     resolver: zodResolver(parcelRequestSchema),
     defaultValues: {
-      receiverName: "John Doe",
-      receiverPhone: "+8801712345678",
-      receiverAddress: "House 12, Road 7, Dhanmondi, Dhaka",
-      receiverEmail: "israfilhossen3@gmail.com",
-      parcelType: "Electronics",
+      receiverName: 'John Doe',
+      receiverPhone: '+8801712345678',
+      receiverAddress: 'House 12, Road 7, Dhanmondi, Dhaka',
+      receiverEmail: 'israfilhossen3@gmail.com',
+      parcelType: 'Electronics',
       weight: 1500,
-      specialInstructions: "Handle with care, fragile item inside",
-      pickupLocation: "Banani, Dhaka",
-      dropoffLocation: "Uttara, Dhaka",
+      specialInstructions: 'Handle with care, fragile item inside',
+      pickupLocation: 'Banani, Dhaka',
+      dropoffLocation: 'Uttara, Dhaka',
     },
   });
 
   async function onSubmit(values: ParcelRequestFormValues) {
-    const toastId = toast.loading("Parcel Send Request Submitting...");
+    const toastId = toast.loading('Parcel Send Request Submitting...');
     try {
       const parcelInfo = {
         senderId: userInfo?.data?._id,
@@ -81,7 +81,7 @@ export function ParcelRequestForm({
       };
       const res = await parcelSendRequest(parcelInfo).unwrap();
       if (res?.success) {
-        toast.success("Parcel Send Request Submitted Successfully", {
+        toast.success('Parcel Send Request Submitted Successfully', {
           id: toastId,
         });
       }
@@ -93,7 +93,7 @@ export function ParcelRequestForm({
   }
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card className="border-0 bg-none shadow-none">
         <CardHeader>
           <CardTitle className="text-2xl">Send a Parcel</CardTitle>
@@ -222,7 +222,7 @@ export function ParcelRequestForm({
                           type="number"
                           placeholder="1500"
                           {...field}
-                          value={field.value ?? ""}
+                          value={field.value ?? ''}
                           onChange={(e) =>
                             field.onChange(e.target.valueAsNumber || 0)
                           }

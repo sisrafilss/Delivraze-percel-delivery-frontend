@@ -1,27 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import ParcelDetailModal from "@/components/modules/Parcels/ParcelDetailModal";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useEffect, useMemo, useState } from "react";
+import ParcelDetailModal from '@/components/modules/Parcels/ParcelDetailModal';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useEffect, useMemo, useState } from 'react';
 
-import AskConfirmation from "@/components/AskConfirmation";
-import Pagination from "@/components/Pagination";
+import AskConfirmation from '@/components/AskConfirmation';
+import Pagination from '@/components/Pagination';
 import {
   useGetAllIncommingParcelsByReceiverQuery,
   useMarkAsDeliveredMutation,
-} from "@/redux/features/parcel/receiver.api";
-import type { Parcel } from "@/types";
-import { toast } from "sonner";
+} from '@/redux/features/parcel/receiver.api';
+import type { Parcel } from '@/types';
+import { toast } from 'sonner';
 
 const STATUS_OPTIONS = [
-  { label: "All", value: "ALL" },
-  { label: "Pending", value: "PENDING" },
-  { label: "Accepted", value: "ACCEPTED" },
-  { label: "In Transit", value: "IN_TRANSIT" },
+  { label: 'All', value: 'ALL' },
+  { label: 'Pending', value: 'PENDING' },
+  { label: 'Accepted', value: 'ACCEPTED' },
+  { label: 'In Transit', value: 'IN_TRANSIT' },
 ];
 
 export default function AllIncommingParcels() {
-  const [selectedStatus, setSelectedStatus] = useState<string>("ALL");
+  const [selectedStatus, setSelectedStatus] = useState<string>('ALL');
   const [selectedParcel, setSelectedParcel] = useState<Parcel | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [markAsDelivered] = useMarkAsDeliveredMutation();
@@ -33,7 +33,7 @@ export default function AllIncommingParcels() {
     () => ({
       page,
       limit,
-      status: selectedStatus === "ALL" ? undefined : selectedStatus,
+      status: selectedStatus === 'ALL' ? undefined : selectedStatus,
     }),
     [page, limit, selectedStatus]
   );
@@ -65,7 +65,7 @@ export default function AllIncommingParcels() {
       const res = await markAsDelivered({ _id: parcelId }).unwrap();
 
       if (res?.success) {
-        toast.success("Parcel marked as delivered successfully.");
+        toast.success('Parcel marked as delivered successfully.');
       }
       refetch();
     } catch (error: any) {
@@ -153,7 +153,7 @@ export default function AllIncommingParcels() {
                     key={p._id}
                     className="border-b border-border hover:bg-muted/50 dark:hover:bg-muted/30"
                   >
-                    <td className="px-3 py-3 text-sm">{p.trackingId || "-"}</td>
+                    <td className="px-3 py-3 text-sm">{p.trackingId || '-'}</td>
                     <td className="px-3 py-3 text-sm">{p.receiverName}</td>
                     <td className="px-3 py-3 text-sm">{p.parcelType}</td>
                     <td className="px-3 py-3 text-sm">{p.weight}</td>
@@ -166,13 +166,13 @@ export default function AllIncommingParcels() {
                       <span
                         className={`px-2 py-1 rounded-md text-xs font-medium
       ${
-        p.status === "PENDING"
-          ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-          : p.status === "ACCEPTED"
-          ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-          : p.status === "IN_TRANSIT"
-          ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
-          : "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200"
+        p.status === 'PENDING'
+          ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+          : p.status === 'ACCEPTED'
+            ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+            : p.status === 'IN_TRANSIT'
+              ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+              : 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'
       }
     `}
                       >

@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import AskConfirmation from "@/components/AskConfirmation";
-import ParcelDetailModal from "@/components/modules/Parcels/ParcelDetailModal";
-import Pagination from "@/components/Pagination";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
+import AskConfirmation from '@/components/AskConfirmation';
+import ParcelDetailModal from '@/components/modules/Parcels/ParcelDetailModal';
+import Pagination from '@/components/Pagination';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   useCancelPendingParcelBySenderMutation,
   useGetAllParcelsBySenderQuery,
-} from "@/redux/features/parcel/sender.api";
-import type { Parcel } from "@/types";
-import { format } from "date-fns";
-import { useMemo, useState } from "react";
+} from '@/redux/features/parcel/sender.api';
+import type { Parcel } from '@/types';
+import { format } from 'date-fns';
+import { useMemo, useState } from 'react';
 
 export default function CancelParcelSendRequest() {
   const [selectedParcel, setSelectedParcel] = useState<Parcel | null>(null);
@@ -27,7 +27,7 @@ export default function CancelParcelSendRequest() {
   );
 
   const { data, isLoading, isError } = useGetAllParcelsBySenderQuery({
-    status: "PENDING",
+    status: 'PENDING',
     ...queryParams,
   });
 
@@ -111,7 +111,7 @@ export default function CancelParcelSendRequest() {
                   key={p._id}
                   className="border-b border-border hover:bg-muted/50 dark:hover:bg-muted/30"
                 >
-                  <td className="px-3 py-3 text-sm">{p.trackingId || "-"}</td>
+                  <td className="px-3 py-3 text-sm">{p.trackingId || '-'}</td>
                   <td className="px-3 py-3 text-sm">{p.receiverName}</td>
                   <td className="px-3 py-3 text-sm">{p.parcelType}</td>
                   <td className="px-3 py-3 text-sm">{p.weight}</td>
@@ -124,17 +124,17 @@ export default function CancelParcelSendRequest() {
                     <span
                       className={`px-2 py-1 rounded-md text-xs font-medium
             ${
-              p.status === "PENDING"
-                ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200"
-                : p.status === "ACCEPTED"
-                ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                : p.status === "IN_TRANSIT"
-                ? "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
-                : p.status === "DELIVERED"
-                ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200"
-                : p.status === "CANCELLED"
-                ? "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
-                : "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200"
+              p.status === 'PENDING'
+                ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200'
+                : p.status === 'ACCEPTED'
+                  ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                  : p.status === 'IN_TRANSIT'
+                    ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+                    : p.status === 'DELIVERED'
+                      ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200'
+                      : p.status === 'CANCELLED'
+                        ? 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
+                        : 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200'
             }
           `}
                     >
@@ -144,8 +144,8 @@ export default function CancelParcelSendRequest() {
 
                   <td className="px-3 py-3 text-sm">
                     {p.createdAt
-                      ? format(new Date(p.createdAt), "dd MMM yyyy")
-                      : "-"}
+                      ? format(new Date(p.createdAt), 'dd MMM yyyy')
+                      : '-'}
                   </td>
                   <td className="px-3 py-3 text-sm">
                     <div className="flex gap-2">
