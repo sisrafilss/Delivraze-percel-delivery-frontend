@@ -42,7 +42,7 @@ export default function SenderAnalytics() {
   const statuses: ParcelStatusCount[] = data?.data?.totalParcelsByStatus ?? [];
 
   return (
-    <section className="space-y-6">
+    <section className="page-enter space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold">Sender Analytics</h2>
         <div className="flex items-center gap-2">
@@ -64,7 +64,7 @@ export default function SenderAnalytics() {
       {/* Grid of cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Parcels card */}
-        <Card className="col-span-1 md:col-span-2 lg:col-span-1 transition-transform duration-300 hover:scale-[1.03] hover:shadow-xl">
+        <Card className="card-enter col-span-1 md:col-span-2 lg:col-span-1 transition-transform duration-300 hover:scale-[1.03] hover:shadow-xl">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -131,14 +131,19 @@ export default function SenderAnalytics() {
             </CardContent>
           </Card>
         ) : (
-          statuses.map((s) => (
-            <StatCard
+          statuses.map((s, index) => (
+            <div
               key={s._id}
-              title={s._id}
-              subtitle={`${s.count} parcels`}
-              value={<span className="tabular-nums">{s.count}</span>}
-              className={`${getStatusCardBg(s._id)} shadow-lg`}
-            />
+              className="card-enter"
+              style={{ "--delay": `${index * 90 + 100}ms` } as React.CSSProperties}
+            >
+              <StatCard
+                title={s._id}
+                subtitle={`${s.count} parcels`}
+                value={<span className="tabular-nums">{s.count}</span>}
+                className={`${getStatusCardBg(s._id)} shadow-lg`}
+              />
+            </div>
           ))
         )}
       </div>

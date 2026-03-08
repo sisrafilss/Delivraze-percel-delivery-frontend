@@ -8,6 +8,7 @@ import Pagination from '@/components/Pagination';
 import { useGetAllParcelsBySenderQuery } from '@/redux/features/parcel/sender.api';
 import type { Parcel } from '@/types';
 import { format } from 'date-fns';
+import type { CSSProperties } from 'react';
 
 const STATUS_OPTIONS = [
   { label: 'All', value: 'ALL' },
@@ -67,7 +68,7 @@ export default function AllParcelsForSender() {
   };
 
   return (
-    <div className="min-h-screen p-4 bg-background">
+    <div className="page-enter min-h-screen p-4 bg-background">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-4">
           <h1 className="text-2xl font-semibold text-primary">All Parcels</h1>
@@ -98,7 +99,7 @@ export default function AllParcelsForSender() {
           </div>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="table-enter overflow-x-auto">
           <table className="w-full table-auto border-collapse">
             <thead>
               <tr className="text-sm text-left text-muted-foreground border-b border-border">
@@ -132,10 +133,11 @@ export default function AllParcelsForSender() {
                   </td>
                 </tr>
               ) : (
-                parcels.map((p: Parcel) => (
+                parcels.map((p: Parcel, index) => (
                   <tr
                     key={p._id}
-                    className="border-b border-border hover:bg-muted/50 dark:hover:bg-muted/30"
+                    className="row-enter border-b border-border hover:bg-muted/50 dark:hover:bg-muted/30"
+                    style={{ "--delay": `${index * 35}ms` } as CSSProperties}
                   >
                     <td className="px-3 py-3 text-sm">{p.trackingId || '-'}</td>
                     <td className="px-3 py-3 text-sm">{p.receiverName}</td>

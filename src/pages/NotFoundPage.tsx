@@ -5,11 +5,11 @@ import { Link } from "react-router";
 
 export default function NotFoundPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-white dark:bg-charcoal text-center px-4">
-      <Card className="max-w-lg w-full shadow-lg rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+    <div className="page-enter flex min-h-screen items-center justify-center bg-white dark:bg-charcoal text-center px-4">
+      <Card className="card-enter max-w-lg w-full shadow-lg rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
         <CardContent className="flex flex-col items-center gap-6 py-10">
           {/* Icon */}
-          <AlertTriangle className="h-16 w-16 text-[#FB923C]" />
+          <AlertTriangle className="h-16 w-16 text-[#FB923C] ambient-drift" />
 
           {/* Error Text */}
           <h1 className="text-4xl font-bold text-[#6D28D9] dark:text-[#FB923C]">

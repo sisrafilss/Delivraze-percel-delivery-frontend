@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useGetAllParcelsByAdminQuery } from '@/redux/features/parcel/admin.api';
 import type { Parcel } from '@/types';
+import type { CSSProperties } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 
 export default function AdminAllParcelsPage() {
@@ -67,7 +68,7 @@ export default function AdminAllParcelsPage() {
 
   return (
     <LazyLoadWrapper>
-      <div className="min-h-screen p-4 bg-background">
+      <div className="page-enter min-h-screen p-4 bg-background">
         <div className="max-w-7xl mx-auto space-y-6">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-semibold text-primary">All Parcels</h1>
@@ -76,15 +77,17 @@ export default function AdminAllParcelsPage() {
             </Button>
           </div>
 
-          <ParcelFilters
+          <div className="section-enter" style={{ "--delay": "80ms" } as CSSProperties}>
+            <ParcelFilters
             selectedStatus={selectedStatus}
             onStatusChange={setSelectedStatus}
             searchEmail={searchEmail}
             onEmailChange={setSearchEmail}
-          />
+            />
+          </div>
 
           {isLoading ? (
-            <div className="p-4 space-y-3 bg-card border rounded-lg">
+            <div className="card-enter p-4 space-y-3 bg-card border rounded-lg">
               {/* Skeleton table header */}
               <div className="flex gap-2">
                 <Skeleton className="h-6 w-24" />
@@ -104,11 +107,13 @@ export default function AdminAllParcelsPage() {
               ))}
             </div>
           ) : (
-            <ParcelTable
-              parcels={parcels}
-              onViewDetail={openDetail}
-              onEdit={openEdit}
-            />
+            <div className="table-enter" style={{ "--delay": "120ms" } as CSSProperties}>
+              <ParcelTable
+                parcels={parcels}
+                onViewDetail={openDetail}
+                onEdit={openEdit}
+              />
+            </div>
           )}
 
           {meta && meta.totalPage > 1 && (

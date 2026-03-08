@@ -75,9 +75,9 @@ const TrackParcel: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center px-4 py-8 bg-background transition-colors">
+    <div className="page-enter flex flex-col items-center justify-center px-4 py-8 bg-background transition-colors">
       {isFetching ? (
-        <div className="w-full max-w-md bg-card p-6 rounded-lg shadow-md space-y-4">
+        <div className="card-enter w-full max-w-md bg-card p-6 rounded-lg shadow-md space-y-4">
           {/* Skeleton for label */}
           <Skeleton className="h-5 w-56" />
           {/* Skeleton for input */}
@@ -89,7 +89,7 @@ const TrackParcel: React.FC = () => {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="w-full max-w-md bg-card p-6 rounded-lg shadow-md space-y-4"
+            className="card-enter w-full max-w-md bg-card p-6 rounded-lg shadow-md space-y-4"
           >
             <FormField
               control={form.control}

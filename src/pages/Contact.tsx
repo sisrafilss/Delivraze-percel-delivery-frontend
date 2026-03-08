@@ -45,9 +45,12 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <div className="py-12 px-4 md:px-16 lg:px-32 text-slate-900 dark:text-slate-100 space-y-16">
+    <div className="page-enter py-12 px-4 md:px-16 lg:px-32 text-slate-900 dark:text-slate-100 space-y-16">
       {/* Header */}
-      <section className="space-y-4 text-center">
+      <section
+        className="section-enter space-y-4 text-center"
+        style={{ "--delay": "80ms" } as React.CSSProperties}
+      >
         {isLoading ? (
           <div className="space-y-2">
             <Skeleton className="h-10 w-60 mx-auto" />
@@ -65,7 +68,10 @@ const Contact: React.FC = () => {
       </section>
 
       {/* Inquiry Form */}
-      <section className="max-w-3xl mx-auto relative">
+      <section
+        className="section-enter max-w-3xl mx-auto relative"
+        style={{ "--delay": "180ms" } as React.CSSProperties}
+      >
         {isLoading ? (
           <div className="space-y-4">
             <Skeleton className="h-12 w-full rounded-md" />
@@ -75,7 +81,7 @@ const Contact: React.FC = () => {
             <Skeleton className="h-12 w-full rounded-md" />
           </div>
         ) : (
-          <Card className="bg-white dark:bg-slate-800 shadow-md">
+          <Card className="card-enter bg-white dark:bg-slate-800 shadow-md">
             <CardHeader>
               <CardTitle>Send us a message</CardTitle>
             </CardHeader>
@@ -174,7 +180,10 @@ const Contact: React.FC = () => {
       </section>
 
       {/* Company Info */}
-      <section className="max-w-3xl mx-auto space-y-2 text-center">
+      <section
+        className="section-enter max-w-3xl mx-auto space-y-2 text-center"
+        style={{ "--delay": "280ms" } as React.CSSProperties}
+      >
         {isLoading ? (
           <div className="space-y-2">
             <Skeleton className="h-6 w-40 mx-auto" />

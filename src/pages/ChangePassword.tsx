@@ -80,9 +80,9 @@ export default function ChangePasswordPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-background px-4">
+    <div className="page-enter flex items-center justify-center min-h-screen bg-background px-4">
       {isLoading ? (
-        <Card className="w-full max-w-md shadow-lg rounded-2xl border border-border p-6 space-y-6">
+        <Card className="card-enter w-full max-w-md shadow-lg rounded-2xl border border-border p-6 space-y-6">
           <Skeleton className="h-8 w-48 mx-auto" /> {/* Title */}
           <div className="space-y-4">
             <Skeleton className="h-5 w-32" />
@@ -95,7 +95,7 @@ export default function ChangePasswordPage() {
           </div>
         </Card>
       ) : (
-        <Card className="w-full max-w-md shadow-lg rounded-2xl border border-border">
+        <Card className="card-enter w-full max-w-md shadow-lg rounded-2xl border border-border">
           <CardHeader>
             <CardTitle className="text-2xl font-semibold text-center text-primary">
               Change Password

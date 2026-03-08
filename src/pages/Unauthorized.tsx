@@ -6,8 +6,8 @@ import { Link } from "react-router";
 
 export default function Unauthorized() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-white dark:bg-slate-900 px-4">
-      <Card className="w-full max-w-md text-center shadow-lg bg-slate-50 dark:bg-slate-800 rounded-2xl">
+    <div className="page-enter flex min-h-screen items-center justify-center bg-white dark:bg-slate-900 px-4">
+      <Card className="card-enter w-full max-w-md text-center shadow-lg bg-slate-50 dark:bg-slate-800 rounded-2xl">
         <CardContent className="space-y-6 py-10 px-6">
           <Link to="/" className="flex justify-center">
             <span className="h-12 w-12 text-primary hover:opacity-90 transition">
@@ -16,7 +16,7 @@ export default function Unauthorized() {
           </Link>
 
           <div className="flex justify-center">
-            <ShieldAlert className="h-16 w-16 text-primary" />
+            <ShieldAlert className="h-16 w-16 text-primary ambient-drift" />
           </div>
 
           <div className="space-y-2">

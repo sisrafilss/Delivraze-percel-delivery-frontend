@@ -89,9 +89,9 @@ const ResetPassword = () => {
   }, [id, navigate, token]);
 
   return (
-    <div className="flex justify-center flex-col items-center h-screen">
+    <div className="page-enter flex justify-center flex-col items-center h-screen">
       <div className="max-w-lg w-96 mx-auto">
-        <Card>
+        <Card className="card-enter">
           <CardHeader>
             <CardTitle>Reset Your Password</CardTitle>
             <CardDescription>Enter your new password below</CardDescription>

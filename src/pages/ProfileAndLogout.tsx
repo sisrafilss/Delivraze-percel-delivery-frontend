@@ -25,9 +25,9 @@ export default function ProfileAndLogout() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen p-4 bg-background">
+      <div className="page-enter min-h-screen p-4 bg-background">
         <div className="max-w-2xl mx-auto">
-          <Card className="shadow-md">
+          <Card className="card-enter shadow-md">
             <CardHeader className="flex flex-col items-center gap-3">
               {/* Avatar Skeleton */}
               <Skeleton className="h-20 w-20 rounded-full" />
@@ -59,11 +59,11 @@ export default function ProfileAndLogout() {
   const user = userInfo?.data;
 
   return (
-    <div className="min-h-screen p-4 bg-background">
+    <div className="page-enter min-h-screen p-4 bg-background">
       <div className="max-w-2xl mx-auto">
-        <Card className="shadow-md">
+        <Card className="card-enter shadow-md">
           <CardHeader className="flex flex-col items-center gap-3">
-            <Avatar className="h-20 w-20">
+            <Avatar className="h-20 w-20 ambient-drift">
               <AvatarImage src={user?.image} alt={user?.name} />
               <AvatarFallback className="text-lg font-bold">
                 {user?.name?.charAt(0) || "U"}

@@ -39,9 +39,12 @@ const About: React.FC = () => {
   }, []);
 
   return (
-    <div className="space-y-20 py-12 px-4 md:px-16 lg:px-32 text-slate-900 dark:text-slate-100">
+    <div className="page-enter space-y-20 py-12 px-4 md:px-16 lg:px-32 text-slate-900 dark:text-slate-100">
       {/* Service Description */}
-      <section className="space-y-4 text-center max-w-3xl mx-auto">
+      <section
+        className="section-enter space-y-4 text-center max-w-3xl mx-auto"
+        style={{ "--delay": "80ms" } as React.CSSProperties}
+      >
         {isLoading ? (
           <div className="space-y-2">
             <Skeleton className="h-12 w-60 mx-auto" />
@@ -63,7 +66,10 @@ const About: React.FC = () => {
       </section>
 
       {/* Mission Section */}
-      <section className="space-y-4 text-center max-w-3xl mx-auto">
+      <section
+        className="section-enter space-y-4 text-center max-w-3xl mx-auto"
+        style={{ "--delay": "180ms" } as React.CSSProperties}
+      >
         {isLoading ? (
           <div className="space-y-2">
             <Skeleton className="h-10 w-48 mx-auto" />
@@ -85,7 +91,10 @@ const About: React.FC = () => {
       </section>
 
       {/* Team Section */}
-      <section className="space-y-8">
+      <section
+        className="section-enter space-y-8"
+        style={{ "--delay": "280ms" } as React.CSSProperties}
+      >
         <h2 className="text-3xl font-semibold text-center">Meet Our Team</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {isLoading
@@ -104,10 +113,13 @@ const About: React.FC = () => {
                   </CardContent>
                 </Card>
               ))
-            : teamMembers.map((member) => (
+            : teamMembers.map((member, index) => (
                 <Card
                   key={member.name}
-                  className="bg-white dark:bg-slate-800 shadow-md"
+                  className="card-enter bg-white dark:bg-slate-800 shadow-md"
+                  style={
+                    { "--delay": `${index * 90}ms` } as React.CSSProperties
+                  }
                 >
                   <CardHeader className="space-y-2 text-center">
                     <Avatar className="mx-auto h-20 w-20">

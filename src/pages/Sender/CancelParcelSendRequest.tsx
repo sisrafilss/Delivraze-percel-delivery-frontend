@@ -10,6 +10,7 @@ import {
 } from '@/redux/features/parcel/sender.api';
 import type { Parcel } from '@/types';
 import { format } from 'date-fns';
+import type { CSSProperties } from 'react';
 import { useMemo, useState } from 'react';
 
 export default function CancelParcelSendRequest() {
@@ -61,7 +62,7 @@ export default function CancelParcelSendRequest() {
   };
 
   return (
-    <div className="min-h-screen p-4 bg-background">
+    <div className="page-enter min-h-screen p-4 bg-background">
       <h1 className="text-2xl font-semibold mb-6 text-primary text-center">
         Pending Parcel Requests
       </h1>
@@ -72,7 +73,7 @@ export default function CancelParcelSendRequest() {
         </p>
       )}
 
-      <div className="overflow-x-auto">
+      <div className="table-enter overflow-x-auto">
         <table className="w-full table-auto border-collapse">
           <thead>
             <tr className="text-sm text-left text-muted-foreground border-b border-border">
@@ -106,10 +107,11 @@ export default function CancelParcelSendRequest() {
                 </td>
               </tr>
             ) : (
-              parcels.map((p: Parcel) => (
+              parcels.map((p: Parcel, index: number) => (
                 <tr
                   key={p._id}
-                  className="border-b border-border hover:bg-muted/50 dark:hover:bg-muted/30"
+                  className="row-enter border-b border-border hover:bg-muted/50 dark:hover:bg-muted/30"
+                  style={{ "--delay": `${index * 35}ms` } as CSSProperties}
                 >
                   <td className="px-3 py-3 text-sm">{p.trackingId || '-'}</td>
                   <td className="px-3 py-3 text-sm">{p.receiverName}</td>

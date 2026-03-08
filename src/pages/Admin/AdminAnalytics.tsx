@@ -68,7 +68,7 @@ export default function AdminAnalytics() {
 
   return (
     <LazyLoadWrapper>
-      <section className="space-y-10">
+      <section className="page-enter space-y-10">
         {/* === Existing cards === */}
         <div className="space-y-6">
           <div className="flex items-center justify-between">
@@ -92,7 +92,7 @@ export default function AdminAnalytics() {
           {/* Grid of cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Total Parcels card */}
-            <Card className="col-span-1 md:col-span-2 lg:col-span-1 transition-transform duration-300 hover:scale-[1.03] hover:shadow-xl">
+            <Card className="card-enter col-span-1 md:col-span-2 lg:col-span-1 transition-transform duration-300 hover:scale-[1.03] hover:shadow-xl">
               <CardHeader>
                 <CardTitle className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -161,14 +161,19 @@ export default function AdminAnalytics() {
                 </CardContent>
               </Card>
             ) : (
-              statuses.map((s) => (
-                <StatCard
+              statuses.map((s, index) => (
+                <div
                   key={s._id}
-                  title={s._id}
-                  subtitle={`${s.count} parcels`}
-                  value={<span className="tabular-nums">{s.count}</span>}
-                  className={`${getStatusCardBg(s._id)} shadow-lg`}
-                />
+                  className="card-enter"
+                  style={{ "--delay": `${index * 90 + 120}ms` } as React.CSSProperties}
+                >
+                  <StatCard
+                    title={s._id}
+                    subtitle={`${s.count} parcels`}
+                    value={<span className="tabular-nums">{s.count}</span>}
+                    className={`${getStatusCardBg(s._id)} shadow-lg`}
+                  />
+                </div>
               ))
             )}
           </div>
@@ -177,7 +182,7 @@ export default function AdminAnalytics() {
         {/* === Charts Section === */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Pie chart: Delivery Status Distribution */}
-          <Card className="p-4">
+          <Card className="card-enter p-4" style={{ "--delay": "180ms" } as React.CSSProperties}>
             <CardHeader>
               <CardTitle>Delivery Status Distribution</CardTitle>
             </CardHeader>
@@ -207,7 +212,7 @@ export default function AdminAnalytics() {
           </Card>
 
           {/* Bar chart: Parcel Trends */}
-          <Card className="p-4">
+          <Card className="card-enter p-4" style={{ "--delay": "260ms" } as React.CSSProperties}>
             <CardHeader>
               <CardTitle>Parcel Trends</CardTitle>
             </CardHeader>
@@ -231,7 +236,7 @@ export default function AdminAnalytics() {
           </Card>
 
           {/* Bar chart: Monthly Shipments */}
-          <Card className="p-4">
+          <Card className="card-enter p-4" style={{ "--delay": "340ms" } as React.CSSProperties}>
             <CardHeader>
               <CardTitle>Monthly Shipments</CardTitle>
             </CardHeader>

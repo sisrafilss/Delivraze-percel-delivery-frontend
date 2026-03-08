@@ -9,6 +9,7 @@ import { useMemo, useState } from "react";
 import { LazyLoadWrapper } from "@/components/LazyLoadWrapper";
 import { useGetAllUsersByAdminQuery } from "@/redux/features/admin/user.api";
 import type { User } from "@/types";
+import type { CSSProperties } from "react";
 
 export default function AllUsers() {
   const [page, setPage] = useState<number>(1);
@@ -40,9 +41,9 @@ export default function AllUsers() {
 
   return (
     <LazyLoadWrapper>
-      <div className="p-6">
+      <div className="page-enter p-6">
         {/* Header & Filters */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+        <div className="section-enter flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
           <div>
             <h1 className="text-2xl font-semibold">All Users</h1>
             <p className="text-sm text-muted-foreground mt-1">
@@ -96,7 +97,10 @@ export default function AllUsers() {
         </div>
 
         {/* Table Area */}
-        <div className="bg-card border rounded-lg">
+        <div
+          className="table-enter bg-card border rounded-lg"
+          style={{ "--delay": "100ms" } as CSSProperties}
+        >
           {isLoading ? (
             <div className="p-4 space-y-3">
               {/* Simulate 5 table rows skeleton */}

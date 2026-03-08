@@ -108,9 +108,9 @@ const Verify = () => {
   }, [email, confirmed]);
 
   return (
-    <div className="grid place-content-center h-screen">
+    <div className="page-enter grid place-content-center h-screen">
       {confirmed ? (
-        <Card>
+        <Card className="card-enter">
           <CardHeader>
             <CardTitle className="text-xl">Verify your email address</CardTitle>
             <CardDescription>
@@ -170,7 +170,7 @@ const Verify = () => {
           </CardFooter>
         </Card>
       ) : (
-        <Card>
+        <Card className="card-enter">
           <CardHeader>
             <CardTitle className="text-xl">Verify your email address</CardTitle>
             <CardDescription>
