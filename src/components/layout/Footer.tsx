@@ -1,5 +1,5 @@
-import Logo from "@/assets/icons/Logo";
-import { Link } from "react-router";
+import Logo from '@/assets/icons/Logo';
+import { Link } from 'react-router';
 
 export default function Footer() {
   return (
@@ -14,8 +14,8 @@ export default function Footer() {
             </div>
 
             <p className="mt-4 max-w-xs text-muted-foreground">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Esse non
-              cupiditate quae nam molestias.
+              Delivraze Parcel Delivery makes sending and receiving parcels
+              easy, transparent, and hassle-free.
             </p>
 
             <ul className="mt-8 flex gap-6">
@@ -147,8 +147,8 @@ export default function Footer() {
                     href="#"
                     className="text-foreground/90 transition hover:text-foreground/60"
                   >
-                    {" "}
-                    1on1 Coaching{" "}
+                    {' '}
+                    1on1 Coaching{' '}
                   </a>
                 </li>
 
@@ -157,8 +157,8 @@ export default function Footer() {
                     href="#"
                     className="text-foreground/90 transition hover:text-foreground/60"
                   >
-                    {" "}
-                    Company Review{" "}
+                    {' '}
+                    Company Review{' '}
                   </a>
                 </li>
 
@@ -167,8 +167,8 @@ export default function Footer() {
                     href="#"
                     className="text-foreground/90 transition hover:text-foreground/60"
                   >
-                    {" "}
-                    Accounts Review{" "}
+                    {' '}
+                    Accounts Review{' '}
                   </a>
                 </li>
 
@@ -177,8 +177,8 @@ export default function Footer() {
                     href="#"
                     className="text-foreground/90 transition hover:text-foreground/60"
                   >
-                    {" "}
-                    HR Consulting{" "}
+                    {' '}
+                    HR Consulting{' '}
                   </a>
                 </li>
 
@@ -187,8 +187,8 @@ export default function Footer() {
                     href="#"
                     className="text-foreground/90 transition hover:text-foreground/60"
                   >
-                    {" "}
-                    SEO Optimisation{" "}
+                    {' '}
+                    SEO Optimisation{' '}
                   </a>
                 </li>
               </ul>
@@ -203,8 +203,8 @@ export default function Footer() {
                     href="#"
                     className="text-foreground/90 transition hover:text-foreground/60"
                   >
-                    {" "}
-                    About{" "}
+                    {' '}
+                    About{' '}
                   </a>
                 </li>
 
@@ -213,8 +213,8 @@ export default function Footer() {
                     href="#"
                     className="text-foreground/90 transition hover:text-foreground/60"
                   >
-                    {" "}
-                    Meet the Team{" "}
+                    {' '}
+                    Meet the Team{' '}
                   </a>
                 </li>
 
@@ -223,8 +223,8 @@ export default function Footer() {
                     href="#"
                     className="text-foreground/90 transition hover:text-foreground/60"
                   >
-                    {" "}
-                    Accounts Review{" "}
+                    {' '}
+                    Accounts Review{' '}
                   </a>
                 </li>
               </ul>
@@ -239,8 +239,8 @@ export default function Footer() {
                     href="#"
                     className="text-foreground/90 transition hover:text-foreground/60"
                   >
-                    {" "}
-                    Contact{" "}
+                    {' '}
+                    Contact{' '}
                   </a>
                 </li>
 
@@ -249,8 +249,8 @@ export default function Footer() {
                     href="#"
                     className="text-foreground/90 transition hover:text-foreground/60"
                   >
-                    {" "}
-                    FAQs{" "}
+                    {' '}
+                    FAQs{' '}
                   </a>
                 </li>
 
@@ -259,8 +259,8 @@ export default function Footer() {
                     href="#"
                     className="text-foreground/90 transition hover:text-foreground/60"
                   >
-                    {" "}
-                    Live Chat{" "}
+                    {' '}
+                    Live Chat{' '}
                   </a>
                 </li>
               </ul>
@@ -275,8 +275,8 @@ export default function Footer() {
                     href="#"
                     className="text-foreground/90 transition hover:text-foreground/60"
                   >
-                    {" "}
-                    Accessibility{" "}
+                    {' '}
+                    Accessibility{' '}
                   </a>
                 </li>
 
@@ -285,8 +285,8 @@ export default function Footer() {
                     href="#"
                     className="text-foreground/90 transition hover:text-foreground/60"
                   >
-                    {" "}
-                    Returns Policy{" "}
+                    {' '}
+                    Returns Policy{' '}
                   </a>
                 </li>
 
@@ -295,8 +295,8 @@ export default function Footer() {
                     href="#"
                     className="text-foreground/90 transition hover:text-foreground/60"
                   >
-                    {" "}
-                    Refund Policy{" "}
+                    {' '}
+                    Refund Policy{' '}
                   </a>
                 </li>
 
