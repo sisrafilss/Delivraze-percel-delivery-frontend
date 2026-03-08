@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import StatCard from "@/components/modules/Dashboard/StatsCard";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { formatNumber } from "@/lib/format";
-import { useGetAdminStatsQuery } from "@/redux/features/parcel/admin.api";
-import { Loader2, Package, RefreshCcw } from "lucide-react";
-import React from "react";
-import { toast } from "sonner";
+import StatCard from '@/components/modules/Dashboard/StatsCard';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { formatNumber } from '@/lib/format';
+import { useGetAdminStatsQuery } from '@/redux/features/parcel/admin.api';
+import { Loader2, Package, RefreshCcw } from 'lucide-react';
+import React from 'react';
+import { toast } from 'sonner';
 
 // --- Recharts imports ---
-import { LazyLoadWrapper } from "@/components/LazyLoadWrapper";
+import { LazyLoadWrapper } from '@/components/LazyLoadWrapper';
 import {
   Bar,
   BarChart,
@@ -25,7 +25,7 @@ import {
   ResponsiveContainer,
   XAxis,
   YAxis,
-} from "recharts";
+} from 'recharts';
 
 // --- Types ---
 type ParcelStatusCount = { _id: string; count: number };
@@ -35,21 +35,21 @@ type ParcelTrend = { count: number; date: string };
 // --- Helper: Background class based on status ---
 const getStatusCardBg = (status: string): string => {
   switch (status) {
-    case "DELIVERED":
-      return "bg-gradient-to-r from-emerald-500 to-green-600 text-white dark:from-emerald-600 dark:to-green-700";
-    case "ACCEPTED":
-      return "bg-gradient-to-r from-blue-500 to-sky-600 text-white dark:from-blue-600 dark:to-sky-700";
-    case "PENDING":
-      return "bg-gradient-to-r from-amber-400 to-orange-500 text-white dark:from-amber-500 dark:to-orange-600";
-    case "CANCELLED":
-      return "bg-gradient-to-r from-rose-500 to-red-600 text-white dark:from-rose-600 dark:to-red-700";
+    case 'DELIVERED':
+      return 'bg-gradient-to-r from-emerald-500 to-green-600 text-white dark:from-emerald-600 dark:to-green-700';
+    case 'ACCEPTED':
+      return 'bg-gradient-to-r from-blue-500 to-sky-600 text-white dark:from-blue-600 dark:to-sky-700';
+    case 'PENDING':
+      return 'bg-gradient-to-r from-amber-400 to-orange-500 text-white dark:from-amber-500 dark:to-orange-600';
+    case 'CANCELLED':
+      return 'bg-gradient-to-r from-rose-500 to-red-600 text-white dark:from-rose-600 dark:to-red-700';
     default:
-      return "bg-muted text-foreground";
+      return 'bg-muted text-foreground';
   }
 };
 
 // --- Colors for Pie chart ---
-const PIE_COLORS = ["#10B981", "#3B82F6", "#F59E0B", "#EF4444"]; // delivered, accepted, pending, cancelled
+const PIE_COLORS = ['#10B981', '#3B82F6', '#F59E0B', '#EF4444']; // delivered, accepted, pending, cancelled
 
 export default function AdminAnalytics() {
   const { data, isLoading, isError, error, refetch } =
@@ -57,7 +57,7 @@ export default function AdminAnalytics() {
 
   React.useEffect(() => {
     if (isError) {
-      toast.error("Failed to load sender stats");
+      toast.error('Failed to load sender stats');
     }
   }, [isError, error]);
 
@@ -149,11 +149,11 @@ export default function AdminAnalytics() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-destructive">
-                    {typeof error === "object" &&
+                    {typeof error === 'object' &&
                     error !== null &&
-                    "message" in error
+                    'message' in error
                       ? (error as { message: string }).message
-                      : "Failed to load stats"}
+                      : 'Failed to load stats'}
                   </p>
                   <div className="mt-3">
                     <Button onClick={() => refetch()}>Retry</Button>
@@ -191,7 +191,7 @@ export default function AdminAnalytics() {
                     cx="50%"
                     cy="50%"
                     outerRadius={80}
-                    label={(entry) => String(entry._id)}
+                    label={(entry: any) => String(entry._id)}
                   >
                     {statuses.map((_, index) => (
                       <Cell
@@ -241,8 +241,8 @@ export default function AdminAnalytics() {
                   data={monthlyShipments.map((m) => ({
                     ...m,
                     monthName: new Date(m.year, m.month - 1).toLocaleString(
-                      "default",
-                      { month: "short" }
+                      'default',
+                      { month: 'short' }
                     ),
                   }))}
                 >
