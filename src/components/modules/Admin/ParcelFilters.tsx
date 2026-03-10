@@ -23,11 +23,11 @@ export default function ParcelFilters({
   onEmailChange,
 }: Props) {
   return (
-    <div className="flex flex-col sm:flex-row items-center gap-4">
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
       <select
         value={selectedStatus}
         onChange={(e) => onStatusChange(e.target.value)}
-        className="px-3 py-2 rounded-md border border-border bg-background text-sm"
+        className="rounded-full border border-border bg-white px-4 py-2 text-sm text-foreground shadow-sm transition focus:border-primary focus:ring-1 focus:ring-primary/40"
       >
         {STATUS_OPTIONS.map((opt) => (
           <option key={opt.value} value={opt.value}>
@@ -41,7 +41,7 @@ export default function ParcelFilters({
         placeholder="Search by sender/receiver email"
         value={searchEmail}
         onChange={(e) => onEmailChange(e.target.value)}
-        className="max-w-sm"
+        className="max-w-lg rounded-full border border-border bg-white/70 px-4 py-2 text-sm shadow-sm"
       />
     </div>
   );

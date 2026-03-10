@@ -35,77 +35,120 @@ export default function ReceiverAnalytics() {
 
   React.useEffect(() => {
     if (isError) {
-      toast.error('Failed to load sender stats');
+      toast.error("Failed to load receiver stats");
     }
   }, [isError, error]);
 
   const statuses: ParcelStatusCount[] = data?.data?.totalParcelsByStatus ?? [];
+  const totalParcels = data?.data?.totalParcels ?? 0;
+  const deliveredCount =
+    statuses.find((status) => status._id === "DELIVERED")?.count ?? 0;
+  const activeCount = statuses
+    .filter((status) =>
+      ["PENDING", "ACCEPTED", "IN_TRANSIT"].includes(status._id),
+    )
+    .reduce((acc, status) => acc + status.count, 0);
+  const deliveryRate = totalParcels
+    ? Math.round((deliveredCount / totalParcels) * 100)
+    : 0;
 
   return (
-    <section className="page-enter space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Receiver Analytics</h2>
+    <section className="page-enter space-y-8">
+      <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+        <div>
+          <h2 className="text-2xl font-semibold">Receiver Analytics</h2>
+          <p className="text-sm text-muted-foreground">
+            Track every incoming parcel, view delivery confidence, and ensure
+            nothing slips past your dashboard.
+          </p>
+        </div>
         <div className="flex items-center gap-2">
           <Button
-            variant="ghost"
+            variant="outline"
             size="sm"
             onClick={() => refetch?.()}
-            aria-label="Refresh stats"
+            className="flex items-center gap-2"
           >
             {isLoading ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (
               <RefreshCcw className="h-4 w-4" />
             )}
+            Refresh
           </Button>
         </div>
       </div>
 
-      {/* Grid of cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Total Parcels card */}
-        <Card className="card-enter col-span-1 md:col-span-2 lg:col-span-1 transition-transform duration-300 hover:scale-[1.03] hover:shadow-xl">
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="rounded-full p-2 bg-muted/40 dark:bg-muted/30">
-                  <Package className="h-5 w-5" />
-                </div>
-                <div>
-                  <div className="text-sm">Total Parcels</div>
-                  <div className="text-xs text-muted-foreground">
-                    Overall count for this sender
-                  </div>
-                </div>
-              </div>
-              <Badge variant="outline">Sender</Badge>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="py-8 flex items-center justify-center">
-            {isLoading ? (
-              <div className="flex items-center gap-2">
-                <Loader2 className="h-5 w-5 animate-spin" />
-                <span className="text-sm">Loading...</span>
-              </div>
-            ) : isError ? (
-              <div className="text-center">
-                <div className="text-sm text-destructive">Failed to load.</div>
-                <Button variant="ghost" size="sm" onClick={() => refetch()}>
-                  Retry
-                </Button>
-              </div>
-            ) : (
-              <div className="text-5xl font-bold">
-                {formatNumber(data?.data.totalParcels ?? 0)}
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* One card per status */}
+      <div className="dashboard-panel">
         {isLoading ? (
-          Array.from({ length: 4 }).map((_, i) => (
-            <Card key={i} className="w-full">
+          <div className="space-y-3">
+            <Skeleton className="h-6 w-36" />
+            <Skeleton className="h-14 w-full" />
+            <Skeleton className="h-4 w-full" />
+          </div>
+        ) : isError ? (
+          <div className="space-y-3 text-center">
+            <p className="text-sm text-destructive">
+              {typeof error === "object" &&
+              error !== null &&
+              "message" in error
+                ? (error as { message: string }).message
+                : "Failed to load stats"}
+            </p>
+            <Button onClick={() => refetch?.()}>Retry</Button>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+              <div>
+                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground/70">
+                  Total Parcels
+                </p>
+                <p className="text-4xl font-bold text-foreground">
+                  {formatNumber(totalParcels)}
+                </p>
+              </div>
+              <Badge variant="secondary">Receiver</Badge>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-3">
+              <div className="rounded-2xl border border-border/60 bg-white/70 p-4 text-center">
+                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground/60">
+                  Active
+                </p>
+                <p className="text-2xl font-semibold text-primary">
+                  {formatNumber(activeCount)}
+                </p>
+                <p className="text-xs text-muted-foreground">Incoming logic</p>
+              </div>
+              <div className="rounded-2xl border border-border/60 bg-white/70 p-4 text-center">
+                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground/60">
+                  Delivered
+                </p>
+                <p className="text-2xl font-semibold text-foreground">
+                  {formatNumber(deliveredCount)}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {deliveryRate}% received
+                </p>
+              </div>
+              <div className="rounded-2xl border border-border/60 bg-white/70 p-4 text-center">
+                <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground/60">
+                  Awaiting
+                </p>
+                <p className="text-2xl font-semibold text-accent">
+                  {formatNumber(totalParcels - deliveredCount)}
+                </p>
+                <p className="text-xs text-muted-foreground">Awaiting drop-off</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {isLoading ? (
+          Array.from({ length: 4 }).map((_, index) => (
+            <Card key={index} className="shadow-lg">
               <CardContent className="py-6">
                 <Skeleton className="h-6 w-28 mb-3" />
                 <Skeleton className="h-8 w-full" />
@@ -113,23 +156,16 @@ export default function ReceiverAnalytics() {
             </Card>
           ))
         ) : isError ? (
-          <Card className="col-span-1 md:col-span-3">
-            <CardHeader>
-              <CardTitle>Error</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-destructive">
-                {typeof error === 'object' &&
-                error !== null &&
-                'message' in error
-                  ? (error as { message: string }).message
-                  : 'Failed to load stats'}
-              </p>
-              <div className="mt-3">
-                <Button onClick={() => refetch()}>Retry</Button>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="dashboard-panel text-center">
+            <p className="text-sm text-destructive">
+              {typeof error === "object" &&
+              error !== null &&
+              "message" in error
+                ? (error as { message: string }).message
+                : "Failed to load stats"}
+            </p>
+            <Button onClick={() => refetch?.()}>Retry</Button>
+          </div>
         ) : (
           statuses.map((s, index) => (
             <div
@@ -141,7 +177,7 @@ export default function ReceiverAnalytics() {
                 title={s._id}
                 subtitle={`${s.count} parcels`}
                 value={<span className="tabular-nums">{s.count}</span>}
-                className={`${getStatusCardBg(s._id)} shadow-lg`}
+                className={`${getStatusCardBg(s._id)} shadow-xl`}
               />
             </div>
           ))

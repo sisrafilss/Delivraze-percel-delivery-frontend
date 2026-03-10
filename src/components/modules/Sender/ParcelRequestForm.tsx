@@ -59,17 +59,6 @@ export function ParcelRequestForm({
   // ✅ Ensure correct type
   const form = useForm<ParcelRequestFormValues>({
     resolver: zodResolver(parcelRequestSchema),
-    defaultValues: {
-      receiverName: 'John Doe',
-      receiverPhone: '+8801712345678',
-      receiverAddress: 'House 12, Road 7, Dhanmondi, Dhaka',
-      receiverEmail: 'israfilhossen3@gmail.com',
-      parcelType: 'Electronics',
-      weight: 1500,
-      specialInstructions: 'Handle with care, fragile item inside',
-      pickupLocation: 'Banani, Dhaka',
-      dropoffLocation: 'Uttara, Dhaka',
-    },
   });
 
   async function onSubmit(values: ParcelRequestFormValues) {

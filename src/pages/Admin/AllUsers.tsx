@@ -5,11 +5,9 @@ import UserTable from "@/components/modules/Admin/UserTable";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMemo, useState } from "react";
-
 import { LazyLoadWrapper } from "@/components/LazyLoadWrapper";
 import { useGetAllUsersByAdminQuery } from "@/redux/features/admin/user.api";
 import type { User } from "@/types";
-import type { CSSProperties } from "react";
 
 export default function AllUsers() {
   const [page, setPage] = useState<number>(1);
@@ -30,7 +28,7 @@ export default function AllUsers() {
       isActive: status || undefined,
       isVerified: isVerified || undefined,
     }),
-    [page, limit, search, role, status, isVerified]
+    [page, limit, search, role, status, isVerified],
   );
 
   const { data, isLoading, isFetching, refetch } =
@@ -41,103 +39,80 @@ export default function AllUsers() {
 
   return (
     <LazyLoadWrapper>
-      <div className="page-enter p-6">
-        {/* Header & Filters */}
-        <div className="section-enter flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+      <div className="page-enter space-y-8">
+        <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
             <h1 className="text-2xl font-semibold">All Users</h1>
-            <p className="text-sm text-muted-foreground mt-1">
-              Manage users — view details, block/unblock, or delete.
+            <p className="text-sm text-muted-foreground">
+              Manage accounts, block/unblock, or delete records directly from
+              here.
             </p>
           </div>
-
-          <div className="flex items-center gap-2">
-            {isLoading ? (
-              <>
-                <Skeleton className="h-10 w-64" />
-                <Skeleton className="h-10 w-20" />
-              </>
-            ) : (
-              <>
-                <UserFilters
-                  initialSearch={search}
-                  initialRole={role}
-                  initialStatus={status}
-                  initalIsVerified={isVerified}
-                  onSearch={(s) => {
-                    setSearch(s);
-                    setPage(1);
-                  }}
-                  onRole={(r) => {
-                    setRole(r);
-                    setPage(1);
-                  }}
-                  onStatus={(s) => {
-                    setStatus(s);
-                    setPage(1);
-                  }}
-                  onVerified={(v) => {
-                    setIsVerified(v);
-                    setPage(1);
-                  }}
-                  onClear={() => {
-                    setSearch("");
-                    setRole("");
-                    setStatus("");
-                    setIsVerified("");
-                    setPage(1);
-                  }}
-                />
-                <Button onClick={() => refetch()} disabled={isFetching}>
-                  Refresh
-                </Button>
-              </>
-            )}
-          </div>
+          <Button variant="outline" onClick={() => refetch()} disabled={isFetching}>
+            Refresh
+          </Button>
         </div>
 
-        {/* Table Area */}
-        <div
-          className="table-enter bg-card border rounded-lg"
-          style={{ "--delay": "100ms" } as CSSProperties}
-        >
-          {isLoading ? (
-            <div className="p-4 space-y-3">
-              {/* Simulate 5 table rows skeleton */}
-              {Array.from({ length: 5 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="flex items-center justify-between gap-4 border-b last:border-0 pb-3"
-                >
-                  <Skeleton className="h-4 w-24" />
-                  <Skeleton className="h-4 w-32" />
-                  <Skeleton className="h-4 w-20" />
-                  <Skeleton className="h-8 w-20 rounded" />
-                </div>
-              ))}
-            </div>
-          ) : (
+        <div className="dashboard-panel space-y-4">
+          <div className="dashboard-filter-ring">
+            {isLoading ? (
+              <div className="flex gap-3">
+                <Skeleton className="h-10 w-64" />
+                <Skeleton className="h-10 w-20" />
+              </div>
+            ) : (
+              <UserFilters
+                initialSearch={search}
+                initialRole={role}
+                initialStatus={status}
+                initalIsVerified={isVerified}
+                onSearch={(s) => {
+                  setSearch(s);
+                  setPage(1);
+                }}
+                onRole={(r) => {
+                  setRole(r);
+                  setPage(1);
+                }}
+                onStatus={(s) => {
+                  setStatus(s);
+                  setPage(1);
+                }}
+                onVerified={(v) => {
+                  setIsVerified(v);
+                  setPage(1);
+                }}
+                onClear={() => {
+                  setSearch("");
+                  setRole("");
+                  setStatus("");
+                  setIsVerified("");
+                  setPage(1);
+                }}
+              />
+            )}
+          </div>
+
+          <div>
             <UserTable
               users={users}
               loading={isLoading}
               onView={(u) => setSelectedUser(u)}
               onRefetch={() => refetch()}
             />
+          </div>
+
+          {meta && meta.totalPage > 1 && (
+            <div className="flex justify-end">
+              <Pagination
+                page={meta.page}
+                totalPages={meta.totalPage}
+                onPageChange={(p) => setPage(p)}
+              />
+            </div>
           )}
         </div>
 
-        {/* Pagination */}
-        {meta && meta.totalPage > 1 && !isLoading && (
-          <div className="mt-4 flex justify-end">
-            <Pagination
-              page={meta.page}
-              totalPages={meta.totalPage}
-              onPageChange={(p) => setPage(p)}
-            />
-          </div>
-        )}
-
-        {/* User Detail Modal */}
         {selectedUser && (
           <UserDetailDialog
             user={selectedUser}

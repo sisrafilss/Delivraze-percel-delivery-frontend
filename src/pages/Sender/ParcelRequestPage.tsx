@@ -2,13 +2,16 @@ import { ParcelRequestForm } from "@/components/modules/Sender/ParcelRequestForm
 
 const ParcelRequestPage = () => {
   return (
-    <div className="page-enter min-h-svh">
-      <div className="flex flex-col gap-4 p-6 md:p-10 mx-auto">
-        <div className="flex flex-1 items-center justify-center">
-          <div className="card-enter w-full max-w-[600px]">
-            <ParcelRequestForm />
-          </div>
-        </div>
+    <div className="page-enter space-y-6">
+      <div>
+        <h1 className="text-3xl font-semibold">Send a Parcel</h1>
+        <p className="text-sm text-muted-foreground">
+          Tell us about the pick-up and drop-off details to schedule a secure
+          delivery.
+        </p>
+      </div>
+      <div className="dashboard-panel mx-auto w-full max-w-3xl">
+        <ParcelRequestForm />
       </div>
     </div>
   );

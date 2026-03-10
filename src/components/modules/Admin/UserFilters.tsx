@@ -48,7 +48,7 @@ export default function UserFilters({
   };
 
   return (
-    <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
+    <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
       <div className="flex items-center gap-2">
         <Label className="sr-only">Search</Label>
         <Input
@@ -58,15 +58,15 @@ export default function UserFilters({
           onKeyDown={(e) => {
             if (e.key === "Enter") apply();
           }}
-          className="min-w-[220px]"
+          className="min-w-[220px] rounded-full border border-border bg-white/70 px-4 py-2 text-sm shadow-sm"
         />
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <select
           value={verified}
           onChange={(e) => setVerified(e.target.value)}
-          className="px-3 py-2 rounded-md border bg-transparent text-sm"
+          className="rounded-full border border-border bg-white/70 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em]"
         >
           <option value="">All (Verified+Unverified)</option>
           <option value="true">Verified</option>
@@ -76,7 +76,7 @@ export default function UserFilters({
         <select
           value={role}
           onChange={(e) => setRole(e.target.value)}
-          className="px-3 py-2 rounded-md border bg-transparent text-sm"
+          className="rounded-full border border-border bg-white/70 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em]"
         >
           <option value="">All roles</option>
           <option value="ADMIN">Admin</option>
@@ -87,7 +87,7 @@ export default function UserFilters({
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          className="px-3 py-2 rounded-md border bg-transparent text-sm"
+          className="rounded-full border border-border bg-white/70 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em]"
         >
           <option value="">All status</option>
           <option value="ACTIVE">Active</option>

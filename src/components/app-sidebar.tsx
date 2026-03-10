@@ -15,9 +15,10 @@ import {
 } from "@/components/ui/sidebar";
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 import { getSidebarItems } from "@/utils/generateSidebarItems";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const location = useLocation();
   const { data: userInfo } = useUserInfoQuery(undefined);
 
   const data = {
@@ -26,10 +27,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar {...props}>
-      <SidebarHeader>
-        <Link to="/">
+      <SidebarHeader className="space-y-2 border-b border-border/30 pb-4">
+        <Link to="/" className="flex items-center gap-3 text-foreground">
           <Logo />
+          <span className="text-lg font-semibold">Delivraze</span>
         </Link>
+        <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground/70">
+          Parcel Dashboard
+        </p>
       </SidebarHeader>
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}
@@ -40,7 +45,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <SidebarMenu>
                 {group.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={location.pathname === item.url}
+                    >
                       <Link to={item.url} className="flex items-center gap-2">
                         {/* Render the icon if provided */}
                         {item.Icon && <item.Icon className="w-4 h-4" />}
