@@ -20,25 +20,26 @@ export default function Pagination({ page, totalPages, onPageChange }: Props) {
   })();
 
   return (
-    <div className="flex items-center gap-2">
-      <Button onClick={prev} disabled={page === 1}>
-        Prev
+    <div className="flex items-center gap-1 sm:gap-2 flex-wrap justify-center">
+      <Button onClick={prev} disabled={page === 1} size="sm">
+        <span className="hidden sm:inline">Prev</span>
+        <span className="sm:hidden">&lt;</span>
       </Button>
       {page > 3 && (
         <button
-          className="px-3 py-1 rounded-md"
+          className="px-2 sm:px-3 py-1 rounded-md text-sm"
           onClick={() => onPageChange(1)}
         >
           1
         </button>
       )}
-      {page > 4 && <span className="px-2">…</span>}
+      {page > 4 && <span className="px-1 sm:px-2">…</span>}
 
       {pagesToShow.map((p) => (
         <button
           key={p}
           onClick={() => onPageChange(p)}
-          className={`px-3 py-1 rounded-md ${
+          className={`px-2 sm:px-3 py-1 rounded-md text-sm ${
             p === page ? "bg-primary text-white" : "border"
           }`}
         >
@@ -46,18 +47,19 @@ export default function Pagination({ page, totalPages, onPageChange }: Props) {
         </button>
       ))}
 
-      {page < totalPages - 3 && <span className="px-2">…</span>}
+      {page < totalPages - 3 && <span className="px-1 sm:px-2">…</span>}
       {page < totalPages - 2 && (
         <button
-          className="px-3 py-1 rounded-md"
+          className="px-2 sm:px-3 py-1 rounded-md text-sm"
           onClick={() => onPageChange(totalPages)}
         >
           {totalPages}
         </button>
       )}
 
-      <Button onClick={next} disabled={page === totalPages}>
-        Next
+      <Button onClick={next} disabled={page === totalPages} size="sm">
+        <span className="hidden sm:inline">Next</span>
+        <span className="sm:hidden">&gt;</span>
       </Button>
     </div>
   );

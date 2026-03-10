@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -9,15 +9,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
 import { useChangePasswordMutation } from "@/redux/features/auth/auth.api";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Lock, KeyRound, Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
-// ✅ Zod schema for validation
 const changePasswordSchema = z
   .object({
     currentPassword: z.string().min(6, {
@@ -47,6 +47,9 @@ type ChangePasswordFormValues = z.infer<typeof changePasswordSchema>;
 
 export default function ChangePasswordPage() {
   const [changePassword, { isLoading }] = useChangePasswordMutation();
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const form = useForm<ChangePasswordFormValues>({
     resolver: zodResolver(changePasswordSchema),
@@ -70,120 +73,172 @@ export default function ChangePasswordPage() {
         });
         form.reset();
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
-      toast.error(error?.data?.message || "Failed to change password", {
+      const err = error as Record<string, unknown>;
+      const message = err?.data && typeof err.data === 'object' 
+        ? (err.data as Record<string, unknown>)?.message 
+        : "Failed to change password";
+      toast.error(String(message), {
         id: toastId,
       });
     }
   };
 
   return (
-    <div className="page-enter flex items-center justify-center min-h-screen bg-background px-4">
-      {isLoading ? (
-        <Card className="card-enter w-full max-w-md shadow-lg rounded-2xl border border-border p-6 space-y-6">
-          <Skeleton className="h-8 w-48 mx-auto" /> {/* Title */}
-          <div className="space-y-4">
-            <Skeleton className="h-5 w-32" />
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-5 w-32" />
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-5 w-32" />
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-10 w-full" /> {/* Button */}
-          </div>
-        </Card>
-      ) : (
-        <Card className="card-enter w-full max-w-md shadow-lg rounded-2xl border border-border">
-          <CardHeader>
-            <CardTitle className="text-2xl font-semibold text-center text-primary">
-              Change Password
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-6"
-              >
-                {/* Current Password */}
-                <FormField
-                  control={form.control}
-                  name="currentPassword"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Current Password</FormLabel>
+    <div className="max-w-xl mx-auto">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold text-foreground">Change Password</h1>
+        <p className="text-muted-foreground mt-1">
+          Update your password to keep your account secure
+        </p>
+      </div>
+
+      <Card className="card-modern">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <KeyRound className="h-5 w-5" />
+            Password Settings
+          </CardTitle>
+          <CardDescription>
+            Enter your current password and choose a new one
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="space-y-6"
+            >
+              <FormField
+                control={form.control}
+                name="currentPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <Lock className="h-4 w-4" />
+                      Current Password
+                    </FormLabel>
+                    <div className="relative">
                       <FormControl>
                         <Input
-                          type="password"
+                          type={showCurrentPassword ? "text" : "password"}
                           placeholder="Enter current password"
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="absolute right-0 top-0 h-full px-3"
+                        onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                      >
+                        {showCurrentPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                {/* New Password */}
-                <FormField
-                  control={form.control}
-                  name="newPassword"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>New Password</FormLabel>
+              <FormField
+                control={form.control}
+                name="newPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <KeyRound className="h-4 w-4" />
+                      New Password
+                    </FormLabel>
+                    <div className="relative">
                       <FormControl>
                         <Input
-                          type="password"
+                          type={showNewPassword ? "text" : "password"}
                           placeholder="Enter new password"
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="absolute right-0 top-0 h-full px-3"
+                        onClick={() => setShowNewPassword(!showNewPassword)}
+                      >
+                        {showNewPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </Button>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                {/* Confirm Password */}
-                <FormField
-                  control={form.control}
-                  name="confirmPassword"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Confirm Password</FormLabel>
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <KeyRound className="h-4 w-4" />
+                      Confirm Password
+                    </FormLabel>
+                    <div className="relative">
                       <FormControl>
                         <Input
-                          type="password"
+                          type={showConfirmPassword ? "text" : "password"}
                           placeholder="Confirm new password"
                           {...field}
                         />
                       </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Submit Button */}
-                <Button
-                  type="submit"
-                  className="w-full bg-primary hover:bg-primary/90 text-white"
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <div className="flex items-center gap-2">
-                      <Spinner size="sm" />
-                      Changing...
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="absolute right-0 top-0 h-full px-3"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      >
+                        {showConfirmPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </Button>
                     </div>
-                  ) : (
-                    "Change Password"
-                  )}
-                </Button>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
-      )}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button
+                type="submit"
+                className="w-full gap-2"
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <>
+                    <Spinner size="sm" />
+                    Changing...
+                  </>
+                ) : (
+                  <>
+                    <KeyRound className="w-4 h-4" />
+                    Change Password
+                  </>
+                )}
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
     </div>
   );
 }

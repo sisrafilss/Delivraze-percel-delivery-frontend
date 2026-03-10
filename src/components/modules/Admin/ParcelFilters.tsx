@@ -27,7 +27,7 @@ export default function ParcelFilters({
       <select
         value={selectedStatus}
         onChange={(e) => onStatusChange(e.target.value)}
-        className="rounded-full border border-border bg-white px-4 py-2 text-sm text-foreground shadow-sm transition focus:border-primary focus:ring-1 focus:ring-primary/40"
+        className="w-full sm:w-auto rounded-full border border-border bg-white px-4 py-2 text-sm text-foreground shadow-sm transition focus:border-primary focus:ring-1 focus:ring-primary/40"
       >
         {STATUS_OPTIONS.map((opt) => (
           <option key={opt.value} value={opt.value}>
@@ -41,7 +41,7 @@ export default function ParcelFilters({
         placeholder="Search by sender/receiver email"
         value={searchEmail}
         onChange={(e) => onEmailChange(e.target.value)}
-        className="max-w-lg rounded-full border border-border bg-white/70 px-4 py-2 text-sm shadow-sm"
+        className="w-full rounded-full border border-border bg-white/70 px-4 py-2 text-sm shadow-sm"
       />
     </div>
   );

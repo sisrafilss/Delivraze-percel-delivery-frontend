@@ -49,7 +49,7 @@ export default function UserFilters({
 
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 w-full sm:w-auto">
         <Label className="sr-only">Search</Label>
         <Input
           placeholder="Search by name or email..."
@@ -58,15 +58,15 @@ export default function UserFilters({
           onKeyDown={(e) => {
             if (e.key === "Enter") apply();
           }}
-          className="min-w-[220px] rounded-full border border-border bg-white/70 px-4 py-2 text-sm shadow-sm"
+          className="min-w-[180px] flex-1 sm:flex-none rounded-full border border-border bg-white/70 px-4 py-2 text-sm shadow-sm"
         />
       </div>
 
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
         <select
           value={verified}
           onChange={(e) => setVerified(e.target.value)}
-          className="rounded-full border border-border bg-white/70 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em]"
+          className="w-full sm:w-auto rounded-full border border-border bg-white/70 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em]"
         >
           <option value="">All (Verified+Unverified)</option>
           <option value="true">Verified</option>
@@ -76,7 +76,7 @@ export default function UserFilters({
         <select
           value={role}
           onChange={(e) => setRole(e.target.value)}
-          className="rounded-full border border-border bg-white/70 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em]"
+          className="w-full sm:w-auto rounded-full border border-border bg-white/70 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em]"
         >
           <option value="">All roles</option>
           <option value="ADMIN">Admin</option>
@@ -87,7 +87,7 @@ export default function UserFilters({
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          className="rounded-full border border-border bg-white/70 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em]"
+          className="w-full sm:w-auto rounded-full border border-border bg-white/70 px-3 py-2 text-xs font-semibold uppercase tracking-[0.2em]"
         >
           <option value="">All status</option>
           <option value="ACTIVE">Active</option>
@@ -95,12 +95,14 @@ export default function UserFilters({
           <option value="INACTIVE">Inactive</option>
         </select>
 
-        <Button variant="outline" onClick={apply}>
-          Apply
-        </Button>
-        <Button variant="ghost" onClick={clear}>
-          Clear
-        </Button>
+        <div className="flex gap-2 w-full sm:w-auto mt-2 sm:mt-0">
+          <Button variant="outline" onClick={apply} className="flex-1 sm:flex-none">
+            Apply
+          </Button>
+          <Button variant="ghost" onClick={clear} className="flex-1 sm:flex-none">
+            Clear
+          </Button>
+        </div>
       </div>
     </div>
   );

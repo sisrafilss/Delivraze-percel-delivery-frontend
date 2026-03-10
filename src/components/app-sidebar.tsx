@@ -1,6 +1,5 @@
 import * as React from "react";
 
-import Logo from "@/assets/icons/Logo";
 import {
   Sidebar,
   SidebarContent,
@@ -25,34 +24,69 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     navMain: getSidebarItems(userInfo?.data?.role),
   };
 
+  const isActive = (url: string) => {
+    return location.pathname === url || location.pathname.startsWith(url + "/");
+  };
+
   return (
-    <Sidebar {...props}>
-      <SidebarHeader className="space-y-2 border-b border-border/30 pb-4">
-        <Link to="/" className="flex items-center gap-3 text-foreground">
-          <Logo />
-          <span className="text-lg font-semibold">Delivraze</span>
+    <Sidebar
+      {...props}
+      className="border-r border-sidebar-border bg-sidebar"
+    >
+      <SidebarHeader className="border-b border-sidebar-border py-4 animate-fade-in-down">
+        <Link
+          to="/"
+          className="flex items-center gap-3 px-4 hover:scale-105 transition-transform"
+        >
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground animate-float">
+            <span className="text-sm font-bold">D</span>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-lg font-bold text-sidebar-foreground">
+              Delivraze
+            </span>
+            <span className="text-xs text-muted-foreground">
+              Parcel Dashboard
+            </span>
+          </div>
         </Link>
-        <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground/70">
-          Parcel Dashboard
-        </p>
       </SidebarHeader>
-      <SidebarContent>
-        {/* We create a SidebarGroup for each parent. */}
-        {data.navMain.map((group) => (
+      <SidebarContent className="px-3 py-2">
+        {data.navMain.map((group, groupIndex) => (
           <SidebarGroup key={group.title}>
-            <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
+            <SidebarGroupLabel 
+              className="px-3 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider animate-fade-in"
+              style={{ animationDelay: `${groupIndex * 50}ms` }}
+            >
+              {group.title}
+            </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu>
+              <SidebarMenu className="gap-1">
                 {group.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       asChild
-                      isActive={location.pathname === item.url}
+                      isActive={isActive(item.url)}
+                      className={`flex items-center gap-3 rounded-lg px-3 py-2.5 transition-all duration-200 ${
+                        isActive(item.url)
+                          ? "bg-primary text-primary-foreground font-medium shadow-lg shadow-primary/25"
+                          : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground hover:translate-x-1"
+                      }`}
                     >
-                      <Link to={item.url} className="flex items-center gap-2">
-                        {/* Render the icon if provided */}
-                        {item.Icon && <item.Icon className="w-4 h-4" />}
-                        <span>{item.title}</span>
+                      <Link
+                        to={item.url}
+                        className="flex items-center gap-3 w-full"
+                      >
+                        {item.Icon && (
+                          <item.Icon
+                            className={`h-4 w-4 flex-shrink-0 ${
+                              isActive(item.url)
+                                ? "text-primary-foreground"
+                                : ""
+                            } ${isActive(item.url) ? "" : "animate-icon-bounce"}`}
+                          />
+                        )}
+                        <span className="text-sm truncate">{item.title}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -62,7 +96,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarGroup>
         ))}
       </SidebarContent>
-      <SidebarRail />
+      <SidebarRail className="hover:bg-primary/5 transition-colors" />
     </Sidebar>
   );
 }

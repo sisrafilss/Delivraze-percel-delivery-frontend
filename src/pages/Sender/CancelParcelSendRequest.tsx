@@ -3,7 +3,8 @@ import AskConfirmation from "@/components/AskConfirmation";
 import ParcelDetailModal from "@/components/modules/Parcels/ParcelDetailModal";
 import Pagination from "@/components/Pagination";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
+import type { DashboardTableColumn } from "@/components/ui/dashboard-table";
+import { DashboardTable } from "@/components/ui/dashboard-table";
 import {
   useCancelPendingParcelBySenderMutation,
   useGetAllParcelsBySenderQuery,
@@ -13,6 +14,7 @@ import { format } from "date-fns";
 import type { CSSProperties } from "react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
+import { AlertTriangle } from "lucide-react";
 
 export default function CancelParcelSendRequest() {
   const [selectedParcel, setSelectedParcel] = useState<Parcel | null>(null);
@@ -25,10 +27,10 @@ export default function CancelParcelSendRequest() {
       page,
       limit,
     }),
-    [page, limit],
+    [page, limit]
   );
 
-  const { data, isLoading, isError, refetch } = useGetAllParcelsBySenderQuery({
+  const { data, isLoading, refetch } = useGetAllParcelsBySenderQuery({
     status: "PENDING",
     ...queryParams,
   });
@@ -62,122 +64,105 @@ export default function CancelParcelSendRequest() {
     }
   };
 
-  const renderSkeletonRows = () =>
-    Array.from({ length: limit }).map((_, i) => (
-      <tr key={i} className="border-b border-border">
-        {Array.from({ length: 8 }).map((_, j) => (
-          <td key={j} className="px-3 py-3">
-            <Skeleton className="h-4 w-full" />
-          </td>
-        ))}
-      </tr>
-    ));
+  const columns: DashboardTableColumn<Parcel>[] = [
+    {
+      header: "Tracking",
+      accessor: (parcel) => parcel.trackingId || "-",
+    },
+    { header: "Receiver", accessor: (parcel) => parcel.receiverName },
+    { header: "Type", accessor: (parcel) => parcel.parcelType },
+    { header: "Weight", accessor: (parcel) => `${parcel.weight}g` },
+    {
+      header: "Route",
+      accessor: (parcel) => (
+        <div className="max-w-xs truncate text-xs">
+          {parcel.pickupLocation} → {parcel.dropoffLocation}
+        </div>
+      ),
+    },
+    {
+      header: "Status",
+      accessor: (parcel) => (
+        <span className="status-badge status-pending">
+          {parcel.status.replace("_", " ")}
+        </span>
+      ),
+    },
+    {
+      header: "Created",
+      accessor: (parcel) =>
+        parcel.createdAt
+          ? format(new Date(parcel.createdAt), "MMM dd, yyyy")
+          : "-",
+    },
+    {
+      header: "Actions",
+      accessor: (parcel) => (
+        <div className="flex gap-2">
+          <Button size="sm" variant="outline" onClick={() => openDetail(parcel)}>
+            Detail
+          </Button>
+          <AskConfirmation
+            title="Cancel Parcel?"
+            description="Are you sure you want to cancel this pending parcel request?"
+            onDelete={() => handleCancel(parcel._id)}
+          >
+            <Button size="sm" variant="destructive">
+              Cancel
+            </Button>
+          </AskConfirmation>
+        </div>
+      ),
+      className: "min-w-[160px]",
+    },
+  ];
+
+  const rowStyle = (_parcel: Parcel, index: number) =>
+    ({
+      "--delay": `${index * 35}ms`,
+    }) as CSSProperties;
 
   return (
-    <div className="page-enter space-y-6">
-      <div>
-        <h1 className="text-2xl font-semibold text-primary text-center">
-          Pending Parcel Requests
-        </h1>
-        <p className="text-center text-sm text-muted-foreground">
-          Cancel any pending parcel before it is dispatched to avoid rework.
-        </p>
+    <div className="space-y-6">
+      <div className="flex items-start gap-4">
+        <div className="h-12 w-12 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0">
+          <AlertTriangle className="h-6 w-6 text-amber-600 dark:text-amber-400" />
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold text-foreground">
+            Pending Parcel Requests
+          </h1>
+          <p className="text-muted-foreground mt-1">
+            Cancel any pending parcel before it is dispatched
+          </p>
+        </div>
       </div>
 
-      <div className="dashboard-panel space-y-4">
-        <div className="dashboard-table-scroll">
-          <div className="overflow-x-auto">
-            <table className="w-full table-auto border-collapse">
-              <thead>
-                <tr className="text-sm text-left text-muted-foreground border-b border-border">
-                  <th className="px-3 py-2">Tracking</th>
-                  <th className="px-3 py-2">Receiver</th>
-                  <th className="px-3 py-2">Type</th>
-                  <th className="px-3 py-2">Weight (g)</th>
-                  <th className="px-3 py-2">Pickup → Dropoff</th>
-                  <th className="px-3 py-2">Status</th>
-                  <th className="px-3 py-2">Created</th>
-                  <th className="px-3 py-2">Actions</th>
-                </tr>
-              </thead>
+      <div className="card-modern">
+        <div className="p-4">
+          <DashboardTable
+            columns={columns}
+            data={parcels}
+            loading={isLoading}
+            rowKey={(parcel) => parcel._id}
+            emptyState={
+              <div className="text-center py-8">
+                <p className="text-muted-foreground">No pending parcel requests.</p>
+              </div>
+            }
+            rowStyle={rowStyle}
+          />
 
-              <tbody>
-                {isLoading ? (
-                  renderSkeletonRows()
-                ) : isError ? (
-                  <tr>
-                    <td colSpan={8} className="py-8 text-center text-destructive">
-                      Failed to load parcels.
-                    </td>
-                  </tr>
-                ) : parcels.length === 0 ? (
-                  <tr>
-                    <td
-                      colSpan={8}
-                      className="py-8 text-center text-muted-foreground"
-                    >
-                      No parcels found.
-                    </td>
-                  </tr>
-                ) : (
-                  parcels.map((p: Parcel, index: number) => (
-                    <tr
-                      key={p._id}
-                      className="row-enter border-b border-border hover:bg-muted/50 dark:hover:bg-muted/30"
-                      style={{ "--delay": `${index * 35}ms` } as CSSProperties}
-                    >
-                      <td className="px-3 py-3 text-sm">{p.trackingId || "-"}</td>
-                      <td className="px-3 py-3 text-sm">{p.receiverName}</td>
-                      <td className="px-3 py-3 text-sm">{p.parcelType}</td>
-                      <td className="px-3 py-3 text-sm">{p.weight}</td>
-                      <td className="px-3 py-3 text-sm">
-                        <div className="max-w-xs truncate">
-                          {p.pickupLocation} → {p.dropoffLocation}
-                        </div>
-                      </td>
-                      <td className="px-3 py-3 text-sm">
-                        <span className="px-2 py-1 rounded-full text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground/70">
-                          {p.status}
-                        </span>
-                      </td>
-                      <td className="px-3 py-3 text-sm">
-                        {p.createdAt
-                          ? format(new Date(p.createdAt), "dd MMM yyyy")
-                          : "-"}
-                      </td>
-                      <td className="px-3 py-3 text-sm">
-                        <div className="flex gap-2">
-                          <Button size="sm" onClick={() => openDetail(p)}>
-                            Detail
-                          </Button>
-                          <AskConfirmation
-                            title="Are you sure?"
-                            description="Want to cancel this parcel?"
-                            onDelete={() => handleCancel(p._id)}
-                          >
-                            <Button size="sm" variant="destructive">
-                              Cancel
-                            </Button>
-                          </AskConfirmation>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+          {meta && meta.totalPage > 1 && (
+            <div className="flex justify-end mt-4">
+              <Pagination
+                page={meta.page}
+                totalPages={meta.totalPage}
+                onPageChange={(p) => setPage(p)}
+              />
+            </div>
+          )}
         </div>
-
-        {meta && meta.totalPage > 1 && (
-          <div className="flex justify-end">
-            <Pagination
-              page={meta.page}
-              totalPages={meta.totalPage}
-              onPageChange={(p) => setPage(p)}
-            />
-          </div>
-        )}
       </div>
 
       <ParcelDetailModal
