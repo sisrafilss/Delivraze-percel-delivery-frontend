@@ -27,9 +27,12 @@ export default function Footer() {
           <div className="space-y-4">
             <Link to="/" className="inline-flex items-center gap-3">
               <Logo />
-              <span className="hidden text-lg font-semibold text-foreground md:inline-flex">
-                Delivraze
-              </span>
+              <div className="hidden flex-col text-sm font-semibold leading-tight text-foreground/80 md:flex">
+                <span className="text-foreground">Delivraze</span>
+                <span className="text-[8px] uppercase tracking-[0.15em] text-muted-foreground">
+                  Express Logistics
+                </span>
+              </div>
             </Link>
             <p className="text-sm leading-relaxed text-muted-foreground">
               Fast, reliable and transparent parcel delivery built for modern

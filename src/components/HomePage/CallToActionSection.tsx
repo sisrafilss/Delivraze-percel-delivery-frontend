@@ -29,7 +29,7 @@ export default function CallToActionSection() {
             asChild
             size="lg"
             variant="outline"
-            className="rounded-full border border-white/60 px-6 py-3 text-sm font-semibold uppercase tracking-wide text-primary-foreground transition hover:border-white"
+            className="rounded-full border border-white/60 px-6 py-3 text-sm font-semibold uppercase tracking-wide text-slate-900 transition hover:border-white"
           >
             <Link to="/register?role=receiver">Register as Receiver</Link>
           </Button>

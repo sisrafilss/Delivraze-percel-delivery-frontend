@@ -19,12 +19,11 @@ import {
   useUserInfoQuery,
 } from "@/redux/features/auth/auth.api";
 import { useAppDispatch } from "@/redux/hook";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import ModeToggler from "./ModeToggler";
 
 const navigationLinks = [
   { href: "/", label: "Home", role: "PUBLIC" },
-  { href: "/track-parcel", label: "Track a Parcel", role: "PUBLIC" },
   { href: "/about", label: "About", role: "PUBLIC" },
   { href: "/contact", label: "Contact", role: "PUBLIC" },
   { href: "/sender", label: "Dashboard", role: RoleEnum.sender },
@@ -37,6 +36,7 @@ export default function Navbar() {
   const { data } = useUserInfoQuery(undefined);
   const [logout] = useLogoutMutation();
   const dispatch = useAppDispatch();
+  const location = useLocation();
 
   const handleLogout = async () => {
     const res = await logout(undefined).unwrap();
@@ -64,10 +64,10 @@ export default function Navbar() {
           <Link to="/" className="flex items-center gap-3">
             <Logo />
             <div className="hidden flex-col text-sm font-semibold leading-tight text-foreground/80 md:flex">
-              <span className="text-xs uppercase tracking-[0.4em] text-muted-foreground">
+              <span className="text-foreground">Delivraze</span>
+              <span className="text-[8px] uppercase tracking-[0.15em] text-muted-foreground">
                 Express Logistics
               </span>
-              <span className="text-foreground">Delivraze</span>
             </div>
           </Link>
 
@@ -76,7 +76,11 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 to={link.href}
-                className="rounded-full px-3 py-2 text-sm font-semibold transition-colors duration-200 hover:text-foreground hover:bg-muted/60"
+                className={`rounded-full px-3 py-2 text-sm font-semibold transition-colors duration-200 hover:text-foreground hover:bg-muted/60 ${
+                  location.pathname === link.href
+                    ? "bg-primary/10 text-primary"
+                    : ""
+                }`}
               >
                 {link.label}
               </Link>

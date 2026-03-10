@@ -18,11 +18,13 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { useLoginMutation } from '@/redux/features/auth/auth.api';
+import { authApi, useLoginMutation } from '@/redux/features/auth/auth.api';
+import { useAppDispatch } from '@/redux/hook';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import { role } from '@/constants/role';
 
 const authSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
@@ -37,6 +39,21 @@ export function LoginForm({
 }: React.ComponentProps<'div'>) {
   const [login] = useLoginMutation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const getDashboardPath = (userRole: string) => {
+    switch (userRole) {
+      case role.sender:
+        return '/sender';
+      case role.receiver:
+        return '/receiver';
+      case role.admin:
+      case role.superAdmin:
+        return '/admin';
+      default:
+        return '/';
+    }
+  };
 
   const form = useForm<z.infer<typeof authSchema>>({
     resolver: zodResolver(authSchema),
@@ -72,7 +89,15 @@ export function LoginForm({
       const result = await login(values).unwrap();
       if (result.success) {
         toast.success('Successfully logged in');
-        navigate('/');
+        dispatch(authApi.util.invalidateTags(['USER']));
+        const userResponse = await dispatch(
+          authApi.endpoints.userInfo.initiate(undefined)
+        ).unwrap();
+        if (userResponse?.data?.role) {
+          navigate(getDashboardPath(userResponse.data.role));
+        } else {
+          navigate('/');
+        }
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {

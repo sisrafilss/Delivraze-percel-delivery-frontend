@@ -1,17 +1,30 @@
 import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
+import { useUserInfoQuery, useLogoutMutation } from "@/redux/features/auth/auth.api";
+import { useAppDispatch } from "@/redux/hook";
+import { authApi } from "@/redux/features/auth/auth.api";
 import { Outlet } from "react-router";
 import { AppSidebar } from "../app-sidebar";
+import ModeToggler from "./ModeToggler";
+import { LogOut } from "lucide-react";
 
 export default function DashboardLayout() {
   const { data: userInfo, isLoading } = useUserInfoQuery(undefined);
+  const [logout] = useLogoutMutation();
+  const dispatch = useAppDispatch();
 
   const user = userInfo?.data;
+
+  const handleLogout = async () => {
+    const res = await logout(undefined).unwrap();
+    console.log(res);
+    dispatch(authApi.util.resetApiState());
+  };
 
   return (
     <SidebarProvider>
@@ -28,12 +41,24 @@ export default function DashboardLayout() {
             </div>
 
             <div className="flex items-center gap-4">
+              <ModeToggler />
+              
               {isLoading ? (
                 <span className="text-muted-foreground">Loading…</span>
               ) : user ? (
-                <div className="flex flex-col text-right">
-                  <span className="font-semibold text-primary">{user.name}</span>
-                  <span className="text-sm text-muted-foreground">{user.role}</span>
+                <div className="flex items-center gap-3">
+                  <div className="flex flex-col text-right">
+                    <span className="font-semibold text-primary">{user.name}</span>
+                    <span className="text-sm text-muted-foreground">{user.role}</span>
+                  </div>
+                  <Button
+                    onClick={handleLogout}
+                    variant="outline"
+                    size="icon"
+                    className="ml-2"
+                  >
+                    <LogOut className="h-4 w-4" />
+                  </Button>
                 </div>
               ) : (
                 <span className="text-muted-foreground">No user info</span>
