@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import Logo from "@/assets/icons/Logo";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,7 +12,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { role } from "@/constants/role";
+import { role as RoleEnum } from "@/constants/role";
 import {
   authApi,
   useLogoutMutation,
@@ -21,16 +22,15 @@ import { useAppDispatch } from "@/redux/hook";
 import { Link } from "react-router";
 import ModeToggler from "./ModeToggler";
 
-// Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
   { href: "/", label: "Home", role: "PUBLIC" },
   { href: "/track-parcel", label: "Track a Parcel", role: "PUBLIC" },
   { href: "/about", label: "About", role: "PUBLIC" },
   { href: "/contact", label: "Contact", role: "PUBLIC" },
-  { href: "/sender", label: "Dashboard", role: role.sender },
-  { href: "/receiver", label: "Dashboard", role: role.receiver },
-  { href: "/admin", label: "Dashboard", role: role.admin },
-  { href: "/admin", label: "Dashboard", role: role.superAdmin },
+  { href: "/sender", label: "Dashboard", role: RoleEnum.sender },
+  { href: "/receiver", label: "Dashboard", role: RoleEnum.receiver },
+  { href: "/admin", label: "Dashboard", role: RoleEnum.admin },
+  { href: "/admin", label: "Dashboard", role: RoleEnum.superAdmin },
 ];
 
 export default function Navbar() {
@@ -44,116 +44,114 @@ export default function Navbar() {
     dispatch(authApi.util.resetApiState());
   };
 
+  const availableLinks = useMemo(() => {
+    const roleBased = navigationLinks.filter(
+      (link) => link.role === "PUBLIC" || link.role === data?.data?.role,
+    );
+    return roleBased.reduce<typeof navigationLinks>(
+      (unique, link) =>
+        unique.some((item) => item.href === link.href)
+          ? unique
+          : [...unique, link],
+      [],
+    );
+  }, [data?.data?.role]);
+
   return (
-    <header className="sticky top-0 z-50 bg-background border-b">
-      <div className="container mx-auto flex h-16 items-center justify-between gap-4 px-4">
-        {/* Left side */}
-        <div className="flex items-center gap-2">
-          {/* Mobile menu trigger */}
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/90 backdrop-blur-xl shadow-sm dark:bg-slate-900/80 transition duration-300">
+      <div className="container mx-auto flex h-20 w-full items-center justify-between gap-4 px-4">
+        <div className="flex items-center gap-6">
+          <Link to="/" className="flex items-center gap-3">
+            <Logo />
+            <div className="hidden flex-col text-sm font-semibold leading-tight text-foreground/80 md:flex">
+              <span className="text-xs uppercase tracking-[0.4em] text-muted-foreground">
+                Express Logistics
+              </span>
+              <span className="text-foreground">Delivraze</span>
+            </div>
+          </Link>
+
+          <nav className="hidden items-center gap-5 text-sm font-medium text-muted-foreground md:flex">
+            {availableLinks.map((link) => (
+              <Link
+                key={link.href}
+                to={link.href}
+                className="rounded-full px-3 py-2 text-sm font-semibold transition-colors duration-200 hover:text-foreground hover:bg-muted/60"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <Link
+            to="/track-parcel"
+            className="hidden rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-md shadow-primary/30 transition hover:shadow-lg hover:translate-y-0.5 md:inline-flex"
+          >
+            Track Parcel
+          </Link>
+
           <Popover>
             <PopoverTrigger asChild>
               <Button
-                className="group size-8 md:hidden"
                 variant="ghost"
                 size="icon"
+                className="md:hidden border border-border/70 bg-muted/50"
               >
+                <span className="sr-only">Open navigation</span>
                 <svg
-                  className="pointer-events-none"
-                  width={16}
-                  height={16}
+                  width={20}
+                  height={20}
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path
-                    d="M4 12L20 12"
-                    className="origin-center -translate-y-[7px] transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.1)] group-aria-expanded:translate-x-0 group-aria-expanded:translate-y-0 group-aria-expanded:rotate-[315deg]"
-                  />
-                  <path
-                    d="M4 12H20"
-                    className="origin-center transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.8)] group-aria-expanded:rotate-45"
-                  />
-                  <path
-                    d="M4 12H20"
-                    className="origin-center translate-y-[7px] transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.1)] group-aria-expanded:translate-y-0 group-aria-expanded:rotate-[135deg]"
-                  />
+                  <line x1="3" y1="12" x2="21" y2="12" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <line x1="3" y1="18" x2="21" y2="18" />
                 </svg>
               </Button>
             </PopoverTrigger>
-            <PopoverContent align="start" className="w-36 p-1 md:hidden">
+            <PopoverContent
+              align="start"
+              className="w-48 rounded-3xl border border-border bg-card/90 p-3 shadow-2xl backdrop-blur-xl"
+            >
               <NavigationMenu className="max-w-none *:w-full">
-                <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
-                  {navigationLinks.map((link, index) => (
-                    <>
-                      {link.role === "PUBLIC" && (
-                        <NavigationMenuItem key={index} className="w-full">
-                          <NavigationMenuLink className="py-1.5" asChild>
-                            <Link to={link.href}>{link.label}</Link>
-                          </NavigationMenuLink>
-                        </NavigationMenuItem>
-                      )}
-                      {link.role === data?.data?.role && (
-                        <NavigationMenuItem key={index} className="w-full">
-                          <NavigationMenuLink className="py-1.5" asChild>
-                            <Link to={link.href}>{link.label}</Link>
-                          </NavigationMenuLink>
-                        </NavigationMenuItem>
-                      )}
-                    </>
-                  ))}
-                </NavigationMenuList>
-              </NavigationMenu>
-            </PopoverContent>
-          </Popover>
-          {/* Main nav */}
-          <div className="flex items-center gap-6">
-            <Link to="/" className="text-primary hover:text-primary/90">
-              <Logo />
-            </Link>
-            {/* Navigation menu */}
-            <NavigationMenu className="max-md:hidden">
-              <NavigationMenuList className="gap-2">
-                {navigationLinks.map((link, index) => (
-                  <>
-                    {link.role === "PUBLIC" && (
-                      <NavigationMenuItem key={index} className="w-full">
-                        <NavigationMenuLink className="py-1.5" asChild>
-                          <Link to={link.href}>{link.label}</Link>
-                        </NavigationMenuLink>
-                      </NavigationMenuItem>
-                    )}
-                    {link.role === data?.data?.role && (
-                      <NavigationMenuItem key={index} className="w-full">
-                        <NavigationMenuLink className="py-1.5" asChild>
-                          <Link to={link.href}>{link.label}</Link>
-                        </NavigationMenuLink>
-                      </NavigationMenuItem>
-                    )}
-                  </>
+                <NavigationMenuList className="flex-col items-start gap-2">
+                  {availableLinks.map((link) => (
+                  <NavigationMenuItem
+                    key={`${link.href}-mobile`}
+                    className="w-full"
+                  >
+                    <NavigationMenuLink
+                      asChild
+                      className="rounded-2xl px-3 py-2 text-sm font-semibold text-foreground transition hover:bg-muted/70"
+                    >
+                      <Link to={link.href}>{link.label}</Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
                 ))}
               </NavigationMenuList>
             </NavigationMenu>
-          </div>
-        </div>
-        {/* Right side */}
-        <div className="flex items-center gap-2">
+          </PopoverContent>
+          </Popover>
+
           <ModeToggler />
-          {data?.data?.email && (
+
+          {data?.data?.email ? (
             <Button
               onClick={handleLogout}
               variant="outline"
-              className="text-sm"
+              className="hidden rounded-full border-primary/40 px-4 py-2 text-sm font-semibold hover:border-primary/70 hover:bg-primary/5 md:inline-flex"
             >
               Logout
             </Button>
-          )}
-
-          {!data?.data?.email && (
-            <Button asChild variant="default" className="text-sm">
+          ) : (
+            <Button asChild className="rounded-full px-4 py-2 text-sm font-semibold md:inline-flex">
               <Link to="/login">Login</Link>
             </Button>
           )}

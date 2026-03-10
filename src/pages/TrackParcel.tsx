@@ -75,64 +75,112 @@ const TrackParcel: React.FC = () => {
   };
 
   return (
-    <div className="page-enter flex flex-col items-center justify-center px-4 py-8 bg-background transition-colors">
-      {isFetching ? (
-        <div className="card-enter w-full max-w-md bg-card p-6 rounded-lg shadow-md space-y-4">
-          {/* Skeleton for label */}
-          <Skeleton className="h-5 w-56" />
-          {/* Skeleton for input */}
-          <Skeleton className="h-10 w-full" />
-          {/* Skeleton for button */}
-          <Skeleton className="h-10 w-full" />
+    <main className="page-enter flex flex-col gap-10 px-4 py-12 md:px-8 lg:px-16">
+      <section className="mx-auto w-full max-w-3xl text-center space-y-3">
+        <p className="text-xs font-semibold uppercase tracking-[0.4em] text-muted-foreground/70">
+          Real-time visibility
+        </p>
+        <h1 className="text-3xl font-bold text-foreground">Track a Parcel</h1>
+        <p className="text-sm text-muted-foreground">
+          Enter your tracking ID and instantly see where your parcel is along
+          the journey with verified scans, updates, and proof of delivery.
+        </p>
+      </section>
+
+      <section className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="rounded-[2rem] border border-border/70 bg-card/90 p-6 shadow-2xl">
+          {isFetching ? (
+            <div className="space-y-4">
+              <Skeleton className="h-5 w-48" />
+              <Skeleton className="h-12 w-full" />
+              <Skeleton className="h-12 w-full" />
+            </div>
+          ) : (
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
+              >
+                <FormField
+                  control={form.control}
+                  name="trackingId"
+                  render={({ field }) => (
+                    <FormItem className="space-y-2">
+                      <div className="text-sm font-semibold uppercase tracking-[0.3em] text-muted-foreground/70">
+                        Track your parcel
+                      </div>
+                      <FormLabel className="text-lg font-semibold">
+                        Enter Parcel Tracking ID
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="e.g. 123456789"
+                          autoFocus
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button
+                  type="submit"
+                  className="w-full rounded-full"
+                  disabled={isFetching || !form.formState.isValid}
+                >
+                  {isFetching ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Tracking...
+                    </span>
+                  ) : (
+                    "Track Parcel"
+                  )}
+                </Button>
+                {isError && (
+                  <p className="text-sm text-destructive">
+                    {error &&
+                    typeof error === "object" &&
+                    error !== null &&
+                    "data" in error
+                      ? (error.data as any)?.message || "Parcel not found."
+                      : "Parcel not found."}
+                  </p>
+                )}
+              </form>
+            </Form>
+          )}
         </div>
-      ) : (
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="card-enter w-full max-w-md bg-card p-6 rounded-lg shadow-md space-y-4"
-          >
-            <FormField
-              control={form.control}
-              name="trackingId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-lg font-semibold">
-                    Enter Parcel Tracking ID
-                  </FormLabel>
-                  <FormControl>
-                    <Input placeholder="e.g. 123456789" autoFocus {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={isFetching || !form.formState.isValid}
-            >
-              {isFetching ? (
-                <span className="flex items-center justify-center">
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Tracking...
-                </span>
-              ) : (
-                'Track Parcel'
-              )}
-            </Button>
-            {isError && (
-              <div className="text-destructive text-sm mt-2">
-                {error &&
-                typeof error === 'object' &&
-                error !== null &&
-                'data' in error
-                  ? (error.data as any)?.message || 'Parcel not found.'
-                  : 'Parcel not found.'}
-              </div>
-            )}
-          </form>
-        </Form>
-      )}
+
+        <div className="space-y-6 rounded-[2rem] border border-border/60 bg-gradient-to-br from-secondary/20 via-background to-primary/20 p-6 text-sm text-muted-foreground shadow-xl">
+          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground/80">
+            <span>Delivery insights</span>
+            <span>Always transparent</span>
+          </div>
+          <div className="space-y-3">
+            <p>
+              <strong className="text-foreground">Live scans:</strong> Every
+              stop is recorded with GPS, time, and courier notes.
+            </p>
+            <p>
+              <strong className="text-foreground">Instant alerts:</strong> SMS
+              and email updates trigger for pickups, transit, and delivery.
+            </p>
+            <p>
+              <strong className="text-foreground">Proof of delivery:</strong>{" "}
+              Photos, signatures, and OTPs ensure safe handoffs.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-border bg-white/70 p-4 text-sm text-muted-foreground shadow-lg">
+            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground/80">
+              Need help?
+            </p>
+            <p className="text-foreground">
+              Support at support@delivraze.com · +88 0181 234 5678
+            </p>
+          </div>
+        </div>
+      </section>
 
       {parcelData && (
         <ParcelDetailModal
@@ -141,7 +189,7 @@ const TrackParcel: React.FC = () => {
           onClose={closeDetail}
         />
       )}
-    </div>
+    </main>
   );
 };
 
